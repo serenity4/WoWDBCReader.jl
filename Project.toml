@@ -1,9 +1,13 @@
 name = "WoWDBCReader"
 uuid = "1777bde7-0b71-4cc1-b255-d672d206c00f"
-authors = ["Cédric BELMANT"]
 version = "0.1.0"
+authors = ["Cédric BELMANT"]
+
+[deps]
+BinaryParsingTools = "6663bfc4-f836-4634-93ec-aee42a53a86a"
 
 [compat]
+BinaryParsingTools = "0.1.5"
 julia = "1.10"
 
 [extras]

@@ -15,7 +15,8 @@ function initialize_seed_buffer()
 end
 
 function next_seed(seed::UInt32)
-  seed = seed * UInt32(125) + UInt32(3)
+  seed *= UInt32(125)
+  seed += UInt32(3)
   seed % 0x002aaaab
 end
 
@@ -27,27 +28,17 @@ const MPQ_HASH_NAME_B = 0x200
 const MPQ_HASH_FILE_KEY = 0x300
 
 function hash_filename(filename::AbstractString, hash_type; slash_to_backslash = false)
-  seed_1 = 0x7fed7fed
-  seed_2 = 0xeeeeeeee
+  seed_1::UInt32 = 0x7fed7fed
+  seed_2::UInt32 = 0xeeeeeeee
   for char in filename
     char = uppercase(char)
     slash_to_backslash && char == '/' && (char = '\\')
     byte = UInt8(char)
-    seed_1 = SEED_BUFFER[hash_type + byte + 1] ^ (seed_1 + seed_2)
+    seed_1 = SEED_BUFFER[hash_type + byte + 1] ⊻ (seed_1 + seed_2)
     seed_2 = byte + seed_1 + seed_2 + (seed_2 << 5) + UInt32(3)
   end
   seed_1
 end
-
-struct HashTableEntry
-  ha::UInt32
-  hb::UInt32
-end
-
-struct HashTable
-  entries::Vector{Optional{HashTableEntry}}
-end
-HashTable(n::Integer = 4096) = HashTableEntry(fill(nothing, n))
 
 function hash_table_slot(filename::AbstractString, table, table_length)
   h = hash_filename(filename, MPQ_HASH_TABLE_INDEX)

@@ -1,9 +1,12 @@
-function read_mpq(path::AbstractString)
-  open(io -> read_binary(io, MPQArchive), path, "r")
+function read_mpq(path::AbstractString, ::Type{T} = MPQArchive) where {T}
+  open(io -> read_binary(io, T), path, "r")
 end
 
 function Base.read(io::BinaryIO, ::Type{MPQArchive})
-  read(io, MPQHeader)
+  header = read(io, MPQHeader)
+  ht = read(io, MPQHashTable, header)
+  bt = read(io, MPQBlockTable, header)
+  MPQArchive(ht, bt)
 end
 
 function extended_offset(hi, offset)
@@ -49,4 +52,24 @@ function Base.read(io::IO, ::Type{MPQHeader})
   end
 
   MPQHeader(block_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
+end
+
+function Base.read(io::IO, ::Type{MPQHashTable}, header::MPQHeader)
+  compressed = ht_size_compressed(header) < ht_size(header)
+  !compressed || error("Compressed hash tables are not supported")
+
+  seek(io, header.hash_table_offset)
+  data = [read(io, UInt32) for _ in 1:(ht_size_compressed(header) ÷ 4)]
+  decrypt_block!(data, MPQ_KEY_HASH_TABLE)
+  # Decompression step would go there.
+  entries = reinterpret(MPQHashTableEntry, data)
+  MPQHashTable(entries)
+end
+
+function Base.read(io::IO, ::Type{MPQBlockTable}, header::MPQHeader)
+  seek(io, header.block_table_offset)
+  data = [read(io, UInt32) for _ in 1:4header.block_table_length]
+  decrypt_block!(data, MPQ_KEY_BLOCK_TABLE)
+  entries = reinterpret(MPQBlock, data)
+  MPQBlockTable(entries)
 end

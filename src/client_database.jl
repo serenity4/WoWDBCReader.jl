@@ -7,6 +7,16 @@ function read_dbc(path::AbstractString, schema::Symbol)
   read_dbc(path, T)
 end
 
+function read_dbc(data::AbstractVector{UInt8}, schema::Symbol)
+  T = getproperty(@__MODULE__, schema_type(schema))
+  read_dbc(data, T)
+end
+
+function read_dbc(data::AbstractVector{UInt8}, ::Type{T}) where {T}
+  io = IOBuffer(data)
+  read_binary(io, ClientDatabase; T)
+end
+
 function read_dbc(path::AbstractString, ::Type{T}) where {T}
   open(io -> read_binary(io, ClientDatabase; T), path, "r")
 end
@@ -51,7 +61,7 @@ BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{ClientDatabase}) = true
   ex
 end
 
-function Base.read(io::BinaryIO, ::Type{ClientDatabase}; T::DataType)
+function Base.read(io::IO, ::Type{ClientDatabase}; T::DataType)
   magic = read(io, Tag4)
   magic === tag4"WDBC" || error("The provided file has an invalid signature: $magic")
   record_count = read(io, UInt32)

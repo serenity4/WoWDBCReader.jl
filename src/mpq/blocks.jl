@@ -1,5 +1,6 @@
 function find_file(archive::MPQArchive, filename::AbstractString)
   block = find_block(archive, filename)
+  isnothing(block) && return
   seek(archive.io, block.file_offset)
   n = cld(Int64(block.uncompressed_file_size), archive.sector_size)
   key = in(MPQ_FILE_ENCRYPTED, block.flags) ? file_decryption_key(block, filename) : nothing
@@ -86,8 +87,8 @@ function read_uncompressed_block_data(io::IO, block::MPQBlock, ns, sector_size, 
   data
 end
 
-function decompress!(buffer, bytes::AbstractVector{UInt8}, method::MPQCompressionFlags)
-  length(enabled_flags(method)) == 1 || error("Only single-algorithm compression schemes are supported at the moment.")
+function decompress!(buffer::Vector{UInt8}, bytes::AbstractVector{UInt8}, method::MPQCompressionFlags)
+  length(enabled_flags(method)) == 1 || error("Only single-algorithm compression schemes are supported at the moment, got $method.")
   in(MPQ_COMPRESSION_HUFFMANN, method) && (bytes = decompress_huffman!(buffer, bytes))
   in(MPQ_COMPRESSION_ZLIB, method) && (bytes = decompress_zlib!(buffer, bytes))
   in(MPQ_COMPRESSION_PKWARE, method) && (bytes = decompress_pkware!(buffer, bytes))

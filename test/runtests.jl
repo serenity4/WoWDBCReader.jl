@@ -7,10 +7,6 @@ dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-
 
 mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data", "$name.MPQ")
 
-archive = MPQArchive(mpq_file("patch-3"))
-block = find_block(archive, "(listfile)")
-files = listfile(archive)
-
 @testset "WoWDBCReader.jl" begin
   @testset "Reading DBC files" begin
     dbc = read_dbc(dbc_file(:TalentTab), :talenttab)
@@ -72,5 +68,21 @@ files = listfile(archive)
     @test length(files) === 2994
     @test files[begin] == "CHARACTER\\BloodElf\\Female\\BloodElfFemale.M2"
     @test files[end] == "WTF\\DefaultBindings.wtf"
+
+    archive = MPQArchive(mpq_file("enUS/patch-enUS"))
+    talent_tabs_dbc = find_file(archive, "DBFilesClient\\TalentTab.dbc")
+    talent_tabs = read_dbc(talent_tabs_dbc, :talenttab)
+    ref = read_dbc(dbc_file(:TalentTab), :talenttab)
+    @test talent_tabs == ref
+
+    archive = MPQArchive(mpq_file("enUS/patch-enUS-3"))
+    map_dbc = find_file(archive, "DBFilesClient\\Map.dbc")
+    map = read_dbc(map_dbc, :map)
+    ref = read_dbc(dbc_file(:Map), :map)
+    @test map == ref
+    spell_dbc = find_file(archive, "DBFilesClient\\Spell.dbc")
+    spell = read_dbc(spell_dbc, :spell)
+    ref = read_dbc(dbc_file(:Spell), :spell)
+    @test spell == ref
   end
 end;

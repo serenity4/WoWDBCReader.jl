@@ -45,7 +45,7 @@ function hash_table_slot(ht::MPQHashTable, filename::AbstractString; locale::Opt
   ha = hash_filename(filename, MPQ_HASH_NAME_A)
   hb = hash_filename(filename, MPQ_HASH_NAME_B)
   n = length(ht.entries)
-  index::UInt32 = mod1(h, n)
+  index::UInt32 = mod1(h + one(h), n)
   stop = index - one(index)
   while index ≠ stop
     entry = ht.entries[index]

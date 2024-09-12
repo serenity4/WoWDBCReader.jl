@@ -13,7 +13,7 @@ function Base.write(io::IO, header::MPQHeader)
 
   # Power of two exponent specifying the number of 512-byte disk sectors in each logical sector
   # in the archive. The size of each logical sector in the archive is 512 * 2^block_size.
-  write(io, UInt16(log2(header.block_size))) # 16
+  write(io, UInt16(log2(header.sector_size ÷ 512))) # 16
 
   hi_hash_table_offset, hash_table_offset = decompose_offset(header.hash_table_offset)
 
@@ -21,8 +21,8 @@ function Base.write(io::IO, header::MPQHeader)
 
   write(io, hash_table_offset) # 20
   write(io, block_table_offset) # 24
-  write(io, header.hash_table_length) # 28
-  write(io, header.block_table_length) # 32
+  write(io, UInt32(header.hash_table_length)) # 28
+  write(io, UInt32(header.block_table_length)) # 32
 
   # Offset to the beginning of array of 16-bit high parts of file offsets.
   hi_block_table_offset_64 = UInt64(0)

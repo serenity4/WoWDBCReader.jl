@@ -1,12 +1,15 @@
-function read_mpq(path::AbstractString, ::Type{T} = MPQArchive) where {T}
-  open(io -> read_binary(io, T), path, "r")
+function MPQArchive(path::AbstractString)
+  io = open(path, "r")
+  read_binary(io, MPQArchive)
 end
+
+Base.close(archive::MPQArchive) = finalize(archive)
 
 function Base.read(io::BinaryIO, ::Type{MPQArchive})
   header = read(io, MPQHeader)
   ht = read(io, MPQHashTable, header)
   bt = read(io, MPQBlockTable, header)
-  MPQArchive(ht, bt)
+  MPQArchive(io, ht, bt, header.sector_size)
 end
 
 function extended_offset(hi, offset)
@@ -33,7 +36,8 @@ function Base.read(io::IO, ::Type{MPQHeader})
   format = read(io, UInt16)
   format == 1 || error("Only WOTLK-compatible MPQ files are supported; format must therefore be 1, but is $format")
   block_size_exponent = read(io, UInt16)
-  block_size = exp2(block_size_exponent)
+  block_size = 2^block_size_exponent
+  sector_size = 512block_size
 
   hash_table_offset = read(io, UInt32)
   block_table_offset = read(io, UInt32)
@@ -51,7 +55,7 @@ function Base.read(io::IO, ::Type{MPQHeader})
     error("Expected value of `hi_block_table_offset_64` to be zero; got $hi_block_table_offset_64 instead")
   end
 
-  MPQHeader(block_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
+  MPQHeader(sector_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
 end
 
 function Base.read(io::IO, ::Type{MPQHashTable}, header::MPQHeader)
@@ -68,7 +72,8 @@ end
 
 function Base.read(io::IO, ::Type{MPQBlockTable}, header::MPQHeader)
   seek(io, header.block_table_offset)
-  data = [read(io, UInt32) for _ in 1:4header.block_table_length]
+  nb = sizeof(MPQBlock) * header.block_table_length
+  data = [read(io, UInt32) for _ in 1:(nb ÷ sizeof(UInt32))]
   decrypt_block!(data, MPQ_KEY_BLOCK_TABLE)
   entries = reinterpret(MPQBlock, data)
   MPQBlockTable(entries)

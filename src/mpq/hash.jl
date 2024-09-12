@@ -40,17 +40,18 @@ function hash_filename(filename::AbstractString, hash_type; slash_to_backslash =
   seed_1
 end
 
-function hash_table_slot(filename::AbstractString, table, table_length)
+function hash_table_slot(ht::MPQHashTable, filename::AbstractString; locale::Optional{MPQLocale} = nothing)
   h = hash_filename(filename, MPQ_HASH_TABLE_INDEX)
   ha = hash_filename(filename, MPQ_HASH_NAME_A)
   hb = hash_filename(filename, MPQ_HASH_NAME_B)
-  index::UInt32 = mod1(h, table_length)
-  original = index - one(index)
-  while index ≠ original
-    entry = table[index]
-    entry === nothing && break
-    entry.ha == ha && entry.hb == hb && return index
-    index = mod1(index + one(index), table_length)
+  n = length(ht.entries)
+  index::UInt32 = mod1(h, n)
+  stop = index - one(index)
+  while index ≠ stop
+    entry = ht.entries[index]
+    entry.block_index == 0xffffffff && break
+    entry.ha == ha && entry.hb == hb && (isnothing(locale) || entry.locale == locale) && return index
+    index = mod1(index + one(index), n)
   end
   0xffffffff
 end

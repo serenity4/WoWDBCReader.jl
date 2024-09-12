@@ -1,33 +1,52 @@
 struct MPQHeader
-  block_size::UInt32
+  sector_size::Int64
   # Number of entries in the hash table. Must be a power of two, and must be less than 2^16 for
   # the original MoPaQ format, or less than 2^20 for the Burning Crusade format.
-  hash_table_length::UInt32
+  hash_table_length::Int64
   # Number of entries in the block table.
-  block_table_length::UInt32
+  block_table_length::Int64
   # Offset to the beginning of the hash table, relative to the beginning of the archive.
-  hash_table_offset::UInt64
+  hash_table_offset::Int64
   # Offset to the beginning of the block table, relative to the beginning of the archive.
-  block_table_offset::UInt64
+  block_table_offset::Int64
 end
 
-function MPQHeader(block_size, hash_table_length, block_table_length; hash_table_offset = 44, block_table_offset = hash_table_offset + hash_table_length * sizeof(MPQHashTable))
-  MPQHeader(block_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
+function MPQHeader(sector_size, hash_table_length, block_table_length; hash_table_offset = 44, block_table_offset = hash_table_offset + hash_table_length * sizeof(MPQHashTable))
+  MPQHeader(sector_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
 end
 
 ht_size_compressed(header::MPQHeader) = Int(header.block_table_offset - header.hash_table_offset)
 ht_size(header::MPQHeader) = ht_size(header.hash_table_length)
 
+@enum MPQLocale::UInt16 begin
+  MPQ_LOCALE_NEUTRAL      = 0x0000
+  MPQ_LOCALE_CHINESE      = 0x0404
+  MPQ_LOCALE_CZECH        = 0x0405
+  MPQ_LOCALE_GERMAN       = 0x0407
+  MPQ_LOCALE_ENGLISH      = 0x0409
+  MPQ_LOCALE_SPANISH      = 0x040a
+  MPQ_LOCALE_FRENCH       = 0x040c
+  MPQ_LOCALE_ITALIAN      = 0x0410
+  MPQ_LOCALE_JAPANESE     = 0x0411
+  MPQ_LOCALE_KOREAN       = 0x0412
+  MPQ_LOCALE_DUTCH        = 0x0413
+  MPQ_LOCALE_POLISH       = 0x0415
+  MPQ_LOCALE_PORTUGUESE   = 0x0416
+  MPQ_LOCALE_RUSSSIAN     = 0x0419
+  MPQ_LOCALE_ENGLISH_UK   = 0x0809
+  MPQ_LOCALE_UNDEFINED    = 0xffff
+end
+
 struct MPQHashTableEntry
   ha::UInt32
   hb::UInt32
-  locale::UInt16
+  locale::MPQLocale
   platform::UInt8
   reserved::UInt8
   block_index::UInt32
 end
 
-MPQHashTableEntry() = MPQHashTableEntry(0xffffffff, 0xffffffff, 0xffff, 0xff, 0xff, 0xffffffff)
+MPQHashTableEntry() = MPQHashTableEntry(0xffffffff, 0xffffffff, MPQ_LOCALE_UNDEFINED, 0xff, 0xff, 0xffffffff)
 
 struct MPQHashTable
   entries::Vector{MPQHashTableEntry}
@@ -77,6 +96,7 @@ struct MPQBlock
   # Flags for the file. See MPQ_FILE_XXXX constants
   flags::MPQFileFlags
 end
+
 function Base.show(io::IO, block::MPQBlock)
   print(io, MPQBlock, '(')
   print(io, "offset: ", block.file_offset)
@@ -94,7 +114,13 @@ end
 
 struct MPQFile end
 
-struct MPQArchive
+mutable struct MPQArchive{IO<:Base.IO}
+  io::IO
   hash_table::MPQHashTable
   block_table::MPQBlockTable
+  sector_size::Int
+  function MPQArchive(io::IO, hash_table, block_table, sector_size)
+    archive = new{typeof(io)}(io, hash_table, block_table, sector_size)
+    finalizer(x -> close(x.io), archive)
+  end
 end

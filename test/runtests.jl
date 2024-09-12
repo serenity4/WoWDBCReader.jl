@@ -3,6 +3,8 @@ using Test
 
 dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-dbc-reader/data/dbc", "$name.dbc")
 
+mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data", "$name.MPQ")
+
 @testset "WoWDBCReader.jl" begin
   @testset "Reading DBC files" begin
     dbc = read_dbc(dbc_file(:TalentTab), :talenttab)
@@ -21,7 +23,10 @@ dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-
     @test isa(dbc, Vector{SpellData})
     @test length(dbc) > 49000
   end
+
+  @testset "MPQ files" begin
+    mpq = read_mpq(mpq_file("patch-3"))
+    @test mpq.hash_table_length == 4096
+    @test mpq.block_table_length == 2996
+  end
 end;
-
-
-archive = WoWDBCReader.create_archive("test", 1024)

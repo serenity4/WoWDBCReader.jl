@@ -4,6 +4,7 @@ using BinaryParsingTools
 using BitMasks
 using CodecZlib: ZlibCompressorStream, ZlibDecompressorStream
 using CodecBzip2: Bzip2CompressorStream, Bzip2DecompressorStream
+using Dictionaries
 
 const Optional{T} = Union{T, Nothing}
 
@@ -22,8 +23,8 @@ export read_dbc,
        write_dbc,
        MPQHeader,
        MPQHashTableEntry, MPQHashTable,
+       MPQFile,
        MPQArchive,
-       find_block,
        find_file,
        listfile
 

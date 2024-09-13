@@ -4,18 +4,14 @@ function BinaryParsingTools.swap_endianness(io::IO, ::Type{MPQArchive})
   peek(io, UInt32) == reverse(MPQ_MAGIC_NUMBER)
 end
 
-function MPQArchive(path::AbstractString)
-  io = open(path, "r")
-  read_binary(io, MPQArchive)
-end
-
-Base.close(archive::MPQArchive) = finalize(archive)
+MPQArchive(path::AbstractString) = finalizer(x -> close(x.io), MPQArchive(open(path, "r")))
+MPQArchive(io::IO) = read_binary(io, MPQArchive)
 
 function Base.read(io::BinaryIO, ::Type{MPQArchive})
   header = read(io, MPQHeader)
   ht = read(io, MPQHashTable, header)
   bt = read(io, MPQBlockTable, header)
-  MPQArchive(io, ht, bt, header.sector_size)
+  MPQArchive(io, ht, bt, header.sector_size, Dictionary{String, MPQFile}())
 end
 
 function extended_offset(hi, offset)
@@ -25,9 +21,9 @@ end
 
 function decompose_offset(offset)
   offset = convert(UInt64, offset)
-  offset & 0xffff0000 == 0 && return (UInt16(0), UInt32(offset))
+  offset & 0xffffffff00000000 == 0 && return (UInt16(0), UInt32(offset))
   hi = UInt16(offset >> 32)
-  low = UInt32(offset & 0x0000ffff)
+  low = UInt32(offset & 0x00000000ffffffff)
   (hi, low)
 end
 

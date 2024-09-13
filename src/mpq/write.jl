@@ -1,3 +1,34 @@
+function Base.write(io::IO, archive::MPQArchive)
+  header = MPQHeader(archive)
+  write(io, header)
+  write(io, archive.hash_table)
+  padding = (header.block_table_offset - header.hash_table_offset) - ht_size(archive.hash_table)
+  for _ in 1:padding
+    write(io, UInt8)
+  end
+  write(io, archive.block_table)
+end
+
+function Base.write(io::IO, ht::MPQHashTable)
+  data = reinterpret(UInt32, ht.entries)
+  encrypt_block!(data, MPQ_KEY_HASH_TABLE)
+  write(io, data)
+end
+
+function Base.write(io::IO, bt::MPQBlockTable)
+  data = reinterpret(UInt32, bt.entries)
+  encrypt_block!(data, MPQ_KEY_BLOCK_TABLE)
+  write(io, data)
+end
+
+function MPQHeader(archive::MPQArchive)
+  hash_table_length = length(archive.hash_table.entries)
+  block_table_length = length(archive.block_table.entries)
+  hash_table_offset = 44
+  block_table_offset = 4cld(44 + ht_size(archive.hash_table), 4)
+  MPQHeader(archive.sector_size, hash_table_length, block_table_length, hash_table_offset, block_table_offset)
+end
+
 function Base.write(io::IO, header::MPQHeader)
   header_size = UInt32(44)
   write(io, MPQ_MAGIC_NUMBER) # 4

@@ -1,6 +1,23 @@
 function find_file(archive::MPQArchive, filename::AbstractString)
-  block = find_block(archive, filename)
-  isnothing(block) && return
+  hash_entry = find_hash_entry(archive, filename)
+  isnothing(hash_entry) && return nothing
+  block = archive.block_table.entries[hash_entry.block_index + 1]
+  MPQFile(archive, filename, hash_entry, block)
+end
+
+function MPQFile(archive::MPQArchive, filename::AbstractString)
+  get!(archive.files, filename) do
+    file = find_file(archive, filename)
+    isnothing(file) && error("No file named '$filename' exists in this archive")
+    file
+  end
+end
+
+function Base.read(file::MPQFile)
+  !isempty(file.data) && return file.data
+  (; archive, filename) = file
+  isdefined(file.block, 1) || error("The file must be associated with a block for data to be read")
+  block = file.block[]
   seek(archive.io, block.file_offset)
   n = cld(Int64(block.uncompressed_file_size), archive.sector_size)
   key = in(MPQ_FILE_ENCRYPTED, block.flags) ? file_decryption_key(block, filename) : nothing
@@ -8,16 +25,11 @@ function find_file(archive::MPQArchive, filename::AbstractString)
   imploded = in(MPQ_FILE_IMPLODE, block.flags)
   imploded && error("Imploded data is not supported at the moment.")
   if compressed
-    read_compressed_block_data(archive.io, block, n, archive.sector_size, key)
+    read_compressed_block_data!(file.data, archive.io, block, n, archive.sector_size, key)
   else
-    read_uncompressed_block_data(archive.io, block, n, archive.sector_size, key)
+    read_uncompressed_block_data(file.data, archive.io, block, n, archive.sector_size, key)
   end
-end
-
-function find_block(archive::MPQArchive, filename::AbstractString)
-  hash_entry = find_hash_entry(archive, filename)
-  isnothing(hash_entry) && return nothing
-  archive.block_table.entries[hash_entry.block_index + 1]
+  file.data
 end
 
 function find_hash_entry(archive::MPQArchive, filename::AbstractString)
@@ -26,30 +38,10 @@ function find_hash_entry(archive::MPQArchive, filename::AbstractString)
   archive.hash_table.entries[slot]
 end
 
-@bitmask exported = true MPQCompressionFlags::UInt8 begin
-  "Huffmann compression (used on WAVE files only)."
-  MPQ_COMPRESSION_HUFFMANN = 0x01
-  "ZLIB compression."
-  MPQ_COMPRESSION_ZLIB = 0x02
-  "PKWARE DCL compression."
-  MPQ_COMPRESSION_PKWARE = 0x08
-  "BZIP2 compression (added in Warcraft III)."
-  MPQ_COMPRESSION_BZIP2 = 0x10
-  "Sparse compression (added in Starcraft 2)."
-  MPQ_COMPRESSION_SPARSE = 0x20
-  "IMA ADPCM compression (mono)."
-  MPQ_COMPRESSION_ADPCM_MONO = 0x40
-  "IMA ADPCM compression (stereo)."
-  MPQ_COMPRESSION_ADPCM_STEREO = 0x80
-  "LZMA compression. Added in Starcraft 2. This value is NOT a combination of flags."
-  MPQ_COMPRESSION_LZMA = 0x12
-end
-
-function read_compressed_block_data(io::IO, block::MPQBlock, ns, sector_size, key::Optional{UInt32})
+function read_compressed_block_data!(data::Vector{UInt8}, io::IO, block::MPQBlock, ns, sector_size, key::Optional{UInt32})
   p = position(io)
   sector_offsets = Int64[read(io, Int32) for _ in 1:(ns + 1)]
   final_size = Int64(block.uncompressed_file_size) % sector_size
-  data = UInt8[]
   sector_buffer = zeros(UInt8, sector_size)
   decompression_buffer = zeros(UInt8, sector_size)
   for i in 1:ns
@@ -71,9 +63,8 @@ function read_compressed_block_data(io::IO, block::MPQBlock, ns, sector_size, ke
   data
 end
 
-function read_uncompressed_block_data(io::IO, block::MPQBlock, ns, sector_size, key::Optional{UInt32})
+function read_uncompressed_block_data!(data::Vector{UInt8}, io::IO, block::MPQBlock, ns, sector_size, key::Optional{UInt32})
   final_size = Int64(block.uncompressed_file_size) % sector_size
-  data = UInt8[]
   sector_buffer = zeros(UInt8, sector_size)
   for i in 1:ns
     size = i == ns ? final_size : sector_size

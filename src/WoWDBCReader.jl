@@ -19,7 +19,7 @@ include("mpq/write.jl")
 include("mpq/utilities.jl")
 
 export read_dbc,
-       read_mpq,
+       write_dbc,
        MPQHeader,
        MPQHashTableEntry, MPQHashTable,
        MPQArchive,

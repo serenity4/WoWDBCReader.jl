@@ -1,25 +1,20 @@
 struct ClientDatabase end
 
+const DBC_MAGIC_NUMBER = tag4"CBDW"
+
+BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{ClientDatabase}) = true
+BinaryParsingTools.swap_endianness(io::IO, ::Type{ClientDatabase}) = peek(io, UInt32) == reverse(DBC_MAGIC_NUMBER)
+
 schema_type(schema) = Symbol(uppercasefirst(string(schema)), :Data)
 
-function read_dbc(path::AbstractString, schema::Symbol)
+function read_dbc(path_or_data, schema::Symbol)
   T = getproperty(@__MODULE__, schema_type(schema))
-  read_dbc(path, T)
+  read_dbc(path_or_data, T)
 end
 
-function read_dbc(data::AbstractVector{UInt8}, schema::Symbol)
-  T = getproperty(@__MODULE__, schema_type(schema))
-  read_dbc(data, T)
-end
-
-function read_dbc(data::AbstractVector{UInt8}, ::Type{T}) where {T}
-  io = IOBuffer(data)
-  read_binary(io, ClientDatabase; T)
-end
-
-function read_dbc(path::AbstractString, ::Type{T}) where {T}
-  open(io -> read_binary(io, ClientDatabase; T), path, "r")
-end
+read_dbc(path::AbstractString, ::Type{T}) where {T} = open(io -> read_dbc(io, T), path, "r")
+read_dbc(data::AbstractVector{UInt8}, ::Type{T}) where {T} = read_dbc(IOBuffer(data), T)
+read_dbc(io::IO, ::Type{T}) where {T} = read_binary(io, ClientDatabase; T)
 
 function read_strings(io::IO, string_block_size::UInt32)
   # Strings are all the way to the end of the file.
@@ -45,8 +40,6 @@ function find_string(strings, indices, char_index)
   isnothing(i) && error("Could not find string at index $char_index")
   strings[i]
 end
-
-BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{ClientDatabase}) = true
 
 @generated function read_dbc_row(io::IO, strings, indices, ::Type{T}) where {T}
   ex = Expr(:call, T)

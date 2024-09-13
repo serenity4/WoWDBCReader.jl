@@ -1,3 +1,9 @@
+const MPQ_MAGIC_NUMBER = Tag4(('M', 'P', 'Q', '\x1A'))
+
+function BinaryParsingTools.swap_endianness(io::IO, ::Type{MPQArchive})
+  peek(io, UInt32) == reverse(MPQ_MAGIC_NUMBER)
+end
+
 function MPQArchive(path::AbstractString)
   io = open(path, "r")
   read_binary(io, MPQArchive)
@@ -24,8 +30,6 @@ function decompose_offset(offset)
   low = UInt32(offset & 0x0000ffff)
   (hi, low)
 end
-
-const MPQ_MAGIC_NUMBER = Tag4(('M', 'P', 'Q', '\x1A'))
 
 function Base.read(io::IO, ::Type{MPQHeader})
   magic_number = read(io, Tag4)

@@ -26,6 +26,22 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
     @test length(dbc) > 49000
   end
 
+  @testset "Writing DBC files" begin
+    dbc = read_dbc(dbc_file(:TalentTab), :talenttab)
+    buffer = IOBuffer()
+    write_dbc(buffer, dbc)
+    seekstart(buffer)
+    dbc2 = read_dbc(buffer, :talenttab)
+    @test dbc == dbc2
+
+    dbc = read_dbc(dbc_file(:Spell), :spell)
+    buffer = IOBuffer()
+    write_dbc(buffer, dbc)
+    seekstart(buffer)
+    dbc2 = read_dbc(buffer, :spell)
+    @test dbc == dbc2
+  end
+
   @testset "MPQ files" begin
     @testset "Hash computations" begin
       @test WoW.SEED_BUFFER[1] === 0x55c636e2

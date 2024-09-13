@@ -91,6 +91,7 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
       @test Int(block.uncompressed_file_size) === 166702
       @test block.flags === MPQ_FILE_COMPRESS | MPQ_FILE_SECTOR_CRC | MPQ_FILE_EXISTS
       @test block === block_table.entries[2995]
+      @test_throws "No file" archive["doesnotexist"]
       data = read(archive["(listfile)"])
       @test length(data) === Int(block.uncompressed_file_size)
       files = listfile(archive)
@@ -116,16 +117,69 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
     end
 
     @testset "Writing MPQ files" begin
-      archive = MPQArchive(mpq_file("enUS/patch-enUS"))
-      data = read(archive["DBFilesClient\\TalentTab.dbc"])
+      # Archive with no files.
+      archive = MPQArchive()
       buffer = IOBuffer()
-      write(buffer, archive)
+      @test write(buffer, archive) == 65536 + 44
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
-      @test_broken begin
-        data2 = read(archive2["DBFilesClient\\TalentTab.dbc"])
-        @test data2 == data
-      end
+      @test isempty(archive2.block_table.entries)
+      @test write(buffer, archive2) == 65536 + 44
+
+      # Archive with two user-created files.
+      # XXX: Using `rand` instead of `ones` makes the compressed file
+      # bigger than the uncompressed one, which currently errors.
+      # Such a situation should be tested to make sure we are robust against it.
+      archive = MPQArchive()
+      file_a = MPQFile(archive, "Test\\A", ones(UInt8, 256))
+      @test_throws "already exists" MPQFile(archive, "Test\\A", rand(UInt8, 256))
+      file_b = MPQFile(archive, "Test\\B", ones(UInt8, 5000))
+      buffer = IOBuffer()
+      nb = write(buffer, archive)
+      @test nb > 65536 + 44
+
+      seekstart(buffer)
+      archive2 = MPQArchive(buffer)
+      @test length(archive2.block_table.entries) == 2
+      file_a_2 = archive2["Test\\A"]
+      file_b_2 = archive2["Test\\B"]
+      @test file_a_2.block[].uncompressed_file_size == 256
+      @test file_b_2.block[].uncompressed_file_size == 5000
+      @test read(file_a_2) == read(file_a)
+      @test read(file_b_2) == read(file_b)
+      # XXX: It writes more bytes than originally intended, don't know why.
+      @test_broken write(IOBuffer(), archive2) == nb
+
+      # Same, but with one file uncompressed.
+      archive = MPQArchive()
+      file_a = MPQFile(archive, "Test\\A", ones(UInt8, 256); compression = nothing)
+      @test_throws "already exists" MPQFile(archive, "Test\\A", rand(UInt8, 256))
+      file_b = MPQFile(archive, "Test\\B", ones(UInt8, 5000))
+      buffer = IOBuffer()
+      nb = write(buffer, archive)
+      @test nb > 65536 + 44
+
+      seekstart(buffer)
+      archive2 = MPQArchive(buffer)
+      @test length(archive2.block_table.entries) == 2
+      file_a_2 = archive2["Test\\A"]
+      file_b_2 = archive2["Test\\B"]
+      @test file_a_2.block[].uncompressed_file_size == 256
+      @test file_a_2.block[].compressed_file_size == 256
+      @test file_b_2.block[].uncompressed_file_size == 5000
+      @test read(file_a_2) == read(file_a)
+      @test read(file_b_2) == read(file_b)
+
+      archive = MPQArchive(mpq_file("enUS/patch-enUS"))
+      data = read(archive["DBFilesClient\\TalentTab.dbc"])
+      part = MPQArchive()
+      file = MPQFile(part, "DBFilesClient\\TalentTab.dbc", data)
+      buffer = IOBuffer()
+      write(buffer, part)
+      seekstart(buffer)
+      archive2 = MPQArchive(buffer)
+      data2 = read(archive2["DBFilesClient\\TalentTab.dbc"])
+      @test data2 == data
     end
   end
 end;

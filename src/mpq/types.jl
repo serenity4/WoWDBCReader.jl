@@ -18,25 +18,6 @@ end
 ht_size_compressed(header::MPQHeader) = Int(header.block_table_offset - header.hash_table_offset)
 ht_size(header::MPQHeader) = ht_size(header.hash_table_length)
 
-@enum MPQLocale::UInt16 begin
-  MPQ_LOCALE_NEUTRAL      = 0x0000
-  MPQ_LOCALE_CHINESE      = 0x0404
-  MPQ_LOCALE_CZECH        = 0x0405
-  MPQ_LOCALE_GERMAN       = 0x0407
-  MPQ_LOCALE_ENGLISH      = 0x0409
-  MPQ_LOCALE_SPANISH      = 0x040a
-  MPQ_LOCALE_FRENCH       = 0x040c
-  MPQ_LOCALE_ITALIAN      = 0x0410
-  MPQ_LOCALE_JAPANESE     = 0x0411
-  MPQ_LOCALE_KOREAN       = 0x0412
-  MPQ_LOCALE_DUTCH        = 0x0413
-  MPQ_LOCALE_POLISH       = 0x0415
-  MPQ_LOCALE_PORTUGUESE   = 0x0416
-  MPQ_LOCALE_RUSSSIAN     = 0x0419
-  MPQ_LOCALE_ENGLISH_UK   = 0x0809
-  MPQ_LOCALE_UNDEFINED    = 0xffff
-end
-
 struct MPQHashTableEntry
   ha::UInt32
   hb::UInt32
@@ -114,69 +95,76 @@ end
 
 MPQBlockTable() = MPQBlockTable(MPQBlock[])
 
-@bitmask exported = true MPQCompressionFlags::UInt8 begin
-  "Huffmann compression (used on WAVE files only)."
-  MPQ_COMPRESSION_HUFFMANN = 0x01
-  "ZLIB compression."
-  MPQ_COMPRESSION_ZLIB = 0x02
-  "PKWARE DCL compression."
-  MPQ_COMPRESSION_PKWARE = 0x08
-  "BZIP2 compression (added in Warcraft III)."
-  MPQ_COMPRESSION_BZIP2 = 0x10
-  "Sparse compression (added in Starcraft 2)."
-  MPQ_COMPRESSION_SPARSE = 0x20
-  "IMA ADPCM compression (mono)."
-  MPQ_COMPRESSION_ADPCM_MONO = 0x40
-  "IMA ADPCM compression (stereo)."
-  MPQ_COMPRESSION_ADPCM_STEREO = 0x80
-  "LZMA compression. Added in Starcraft 2. This value is NOT a combination of flags."
-  MPQ_COMPRESSION_LZMA = 0x12
-end
-
 struct MPQFile{A}
   archive::A
   filename::String
-  locale::MPQLocale
+  locale::Optional{MPQLocale}
   flags::MPQFileFlags
   compression::Optional{MPQCompressionFlags}
   block::Base.RefValue{MPQBlock}
   data::Vector{UInt8}
+  created::Bool
 end
+
+hasblock(file::MPQFile) = file.block[].uncompressed_file_size !== 0xffffffff
+function getblock(file::MPQFile)
+  hasblock(file) || error("The provided file does not have an associated block")
+  file.block[]
+end
+shouldencrypt(file::MPQFile) = in(MPQ_FILE_ENCRYPTED, file.flags)
+shouldcompress(file::MPQFile) = in(MPQ_FILE_COMPRESS, file.flags)
+iscompressed(block::MPQBlock) = block.compressed_file_size !== block.uncompressed_file_size
+iscompressed(file::MPQFile) = iscompressed(getblock(file))
+isimploded(block::MPQBlock) = in(MPQ_FILE_IMPLODE, block.flags)
+isimploded(file::MPQFile) = isimploded(getblock(file))
+isencrypted(block::MPQBlock) = in(MPQ_FILE_ENCRYPTED, block.flags)
+isencrypted(file::MPQFile) = isencrypted(getblock(file))
 
 mutable struct MPQArchive{IO<:Base.IO}
   io::IO
-  hash_table::MPQHashTable
-  block_table::MPQBlockTable
-  sector_size::Int
-  files::Dictionary{String, MPQFile}
+  const hash_table::MPQHashTable
+  const block_table::MPQBlockTable
+  const sector_size::Int
+  const files::Dictionary{String, MPQFile{MPQArchive{IO}}}
 end
 
 function MPQArchive(; max_files = 4096, sector_size = 4096)
   ispow2(sector_size) || error("Sector size must be a power of two.")
-  MPQArchive(IOBuffer(), MPQHashTable(max_files), MPQBlockTable(), sector_size, Dictionary{String, MPQFile}())
+  MPQArchive(IOBuffer(), MPQHashTable(max_files), MPQBlockTable(), sector_size)
 end
+MPQArchive(io, ht, bt, sector_size) = MPQArchive(io, ht, bt, sector_size, Dictionary{String, MPQFile{MPQArchive{typeof(io)}}}())
 
 function Base.show(io::IO, archive::MPQArchive)
   print(io, MPQArchive, " (")
-  print(io, length(archive.block_table.entries), " files in archive")
-  !isempty(archive.files) && print(io, ", ", length(archive.files), " files extracted")
+  ne = count(file -> !file.created, archive.files)
+  nc = count(file -> file.created, archive.files)
+  n = length(archive.block_table.entries) + nc
+  print(io, n, " files in archive")
+  ne ≠ 0 && print(io, ", ", ne, " files extracted")
+  ne ≠ 0 && print(io, ", ", nc, " files created")
   print(io, ", sector size: ", Base.format_bytes(archive.sector_size))
   print(io, ", limit: ", length(archive.hash_table.entries), " files")
   print(io, ')')
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString, hash_entry::MPQHashTableEntry, block::MPQBlock)
-  MPQFile(archive, filename, hash_entry.locale, block.flags, nothing, Ref(block), UInt8[])
+  MPQFile(archive, filename, hash_entry.locale, block.flags, nothing, Ref(block), UInt8[], false)
 end
 
-function MPQFile(archive::MPQArchive, filename::AbstractString, data::AbstractVector{UInt8}; locale = MPQ_LOCALE_NEUTRAL, flags::Optional{MPQFileFlags} = MPQ_FILE_COMPRESS, compression::Optional{MPQCompressionFlags} = MPQ_COMPRESSION_ZLIB)
-  flags = MPQ_FILE_EXISTS | something(flags, MPQFileFlags())
-  MPQFile(archive, filename, locale, flags, compression, Ref{MPQBlock}(), data)
+function MPQFile(archive::MPQArchive, filename::AbstractString, data::AbstractVector{UInt8}; locale::Optional{MPQLocale} = nothing, flags::MPQFileFlags = MPQFileFlags(), compression::Optional{MPQCompressionFlags} = DEFAULT_COMPRESSION_METHOD, encrypt::Bool = false)
+  haskey(archive.files, filename) && error("The file $(repr(filename)) already exists")
+  flags |= MPQ_FILE_EXISTS
+  !isnothing(compression) && (flags |= MPQ_FILE_COMPRESS)
+  encrypt && (flags |= MPQ_FILE_ENCRYPTED)
+  placeholder = MPQBlock(0xffffffff, 0xffffffff, 0xffffffff, typemax(MPQFileFlags))
+  file = MPQFile(archive, filename, locale, flags, compression, Ref(placeholder), data, true)
+  insert!(archive.files, filename, file)
+  file
 end
 
 function Base.show(io::IO, file::MPQFile)
   print(io, MPQFile, " (filename: $(repr(file.filename))")
-  !isempty(file.data) && print(io, ", ", Base.format_bytes(length(file.data)), " of data extracted")
+  !isempty(file.data) && print(io, ", ", Base.format_bytes(length(file.data)), " of data")
   print(io, ", archive: $(file.archive)")
   print(io, ')')
 end

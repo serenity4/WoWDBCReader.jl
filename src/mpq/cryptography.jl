@@ -29,9 +29,13 @@ function encrypt_block!(data::AbstractVector{UInt32}, key::UInt32)
   end
 end
 
-function file_decryption_key(block::MPQBlock, filename::AbstractString)
+function file_decryption_key(filename::AbstractString, block::MPQBlock)
+  file_decryption_key(filename, block.file_offset, block.uncompressed_file_size, block.flags)
+end
+
+function file_decryption_key(filename::AbstractString, file_offset, uncompressed_file_size, flags::MPQFileFlags)
   filename = filter(x -> x == '/' || x == '\\', filename)
   key = hash_filename(filename, MPQ_HASH_FILE_KEY)
-  !in(MPQ_FILE_KEY_V2, block.flags) && return key
-  (key + block.file_offset) ⊻ block.uncompressed_file_size
+  !in(MPQ_FILE_KEY_V2, flags) && return key
+  (key + file_offset) ⊻ uncompressed_file_size
 end

@@ -8,7 +8,8 @@ using CodecBzip2: Bzip2CompressorStream, Bzip2DecompressorStream
 const Optional{T} = Union{T, Nothing}
 
 include("schemas.jl")
-include("client_database.jl")
+include("dbc/read.jl")
+include("dbc/write.jl")
 include("mpq/types.jl")
 include("mpq/hash.jl")
 include("mpq/cryptography.jl")

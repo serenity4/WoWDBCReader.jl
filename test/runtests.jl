@@ -127,12 +127,11 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
       @test write(buffer, archive2) == 65536 + 44
 
       # Archive with two user-created files.
-      # XXX: Using `rand` instead of `ones` makes the compressed file
-      # bigger than the uncompressed one, which currently errors.
-      # Such a situation should be tested to make sure we are robust against it.
       archive = MPQArchive()
-      file_a = MPQFile(archive, "Test\\A", ones(UInt8, 256))
-      @test_throws "already exists" MPQFile(archive, "Test\\A", rand(UInt8, 256))
+      # This file will be stored as a single uncompressed sector in practice,
+      # because compression will not make it smaller than its data.
+      file_a = MPQFile(archive, "Test\\A", UInt8[0x18, 0x9a, 0xdf, 0xe1, 0xad])
+      @test_throws "already exists" MPQFile(archive, "Test\\A", file_a.data)
       file_b = MPQFile(archive, "Test\\B", ones(UInt8, 5000))
       buffer = IOBuffer()
       nb = write(buffer, archive)
@@ -143,7 +142,7 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
       @test length(archive2.block_table.entries) == 2
       file_a_2 = archive2["Test\\A"]
       file_b_2 = archive2["Test\\B"]
-      @test file_a_2.block[].uncompressed_file_size == 256
+      @test file_a_2.block[].uncompressed_file_size == 5
       @test file_b_2.block[].uncompressed_file_size == 5000
       @test read(file_a_2) == read(file_a)
       @test read(file_b_2) == read(file_b)

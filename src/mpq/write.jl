@@ -84,12 +84,21 @@ function write_compressed_sectors(io::IO, archive::MPQArchive, file::MPQFile, ke
   offsets = Int32[offset]
   compression_buffer = zeros(UInt8, 2sector_size)
   for i in 1:ns
-    size = i == ns ? final_size : sector_size
-    sector = @view file.data[(1 + (i - 1) * sector_size):((i - 1) * sector_size + size)]
+    uncompressed_sector_size = i == ns ? final_size : sector_size
+    sector = @view file.data[(1 + (i - 1) * sector_size):((i - 1) * sector_size + uncompressed_sector_size)]
     !isnothing(key) && encrypt_block!(reinterpret(UInt32, sector), key + UInt32(i - 1))
-    sector = compress!(compression_buffer, IOBuffer(sector), method)
-    compressed_sector_size = write(io, UInt8(method)) + write(io, sector)
-    offset += compressed_sector_size
+    compressed = compress!(compression_buffer, IOBuffer(sector), method)
+    compressed_sector_size = 1 + length(compressed)
+    if compressed_sector_size ≥ uncompressed_sector_size
+      # Compression failed to yield a smaller sector size.
+      # Store the sector uncompressed.
+      write(io, sector)
+      offset += uncompressed_sector_size
+    else
+      write(io, UInt8(method))
+      write(io, compressed)
+      offset += compressed_sector_size
+    end
     push!(offsets, offset)
   end
   after = position(io)

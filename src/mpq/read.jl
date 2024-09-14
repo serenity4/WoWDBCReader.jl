@@ -129,18 +129,26 @@ function read_compressed_block_data!(data::Vector{UInt8}, io::IO, block::MPQBloc
   for i in 1:ns
     i == ns && (decompression_buffer = zeros(UInt8, final_size))
     offset, next_offset = sector_offsets[i], sector_offsets[i + 1]
-    compressed_sector_size = next_offset - offset
     seek(io, p + offset)
-    isimploded(block) && error("PKWARE data compression is not supported at the moment.")
-    method = read(io, MPQCompressionFlags)
-    datasize = compressed_sector_size - one(compressed_sector_size)
-    for j in 1:datasize
-      sector_buffer[j] = read(io, UInt8)
+    compressed_sector_size = next_offset - offset
+    uncompressed_sector_size = ifelse(i == ns, final_size, sector_size)
+    # The sector is compressed only if its size is strictly lesser than its uncompressed size.
+    if uncompressed_sector_size == compressed_sector_size
+      # The sector is stored uncompressed.
+      for j in 1:uncompressed_sector_size sector_buffer[j] = read(io, UInt8) end
+      sector = @view sector_buffer[1:uncompressed_sector_size]
+      !isnothing(key) && decrypt_block!(reinterpret(UInt32, sector), key + UInt32(i - 1))
+      append!(data, sector)
+    else
+      # The sector is stored in a compressed form.
+      method = read(io, MPQCompressionFlags)
+      datasize = compressed_sector_size - one(compressed_sector_size)
+      for j in 1:datasize sector_buffer[j] = read(io, UInt8) end
+      sector = @view sector_buffer[1:datasize]
+      sector = decompress!(decompression_buffer, IOBuffer(sector), method)
+      !isnothing(key) && decrypt_block!(reinterpret(UInt32, sector), key + UInt32(i - 1))
+      append!(data, sector)
     end
-    sector = @view sector_buffer[1:datasize]
-    sector = decompress!(decompression_buffer, IOBuffer(sector), method)
-    !isnothing(key) && decrypt_block!(reinterpret(UInt32, sector), key + UInt32(i - 1))
-    append!(data, sector)
   end
   data
 end

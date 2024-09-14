@@ -5,6 +5,8 @@
 [![Build Status](https://github.com/serenity4/WoWDBCReader.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/serenity4/WoWDBCReader.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/serenity4/WoWDBCReader.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/serenity4/WoWDBCReader.jl)
 
+Utilies to read and write files in the [DBC](https://wowdev.wiki/DBC) and [MPQ](https://wowdev.wiki/MPQ) format.
+
 ## MPQ format
 
 Information about the MPQ format may be found here:

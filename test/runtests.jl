@@ -7,6 +7,11 @@ dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-
 
 mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data", "$name.MPQ")
 
+# Missing features:
+# - Sector checksum verification.
+# Missing tests:
+# - Sector-based encryption/decryption.
+
 @testset "WoWDBCReader.jl" begin
   @testset "DBC files" begin
     @testset "Reading DBC files" begin

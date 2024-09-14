@@ -15,6 +15,7 @@ DBCData(name, rows::AbstractVector{T}) where {T<:DBCDataType} = DBCData{T}(name,
 DBCData(io::IO, name::Symbol, schema::Symbol) = DBCData{schema_type(schema)}(io, name)
 DBCData(path::AbstractString, schema::Symbol) = DBCData{schema_type(schema)}(path)
 DBCData(data::AbstractVector{UInt8}, name::Symbol, schema::Symbol) = DBCData(IOBuffer(data), name, schema)
+DBCData(data::AbstractVector{UInt8}, path::String, schema::Symbol) = DBCData(IOBuffer(data), Symbol(basename(first(splitext(path)))), schema)
 function DBCData{T}(io::IO, path::AbstractString) where {T<:DBCDataType}
   name = dbc_filename(path)
   DBCData{T}(io, name)

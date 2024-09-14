@@ -28,8 +28,19 @@ function generate_schema_types()
       type = Expr(:struct, false, :($name <: DBCDataType))
       fields = Expr(:block)
       push!(type.args, fields)
-      for field in schema
-        push!(fields.args, Expr(:(::), Symbol(field.name), datatype(field.type)))
+      i = 1
+      while i ≤ length(schema)
+        field = schema[i]
+        if endswith(field.name, "_Lang_enUS") && field.type == "string"
+          fname = match(r"^(.*)_Lang_enUS", field.name)[1]
+          any(x -> x.name == fname, schema) && (fname = "_$fname")
+          # We have the first column of a localized string.
+          push!(fields.args, :($(Symbol(fname))::LString))
+          i += 17
+        else
+          push!(fields.args, Expr(:(::), Symbol(field.name), datatype(field.type)))
+          i += 1
+        end
       end
       println(io, type)
       println(io)

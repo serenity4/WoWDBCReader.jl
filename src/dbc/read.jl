@@ -34,6 +34,13 @@ end
     subT = fieldtype(T, i)
     if subT === String
       push!(ex.args, :(find_string(strings, indices, 1 + read(io, Int32))))
+    elseif subT === LString
+      args = Expr[]
+      for name in fieldnames(subT)[1:(end - 1)]
+        push!(args, :(find_string(strings, indices, 1 + read(io, Int32))))
+      end
+      push!(args, :(read(io, UInt32)))
+      push!(ex.args, :(LString($(args...))))
     else
       push!(ex.args, :(read(io, $subT)))
     end
@@ -41,12 +48,17 @@ end
   ex
 end
 
+# `fieldcount` but recursing into `LString`s.
+@generated function _fieldcount(::Type{T}) where {T}
+  sum(x -> ifelse(x === LString, 17, 1), fieldtypes(T); init = 0)
+end
+
 function Base.read(io::IO, ::Type{DBCData{T}}; name::Symbol) where {T<:DBCDataType}
   magic = read(io, Tag4)
   magic === tag4"WDBC" || error("The provided file has an invalid signature: $magic")
   record_count = read(io, UInt32)
   field_count = read(io, UInt32)
-  fieldcount(T) == field_count || error("Inconsistent field counts between DBC and its schema: $(fieldcount(T)) ≠ $field_count")
+  _fieldcount(T) == field_count || error("Inconsistent field counts between DBC and its schema: $(_fieldcount(T)) ≠ $field_count")
   record_size = read(io, UInt32)
   string_block_size = read(io, UInt32)
   p = position(io)

@@ -7,62 +7,14 @@ struct AchievementData <: DBCDataType
     Faction::Int32
     Instance_Id::Int32
     Supercedes::Int32
-    Title_Lang_enUS::String
-    Title_Lang_enGB::String
-    Title_Lang_koKR::String
-    Title_Lang_frFR::String
-    Title_Lang_deDE::String
-    Title_Lang_enCN::String
-    Title_Lang_zhCN::String
-    Title_Lang_enTW::String
-    Title_Lang_zhTW::String
-    Title_Lang_esES::String
-    Title_Lang_esMX::String
-    Title_Lang_ruRU::String
-    Title_Lang_ptPT::String
-    Title_Lang_ptBR::String
-    Title_Lang_itIT::String
-    Title_Lang_Unk::String
-    Title_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    Title::LString
+    Description::LString
     Category::Int32
     Points::Int32
     Ui_Order::Int32
     Flags::Int32
     IconID::Int32
-    Reward_Lang_enUS::String
-    Reward_Lang_enGB::String
-    Reward_Lang_koKR::String
-    Reward_Lang_frFR::String
-    Reward_Lang_deDE::String
-    Reward_Lang_enCN::String
-    Reward_Lang_zhCN::String
-    Reward_Lang_enTW::String
-    Reward_Lang_zhTW::String
-    Reward_Lang_esES::String
-    Reward_Lang_esMX::String
-    Reward_Lang_ruRU::String
-    Reward_Lang_ptPT::String
-    Reward_Lang_ptBR::String
-    Reward_Lang_itIT::String
-    Reward_Lang_Unk::String
-    Reward_Lang_Mask::UInt32
+    Reward::LString
     Minimum_Criteria::Int32
     Shares_Criteria::Int32
 end
@@ -70,23 +22,7 @@ end
 struct Achievement_categoryData <: DBCDataType
     ID::Int32
     Parent::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     Ui_Order::Int32
 end
 
@@ -100,23 +36,7 @@ struct Achievement_criteriaData <: DBCDataType
     Start_Asset::Int32
     Fail_Event::Int32
     Fail_Asset::Int32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    Description::LString
     Flags::Int32
     Timer_Start_Event::Int32
     Timer_Asset_Id::Int32
@@ -154,40 +74,8 @@ struct AreapoiData <: DBCDataType
     ContinentID::Int32
     Flags::Int32
     AreaID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    Name::LString
+    Description::LString
     WorldStateID::Int32
     WorldMapLink::Int32
 end
@@ -204,23 +92,7 @@ struct AreatableData <: DBCDataType
     ZoneMusic::Int32
     IntroSound::Int32
     ExplorationLevel::Int32
-    AreaName_Lang_enUS::String
-    AreaName_Lang_enGB::String
-    AreaName_Lang_koKR::String
-    AreaName_Lang_frFR::String
-    AreaName_Lang_deDE::String
-    AreaName_Lang_enCN::String
-    AreaName_Lang_zhCN::String
-    AreaName_Lang_enTW::String
-    AreaName_Lang_zhTW::String
-    AreaName_Lang_esES::String
-    AreaName_Lang_esMX::String
-    AreaName_Lang_ruRU::String
-    AreaName_Lang_ptPT::String
-    AreaName_Lang_ptBR::String
-    AreaName_Lang_itIT::String
-    AreaName_Lang_Unk::String
-    AreaName_Lang_Mask::UInt32
+    AreaName::LString
     FactionGroupMask::Int32
     LiquidTypeID_1::Int32
     LiquidTypeID_2::Int32
@@ -236,23 +108,7 @@ struct AuctionhouseData <: DBCDataType
     FactionID::Int32
     DepositRate::Int32
     ConsignmentRate::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
 end
 
 struct BankbagslotpricesData <: DBCDataType
@@ -263,40 +119,8 @@ end
 struct BarbershopstyleData <: DBCDataType
     ID::Int32
     Type::Int32
-    DisplayName_Lang_enUS::String
-    DisplayName_Lang_enGB::String
-    DisplayName_Lang_koKR::String
-    DisplayName_Lang_frFR::String
-    DisplayName_Lang_deDE::String
-    DisplayName_Lang_enCN::String
-    DisplayName_Lang_zhCN::String
-    DisplayName_Lang_enTW::String
-    DisplayName_Lang_zhTW::String
-    DisplayName_Lang_esES::String
-    DisplayName_Lang_esMX::String
-    DisplayName_Lang_ruRU::String
-    DisplayName_Lang_ptPT::String
-    DisplayName_Lang_ptBR::String
-    DisplayName_Lang_itIT::String
-    DisplayName_Lang_Unk::String
-    DisplayName_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    DisplayName::LString
+    Description::LString
     Cost_Modifier::Float32
     Race::Int32
     Sex::Int32
@@ -315,23 +139,7 @@ struct BattlemasterlistData <: DBCDataType
     MapID_8::Int32
     InstanceType::Int32
     GroupsAllowed::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     MaxGroupSize::Int32
     HolidayWorldState::Int32
     Minlevel::Int32
@@ -427,40 +235,8 @@ end
 struct ChartitlesData <: DBCDataType
     ID::Int32
     Condition_ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Name1_Lang_enUS::String
-    Name1_Lang_enGB::String
-    Name1_Lang_koKR::String
-    Name1_Lang_frFR::String
-    Name1_Lang_deDE::String
-    Name1_Lang_enCN::String
-    Name1_Lang_zhCN::String
-    Name1_Lang_enTW::String
-    Name1_Lang_zhTW::String
-    Name1_Lang_esES::String
-    Name1_Lang_esMX::String
-    Name1_Lang_ruRU::String
-    Name1_Lang_ptPT::String
-    Name1_Lang_ptBR::String
-    Name1_Lang_itIT::String
-    Name1_Lang_Unk::String
-    Name1_Lang_Mask::UInt32
+    Name::LString
+    Name1::LString
     Mask_ID::Int32
 end
 
@@ -468,40 +244,8 @@ struct ChatchannelsData <: DBCDataType
     ID::Int32
     Flags::Int32
     FactionGroup::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Shortcut_Lang_enUS::String
-    Shortcut_Lang_enGB::String
-    Shortcut_Lang_koKR::String
-    Shortcut_Lang_frFR::String
-    Shortcut_Lang_deDE::String
-    Shortcut_Lang_enCN::String
-    Shortcut_Lang_zhCN::String
-    Shortcut_Lang_enTW::String
-    Shortcut_Lang_zhTW::String
-    Shortcut_Lang_esES::String
-    Shortcut_Lang_esMX::String
-    Shortcut_Lang_ruRU::String
-    Shortcut_Lang_ptPT::String
-    Shortcut_Lang_ptBR::String
-    Shortcut_Lang_itIT::String
-    Shortcut_Lang_Unk::String
-    Shortcut_Lang_Mask::UInt32
+    Name::LString
+    Shortcut::LString
 end
 
 struct ChrclassesData <: DBCDataType
@@ -509,57 +253,9 @@ struct ChrclassesData <: DBCDataType
     Field01::Int32
     DisplayPower::Int32
     PetNameToken::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Name_Female_Lang_enUS::String
-    Name_Female_Lang_enGB::String
-    Name_Female_Lang_koKR::String
-    Name_Female_Lang_frFR::String
-    Name_Female_Lang_deDE::String
-    Name_Female_Lang_enCN::String
-    Name_Female_Lang_zhCN::String
-    Name_Female_Lang_enTW::String
-    Name_Female_Lang_zhTW::String
-    Name_Female_Lang_esES::String
-    Name_Female_Lang_esMX::String
-    Name_Female_Lang_ruRU::String
-    Name_Female_Lang_ptPT::String
-    Name_Female_Lang_ptBR::String
-    Name_Female_Lang_itIT::String
-    Name_Female_Lang_Unk::String
-    Name_Female_Lang_Mask::UInt32
-    Name_Male_Lang_enUS::String
-    Name_Male_Lang_enGB::String
-    Name_Male_Lang_koKR::String
-    Name_Male_Lang_frFR::String
-    Name_Male_Lang_deDE::String
-    Name_Male_Lang_enCN::String
-    Name_Male_Lang_zhCN::String
-    Name_Male_Lang_enTW::String
-    Name_Male_Lang_zhTW::String
-    Name_Male_Lang_esES::String
-    Name_Male_Lang_esMX::String
-    Name_Male_Lang_ruRU::String
-    Name_Male_Lang_ptPT::String
-    Name_Male_Lang_ptBR::String
-    Name_Male_Lang_itIT::String
-    Name_Male_Lang_Unk::String
-    Name_Male_Lang_Mask::UInt32
+    Name::LString
+    Name_Female::LString
+    Name_Male::LString
     Filename::String
     SpellClassSet::Int32
     Flags::Int32
@@ -582,57 +278,9 @@ struct ChrracesData <: DBCDataType
     ClientFilestring::String
     CinematicSequenceID::Int32
     Alliance::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Name_Female_Lang_enUS::String
-    Name_Female_Lang_enGB::String
-    Name_Female_Lang_koKR::String
-    Name_Female_Lang_frFR::String
-    Name_Female_Lang_deDE::String
-    Name_Female_Lang_enCN::String
-    Name_Female_Lang_zhCN::String
-    Name_Female_Lang_enTW::String
-    Name_Female_Lang_zhTW::String
-    Name_Female_Lang_esES::String
-    Name_Female_Lang_esMX::String
-    Name_Female_Lang_ruRU::String
-    Name_Female_Lang_ptPT::String
-    Name_Female_Lang_ptBR::String
-    Name_Female_Lang_itIT::String
-    Name_Female_Lang_Unk::String
-    Name_Female_Lang_Mask::UInt32
-    Name_Male_Lang_enUS::String
-    Name_Male_Lang_enGB::String
-    Name_Male_Lang_koKR::String
-    Name_Male_Lang_frFR::String
-    Name_Male_Lang_deDE::String
-    Name_Male_Lang_enCN::String
-    Name_Male_Lang_zhCN::String
-    Name_Male_Lang_enTW::String
-    Name_Male_Lang_zhTW::String
-    Name_Male_Lang_esES::String
-    Name_Male_Lang_esMX::String
-    Name_Male_Lang_ruRU::String
-    Name_Male_Lang_ptPT::String
-    Name_Male_Lang_ptBR::String
-    Name_Male_Lang_itIT::String
-    Name_Male_Lang_Unk::String
-    Name_Male_Lang_Mask::UInt32
+    Name::LString
+    Name_Female::LString
+    Name_Male::LString
     FacialHairCustomization_1::String
     FacialHairCustomization_2::String
     HairCustomization::String
@@ -716,23 +364,7 @@ struct CreaturefamilyData <: DBCDataType
     PetFoodMask::Int32
     PetTalentType::Int32
     CategoryEnumID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     IconFile::String
 end
 
@@ -781,23 +413,7 @@ end
 
 struct CreaturetypeData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     Flags::Int32
 end
 
@@ -836,23 +452,7 @@ struct DungeonencounterData <: DBCDataType
     Difficulty::Int32
     OrderIndex::Int32
     Bit::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     SpellIconID::Int32
 end
 
@@ -950,40 +550,8 @@ struct FactionData <: DBCDataType
     ParentFactionMod_2::Float32
     ParentFactionCap_1::Int32
     ParentFactionCap_2::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    Name::LString
+    Description::LString
 end
 
 struct FactiontemplateData <: DBCDataType
@@ -1172,23 +740,7 @@ end
 
 struct ItembagfamilyData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
 end
 
 struct ItemdisplayinfoData <: DBCDataType
@@ -1240,23 +792,7 @@ end
 
 struct ItemlimitcategoryData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     Quantity::Int32
     Flags::Int32
 end
@@ -1269,44 +805,12 @@ struct ItemrandompropertiesData <: DBCDataType
     Enchantment_3::Int32
     Enchantment_4::Int32
     Enchantment_5::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    _Name::LString
 end
 
 struct ItemrandomsuffixData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     InternalName::String
     Enchantment_1::Int32
     Enchantment_2::Int32
@@ -1322,23 +826,7 @@ end
 
 struct ItemsetData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     ItemID_1::Int32
     ItemID_2::Int32
     ItemID_3::Int32
@@ -1378,23 +866,7 @@ end
 
 struct LfgdungeonsData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     MinLevel::Int32
     MaxLevel::Int32
     Target_Level::Int32
@@ -1409,23 +881,7 @@ struct LfgdungeonsData <: DBCDataType
     ExpansionLevel::Int32
     Order_Index::Int32
     Group_Id::Int32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    Description::LString
 end
 
 struct LightData <: DBCDataType
@@ -1532,40 +988,8 @@ end
 
 struct MailtemplateData <: DBCDataType
     ID::Int32
-    Subject_Lang_enUS::String
-    Subject_Lang_enGB::String
-    Subject_Lang_koKR::String
-    Subject_Lang_frFR::String
-    Subject_Lang_deDE::String
-    Subject_Lang_enCN::String
-    Subject_Lang_zhCN::String
-    Subject_Lang_enTW::String
-    Subject_Lang_zhTW::String
-    Subject_Lang_esES::String
-    Subject_Lang_esMX::String
-    Subject_Lang_ruRU::String
-    Subject_Lang_ptPT::String
-    Subject_Lang_ptBR::String
-    Subject_Lang_itIT::String
-    Subject_Lang_Unk::String
-    Subject_Lang_Mask::UInt32
-    Body_Lang_enUS::String
-    Body_Lang_enGB::String
-    Body_Lang_koKR::String
-    Body_Lang_frFR::String
-    Body_Lang_deDE::String
-    Body_Lang_enCN::String
-    Body_Lang_zhCN::String
-    Body_Lang_enTW::String
-    Body_Lang_zhTW::String
-    Body_Lang_esES::String
-    Body_Lang_esMX::String
-    Body_Lang_ruRU::String
-    Body_Lang_ptPT::String
-    Body_Lang_ptBR::String
-    Body_Lang_itIT::String
-    Body_Lang_Unk::String
-    Body_Lang_Mask::UInt32
+    Subject::LString
+    Body::LString
 end
 
 struct MapData <: DBCDataType
@@ -1574,58 +998,10 @@ struct MapData <: DBCDataType
     InstanceType::Int32
     Flags::Int32
     PVP::Int32
-    MapName_Lang_enUS::String
-    MapName_Lang_enGB::String
-    MapName_Lang_koKR::String
-    MapName_Lang_frFR::String
-    MapName_Lang_deDE::String
-    MapName_Lang_enCN::String
-    MapName_Lang_zhCN::String
-    MapName_Lang_enTW::String
-    MapName_Lang_zhTW::String
-    MapName_Lang_esES::String
-    MapName_Lang_esMX::String
-    MapName_Lang_ruRU::String
-    MapName_Lang_ptPT::String
-    MapName_Lang_ptBR::String
-    MapName_Lang_itIT::String
-    MapName_Lang_Unk::String
-    MapName_Lang_Mask::UInt32
+    MapName::LString
     AreaTableID::Int32
-    MapDescription0_Lang_enUS::String
-    MapDescription0_Lang_enGB::String
-    MapDescription0_Lang_koKR::String
-    MapDescription0_Lang_frFR::String
-    MapDescription0_Lang_deDE::String
-    MapDescription0_Lang_enCN::String
-    MapDescription0_Lang_zhCN::String
-    MapDescription0_Lang_enTW::String
-    MapDescription0_Lang_zhTW::String
-    MapDescription0_Lang_esES::String
-    MapDescription0_Lang_esMX::String
-    MapDescription0_Lang_ruRU::String
-    MapDescription0_Lang_ptPT::String
-    MapDescription0_Lang_ptBR::String
-    MapDescription0_Lang_itIT::String
-    MapDescription0_Lang_Unk::String
-    MapDescription0_Lang_Mask::UInt32
-    MapDescription1_Lang_enUS::String
-    MapDescription1_Lang_enGB::String
-    MapDescription1_Lang_koKR::String
-    MapDescription1_Lang_frFR::String
-    MapDescription1_Lang_deDE::String
-    MapDescription1_Lang_enCN::String
-    MapDescription1_Lang_zhCN::String
-    MapDescription1_Lang_enTW::String
-    MapDescription1_Lang_zhTW::String
-    MapDescription1_Lang_esES::String
-    MapDescription1_Lang_esMX::String
-    MapDescription1_Lang_ruRU::String
-    MapDescription1_Lang_ptPT::String
-    MapDescription1_Lang_ptBR::String
-    MapDescription1_Lang_itIT::String
-    MapDescription1_Lang_Unk::String
-    MapDescription1_Lang_Mask::UInt32
+    MapDescription0::LString
+    MapDescription1::LString
     LoadingScreenID::Int32
     MinimapIconScale::Float32
     CorpseMapID::Int32
@@ -1641,23 +1017,7 @@ struct MapdifficultyData <: DBCDataType
     ID::Int32
     MapID::Int32
     Difficulty::Int32
-    Message_Lang_enUS::String
-    Message_Lang_enGB::String
-    Message_Lang_koKR::String
-    Message_Lang_frFR::String
-    Message_Lang_deDE::String
-    Message_Lang_enCN::String
-    Message_Lang_zhCN::String
-    Message_Lang_enTW::String
-    Message_Lang_zhTW::String
-    Message_Lang_esES::String
-    Message_Lang_esMX::String
-    Message_Lang_ruRU::String
-    Message_Lang_ptPT::String
-    Message_Lang_ptBR::String
-    Message_Lang_itIT::String
-    Message_Lang_Unk::String
-    Message_Lang_Mask::UInt32
+    Message::LString
     RaidDuration::Int32
     MaxPlayers::Int32
     Difficultystring::String
@@ -1718,23 +1078,7 @@ end
 
 struct QuestsortData <: DBCDataType
     ID::Int32
-    SortName_Lang_enUS::String
-    SortName_Lang_enGB::String
-    SortName_Lang_koKR::String
-    SortName_Lang_frFR::String
-    SortName_Lang_deDE::String
-    SortName_Lang_enCN::String
-    SortName_Lang_zhCN::String
-    SortName_Lang_enTW::String
-    SortName_Lang_zhTW::String
-    SortName_Lang_esES::String
-    SortName_Lang_esMX::String
-    SortName_Lang_ruRU::String
-    SortName_Lang_ptPT::String
-    SortName_Lang_ptBR::String
-    SortName_Lang_itIT::String
-    SortName_Lang_Unk::String
-    SortName_Lang_Mask::UInt32
+    SortName::LString
 end
 
 struct QuestxpData <: DBCDataType
@@ -1826,58 +1170,10 @@ struct SkilllineData <: DBCDataType
     ID::Int32
     CategoryID::Int32
     SkillCostsID::Int32
-    DisplayName_Lang_enUS::String
-    DisplayName_Lang_enGB::String
-    DisplayName_Lang_koKR::String
-    DisplayName_Lang_frFR::String
-    DisplayName_Lang_deDE::String
-    DisplayName_Lang_enCN::String
-    DisplayName_Lang_zhCN::String
-    DisplayName_Lang_enTW::String
-    DisplayName_Lang_zhTW::String
-    DisplayName_Lang_esES::String
-    DisplayName_Lang_esMX::String
-    DisplayName_Lang_ruRU::String
-    DisplayName_Lang_ptPT::String
-    DisplayName_Lang_ptBR::String
-    DisplayName_Lang_itIT::String
-    DisplayName_Lang_Unk::String
-    DisplayName_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
+    DisplayName::LString
+    Description::LString
     SpellIconID::Int32
-    AlternateVerb_Lang_enUS::String
-    AlternateVerb_Lang_enGB::String
-    AlternateVerb_Lang_koKR::String
-    AlternateVerb_Lang_frFR::String
-    AlternateVerb_Lang_deDE::String
-    AlternateVerb_Lang_enCN::String
-    AlternateVerb_Lang_zhCN::String
-    AlternateVerb_Lang_enTW::String
-    AlternateVerb_Lang_zhTW::String
-    AlternateVerb_Lang_esES::String
-    AlternateVerb_Lang_esMX::String
-    AlternateVerb_Lang_ruRU::String
-    AlternateVerb_Lang_ptPT::String
-    AlternateVerb_Lang_ptBR::String
-    AlternateVerb_Lang_itIT::String
-    AlternateVerb_Lang_Unk::String
-    AlternateVerb_Lang_Mask::UInt32
+    AlternateVerb::LString
     CanLink::Int32
 end
 
@@ -2114,74 +1410,10 @@ struct SpellData <: DBCDataType
     SpellIconID::UInt32
     ActiveIconID::UInt32
     SpellPriority::UInt32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
-    NameSubtext_Lang_enUS::String
-    NameSubtext_Lang_enGB::String
-    NameSubtext_Lang_koKR::String
-    NameSubtext_Lang_frFR::String
-    NameSubtext_Lang_deDE::String
-    NameSubtext_Lang_enCN::String
-    NameSubtext_Lang_zhCN::String
-    NameSubtext_Lang_enTW::String
-    NameSubtext_Lang_zhTW::String
-    NameSubtext_Lang_esES::String
-    NameSubtext_Lang_esMX::String
-    NameSubtext_Lang_ruRU::String
-    NameSubtext_Lang_ptPT::String
-    NameSubtext_Lang_ptBR::String
-    NameSubtext_Lang_itIT::String
-    NameSubtext_Lang_Unk::String
-    NameSubtext_Lang_Mask::UInt32
-    Description_Lang_enUS::String
-    Description_Lang_enGB::String
-    Description_Lang_koKR::String
-    Description_Lang_frFR::String
-    Description_Lang_deDE::String
-    Description_Lang_enCN::String
-    Description_Lang_zhCN::String
-    Description_Lang_enTW::String
-    Description_Lang_zhTW::String
-    Description_Lang_esES::String
-    Description_Lang_esMX::String
-    Description_Lang_ruRU::String
-    Description_Lang_ptPT::String
-    Description_Lang_ptBR::String
-    Description_Lang_itIT::String
-    Description_Lang_Unk::String
-    Description_Lang_Mask::UInt32
-    AuraDescription_Lang_enUS::String
-    AuraDescription_Lang_enGB::String
-    AuraDescription_Lang_koKR::String
-    AuraDescription_Lang_frFR::String
-    AuraDescription_Lang_deDE::String
-    AuraDescription_Lang_enCN::String
-    AuraDescription_Lang_zhCN::String
-    AuraDescription_Lang_enTW::String
-    AuraDescription_Lang_zhTW::String
-    AuraDescription_Lang_esES::String
-    AuraDescription_Lang_esMX::String
-    AuraDescription_Lang_ruRU::String
-    AuraDescription_Lang_ptPT::String
-    AuraDescription_Lang_ptBR::String
-    AuraDescription_Lang_itIT::String
-    AuraDescription_Lang_Unk::String
-    AuraDescription_Lang_Mask::UInt32
+    Name::LString
+    NameSubtext::LString
+    Description::LString
+    AuraDescription::LString
     ManaCostPct::UInt32
     StartRecoveryCategory::UInt32
     StartRecoveryTime::UInt32
@@ -2243,23 +1475,7 @@ end
 
 struct SpellfocusobjectData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
 end
 
 struct SpellitemenchantmentData <: DBCDataType
@@ -2277,23 +1493,7 @@ struct SpellitemenchantmentData <: DBCDataType
     EffectArg_1::Int32
     EffectArg_2::Int32
     EffectArg_3::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     ItemVisual::Int32
     Flags::Int32
     Src_ItemID::Int32
@@ -2351,40 +1551,8 @@ struct SpellrangeData <: DBCDataType
     RangeMax_1::Float32
     RangeMax_2::Float32
     Flags::Int32
-    DisplayName_Lang_enUS::String
-    DisplayName_Lang_enGB::String
-    DisplayName_Lang_koKR::String
-    DisplayName_Lang_frFR::String
-    DisplayName_Lang_deDE::String
-    DisplayName_Lang_enCN::String
-    DisplayName_Lang_zhCN::String
-    DisplayName_Lang_enTW::String
-    DisplayName_Lang_zhTW::String
-    DisplayName_Lang_esES::String
-    DisplayName_Lang_esMX::String
-    DisplayName_Lang_ruRU::String
-    DisplayName_Lang_ptPT::String
-    DisplayName_Lang_ptBR::String
-    DisplayName_Lang_itIT::String
-    DisplayName_Lang_Unk::String
-    DisplayName_Lang_Mask::UInt32
-    DisplayNameShort_Lang_enUS::String
-    DisplayNameShort_Lang_enGB::String
-    DisplayNameShort_Lang_koKR::String
-    DisplayNameShort_Lang_frFR::String
-    DisplayNameShort_Lang_deDE::String
-    DisplayNameShort_Lang_enCN::String
-    DisplayNameShort_Lang_zhCN::String
-    DisplayNameShort_Lang_enTW::String
-    DisplayNameShort_Lang_zhTW::String
-    DisplayNameShort_Lang_esES::String
-    DisplayNameShort_Lang_esMX::String
-    DisplayNameShort_Lang_ruRU::String
-    DisplayNameShort_Lang_ptPT::String
-    DisplayNameShort_Lang_ptBR::String
-    DisplayNameShort_Lang_itIT::String
-    DisplayNameShort_Lang_Unk::String
-    DisplayNameShort_Lang_Mask::UInt32
+    DisplayName::LString
+    DisplayNameShort::LString
 end
 
 struct SpellrunecostData <: DBCDataType
@@ -2398,23 +1566,7 @@ end
 struct SpellshapeshiftformData <: DBCDataType
     ID::Int32
     BonusActionBar::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     Flags::Int32
     CreatureType::Int32
     AttackIconID::Int32
@@ -2475,23 +1627,7 @@ end
 
 struct TalenttabData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     SpellIconID::Int32
     RaceMask::Int32
     ClassMask::Int32
@@ -2506,23 +1642,7 @@ struct TaxinodesData <: DBCDataType
     X::Float32
     Y::Float32
     Z::Float32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     MountCreatureID_1::Int32
     MountCreatureID_2::Int32
 end
@@ -2555,23 +1675,7 @@ end
 
 struct TotemcategoryData <: DBCDataType
     ID::Int32
-    Name_Lang_enUS::String
-    Name_Lang_enGB::String
-    Name_Lang_koKR::String
-    Name_Lang_frFR::String
-    Name_Lang_deDE::String
-    Name_Lang_enCN::String
-    Name_Lang_zhCN::String
-    Name_Lang_enTW::String
-    Name_Lang_zhTW::String
-    Name_Lang_esES::String
-    Name_Lang_esMX::String
-    Name_Lang_ruRU::String
-    Name_Lang_ptPT::String
-    Name_Lang_ptBR::String
-    Name_Lang_itIT::String
-    Name_Lang_Unk::String
-    Name_Lang_Mask::UInt32
+    Name::LString
     TotemCategoryType::Int32
     TotemCategoryMask::Int32
 end
@@ -2712,23 +1816,7 @@ struct WmoareatableData <: DBCDataType
     IntroSound::Int32
     Flags::Int32
     AreaTableID::Int32
-    AreaName_Lang_enUS::String
-    AreaName_Lang_enGB::String
-    AreaName_Lang_koKR::String
-    AreaName_Lang_frFR::String
-    AreaName_Lang_deDE::String
-    AreaName_Lang_enCN::String
-    AreaName_Lang_zhCN::String
-    AreaName_Lang_enTW::String
-    AreaName_Lang_zhTW::String
-    AreaName_Lang_esES::String
-    AreaName_Lang_esMX::String
-    AreaName_Lang_ruRU::String
-    AreaName_Lang_ptPT::String
-    AreaName_Lang_ptBR::String
-    AreaName_Lang_itIT::String
-    AreaName_Lang_Unk::String
-    AreaName_Lang_Mask::UInt32
+    AreaName::LString
 end
 
 struct WorldmapareaData <: DBCDataType

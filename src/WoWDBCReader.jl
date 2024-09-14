@@ -10,6 +10,7 @@ using Dictionaries
 
 const Optional{T} = Union{T, Nothing}
 
+include("dbc/localization.jl")
 include("dbc/schemas.jl")
 include("dbc/types.jl")
 include("dbc/read.jl")

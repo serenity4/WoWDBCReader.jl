@@ -26,12 +26,17 @@ end
   ex = Expr(:block)
   for (name, subT) in zip(fieldnames(entry), fieldtypes(entry))
     subT === String && push!(ex.args, :(push!(strings, entry.$name)))
+    subT === LString && push!(ex.args, :(add_strings!(strings, entry.$name)))
   end
   ex
 end
 
 @generated function sizeofentry(::Type{T}) where {T}
-  sum(subT -> subT === String ? 4 : sizeof(subT), fieldtypes(T); init = 0)
+  sum(fieldtypes(T); init = 0) do subT
+    subT === String && return 4
+    subT === LString && return sizeofentry(LString)
+    sizeof(subT)
+  end
 end
 
 @generated function write_dbc_row(io::IO, entry, offsets)
@@ -39,6 +44,14 @@ end
   for (name, subT) in zip(fieldnames(entry), fieldtypes(entry))
     if subT === String
       push!(ex.args, :(write(io, offsets[entry.$name])))
+    elseif subT === LString
+      for (_name, _subT) in zip(fieldnames(subT), fieldtypes(subT))
+        if _subT === String
+          push!(ex.args, :(write(io, offsets[entry.$name.$_name])))
+        else
+          push!(ex.args, :(write(io, entry.$name.$_name)))
+        end
+      end
     else
       push!(ex.args, :(write(io, entry.$name)))
     end
@@ -49,7 +62,7 @@ end
 function write_dbc(io::IO, data::AbstractVector{T}) where {T}
   write(io, tag4"WDBC") # magic number
   write(io, UInt32(length(data))) # record count
-  write(io, UInt32(fieldcount(T))) # field count
+  write(io, UInt32(_fieldcount(T))) # field count
   write(io, UInt32(sizeofentry(T))) # record size
   block, offsets = string_block(data)
   write(io, UInt32(length(block))) # string block size

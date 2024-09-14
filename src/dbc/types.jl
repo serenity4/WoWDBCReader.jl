@@ -29,7 +29,10 @@ struct DBCFile
   data::Vector{UInt8}
 end
 
-DBCFile(path::AbstractString, schema) = DBCFile(DBCData(path, schema))
+function DBCFile(path::AbstractString, schema)
+  name = Symbol(first(splitext(basename(path))))
+  DBCFile(name, schema, read(path))
+end
 
 Base.read(file::DBCFile) = DBCData(IOBuffer(file.data), file.name, file.schema)
 Base.read(file::DBCFile, ::Type{DBCData{T}}) where {T<:DBCDataType} = DBCData{T}(IOBuffer(file.data), file.schema)

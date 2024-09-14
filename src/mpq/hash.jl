@@ -40,7 +40,7 @@ function hash_filename(filename::AbstractString, hash_type; slash_to_backslash =
   seed_1
 end
 
-function hash_table_slot(ht::MPQHashTable, filename::AbstractString; locale::Optional{MPQLocale} = nothing, find_free = false)
+function hash_table_slot(ht::MPQHashTable, filename::AbstractString; locale::Optional{MPQLocale} = nothing, allow_free::Bool = false)
   h = hash_filename(filename, MPQ_HASH_TABLE_INDEX)
   ha = hash_filename(filename, MPQ_HASH_NAME_A)
   hb = hash_filename(filename, MPQ_HASH_NAME_B)
@@ -49,8 +49,8 @@ function hash_table_slot(ht::MPQHashTable, filename::AbstractString; locale::Opt
   stop = index - one(index)
   while index ≠ stop
     entry = ht.entries[index]
-    entry.block_index == 0xffffffff && return ifelse(find_free, index, 0xffffffff)
-    !find_free && entry.ha == ha && entry.hb == hb && (isnothing(locale) || entry.locale == locale) && return index
+    entry.block_index == 0xffffffff && return ifelse(allow_free, index, 0xffffffff)
+    entry.ha == ha && entry.hb == hb && (isnothing(locale) || entry.locale == locale) && return index
     index = mod1(index + one(index), n)
   end
   0xffffffff

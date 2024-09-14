@@ -69,7 +69,9 @@ function MPQCollection(files)
   archives = MPQArchive.(files)
   file_sources = Dictionary{String, typeof(archives[1])}()
   for archive in archives
-    for file in listfile(archive)
+    list = listfile(archive)
+    isnothing(list) && continue
+    for file in list
       get!(file_sources, file, archive)
     end
   end

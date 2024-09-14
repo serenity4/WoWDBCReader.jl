@@ -130,11 +130,13 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
       # Archive with no files.
       archive = MPQArchive()
       buffer = IOBuffer()
-      @test write(buffer, archive) == 65536 + 44
+      nb = write(buffer, archive)
+      @test nb > 65536
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
-      @test isempty(archive2.block_table.entries)
-      @test write(buffer, archive2) == 65536 + 44
+      @test length(archive2.block_table.entries) == 1 # listfile
+      seekstart(buffer)
+      @test write(buffer, archive2) == nb
 
       # Archive with two user-created files.
       archive = MPQArchive()
@@ -149,7 +151,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
-      @test length(archive2.block_table.entries) == 2
+      @test length(archive2.block_table.entries) == 3
       file_a_2 = archive2["Test\\A"]
       file_b_2 = archive2["Test\\B"]
       @test file_a_2.block[].uncompressed_file_size == 5
@@ -169,7 +171,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
-      @test length(archive2.block_table.entries) == 2
+      @test length(archive2.block_table.entries) == 3
       file_a_2 = archive2["Test\\A"]
       file_b_2 = archive2["Test\\B"]
       @test file_a_2.block[].uncompressed_file_size == 256

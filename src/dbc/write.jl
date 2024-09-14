@@ -1,4 +1,4 @@
-function write_dbc(filename, data)
+function write_dbc(filename::AbstractString, data)
   open(filename, "w+") do io
     write_dbc(io, data)
   end

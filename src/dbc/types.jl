@@ -23,6 +23,8 @@ end
 DBCData{T}(io::IO, name::Symbol) where {T<:DBCDataType} = read_binary(io, DBCData{T}; name)
 DBCData{T}(path::AbstractString) where {T<:DBCDataType} = open(io -> DBCData{T}(io, path), path, "r")
 
+Base.write(io::IO, data::DBCData) = write_dbc(io, data.rows)
+
 struct DBCFile
   name::Symbol
   schema::Symbol
@@ -36,10 +38,11 @@ end
 
 Base.read(file::DBCFile) = DBCData(IOBuffer(file.data), file.name, file.schema)
 Base.read(file::DBCFile, ::Type{DBCData{T}}) where {T<:DBCDataType} = DBCData{T}(IOBuffer(file.data), file.schema)
+Base.write(io::IO, file::DBCFile) = write(io, file.data)
 
 function DBCFile(data::DBCData)
   io = IOBuffer()
-  write_dbc(io, data.rows)
+  write(io, data)
   seekstart(io)
   DBCFile(data.name, data.schema, read(io))
 end

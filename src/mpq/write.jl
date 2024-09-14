@@ -1,10 +1,18 @@
+function align(io::IO, alignment)
+  aligned = alignment * cld(position(io), alignment)
+  !eof(io) && return seek(io, aligned)
+  for _ in 1:(aligned - position(io)) write(io, UInt8(0)) end
+end
+
 function Base.write(io::IO, archive::MPQArchive)
   archive_start = position(io)
+  regenerate_listfile!(archive)
   # Write dummy header, it will be updated once we know what to put in there.
   for _ in 1:44 write(io, UInt8(0)) end
 
   hash_table, block_overrides = recompute_hash_table(archive)
   block_table = write_blocks(io, archive, block_overrides)
+  align(io, 4)
   hash_table_offset = position(io) - archive_start
   write(io, hash_table)
   padding = (position(io) - archive_start) % 4
@@ -15,7 +23,10 @@ function Base.write(io::IO, archive::MPQArchive)
   header = MPQHeader(archive, hash_table, block_table, hash_table_offset, block_table_offset)
   seek(io, archive_start)
   write(io, header)
-  archive_end - archive_start
+  archive_size = archive_end - archive_start
+  seek(io, archive_start + 8)
+  write(io, UInt32(archive_size))
+  archive_size
 end
 
 function write_blocks(io::IO, archive::MPQArchive, block_overrides)
@@ -121,7 +132,7 @@ function recompute_hash_table(archive::MPQArchive)
   block_index_start = length(archive.block_table.entries)
   for (i, file) in enumerate(archive.files)
     (; filename, locale) = file
-    slot = hash_table_slot(ht, filename; locale, find_free = true)
+    slot = hash_table_slot(ht, filename; locale, allow_free = true)
     prev = ht.entries[slot]
     if prev.block_index !== 0xffffffff
       insert!(block_overrides, prev.block_index, file)

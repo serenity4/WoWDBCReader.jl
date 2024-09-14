@@ -146,8 +146,7 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
       @test file_b_2.block[].uncompressed_file_size == 5000
       @test read(file_a_2) == read(file_a)
       @test read(file_b_2) == read(file_b)
-      # XXX: It writes more bytes than originally intended, don't know why.
-      @test_broken write(IOBuffer(), archive2) == nb
+      @test write(IOBuffer(), archive2) == nb
 
       # Same, but with one file uncompressed.
       archive = MPQArchive()

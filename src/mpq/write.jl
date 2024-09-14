@@ -35,6 +35,9 @@ function write_blocks(io::IO, archive::MPQArchive, block_overrides)
     blocks[i] = block
   end
   for file in archive.files
+    # Only process created files; otherwise, assume that the data was not modified
+    # and could be rewritten as it was without parsing its block.
+    file.created || continue
     # If the file has been written already, skip it.
     in(file, overwritten_files) && continue
     block = write_block(io, archive, file)

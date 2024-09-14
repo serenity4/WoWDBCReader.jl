@@ -141,7 +141,7 @@ function Base.show(io::IO, archive::MPQArchive)
   n = length(archive.block_table.entries) + nc
   print(io, n, " files in archive")
   ne ≠ 0 && print(io, ", ", ne, " files extracted")
-  ne ≠ 0 && print(io, ", ", nc, " files created")
+  nc ≠ 0 && print(io, ", ", nc, " files created")
   print(io, ", sector size: ", Base.format_bytes(archive.sector_size))
   print(io, ", limit: ", length(archive.hash_table.entries), " files")
   print(io, ')')

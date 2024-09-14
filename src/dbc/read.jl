@@ -1,20 +1,7 @@
-struct ClientDatabase end
-
 const DBC_MAGIC_NUMBER = tag4"CBDW"
 
-BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{ClientDatabase}) = true
-BinaryParsingTools.swap_endianness(io::IO, ::Type{ClientDatabase}) = peek(io, UInt32) == reverse(DBC_MAGIC_NUMBER)
-
-schema_type(schema) = Symbol(uppercasefirst(string(schema)), :Data)
-
-function read_dbc(path_or_data, schema::Symbol)
-  T = getproperty(@__MODULE__, schema_type(schema))
-  read_dbc(path_or_data, T)
-end
-
-read_dbc(path::AbstractString, ::Type{T}) where {T} = open(io -> read_dbc(io, T), path, "r")
-read_dbc(data::AbstractVector{UInt8}, ::Type{T}) where {T} = read_dbc(IOBuffer(data), T)
-read_dbc(io::IO, ::Type{T}) where {T} = read_binary(io, ClientDatabase; T)
+BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{DBCData}) = true
+BinaryParsingTools.swap_endianness(io::IO, ::Type{DBCData}) = peek(io, UInt32) == reverse(DBC_MAGIC_NUMBER)
 
 function read_strings(io::IO, string_block_size::UInt32)
   # Strings are all the way to the end of the file.
@@ -41,7 +28,7 @@ function find_string(strings, indices, char_index)
   strings[i]
 end
 
-@generated function read_dbc_row(io::IO, strings, indices, ::Type{T}) where {T}
+@generated function read_dbc_row(io::IO, strings, indices, ::Type{T}) where {T<:DBCDataType}
   ex = Expr(:call, T)
   for i in 1:fieldcount(T)
     subT = fieldtype(T, i)
@@ -54,7 +41,7 @@ end
   ex
 end
 
-function Base.read(io::IO, ::Type{ClientDatabase}; T::DataType)
+function Base.read(io::IO, ::Type{DBCData{T}}; name::Symbol) where {T<:DBCDataType}
   magic = read(io, Tag4)
   magic === tag4"WDBC" || error("The provided file has an invalid signature: $magic")
   record_count = read(io, UInt32)
@@ -70,5 +57,5 @@ function Base.read(io::IO, ::Type{ClientDatabase}; T::DataType)
     seek(io, p + (i - 1)record_size)
     push!(rows, read_dbc_row(io, strings, indices, T))
   end
-  rows
+  DBCData(name, rows)
 end

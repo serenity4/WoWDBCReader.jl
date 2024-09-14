@@ -3,53 +3,58 @@ using BinaryParsingTools: read_binary
 const WoW = WoWDBCReader
 using Test
 
+DATA_DIRECTORY = "/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data"
+
 dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-dbc-reader/data/dbc", "$name.dbc")
 
-mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data", "$name.MPQ")
-
-# Missing features:
-# - Sector checksum verification.
-# Missing tests:
-# - Sector-based encryption/decryption.
+mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
 @testset "WoWDBCReader.jl" begin
   @testset "DBC files" begin
     @testset "Reading DBC files" begin
-      dbc = read_dbc(dbc_file(:TalentTab), :talenttab)
-      @test isa(dbc, Vector{TalenttabData})
-      @test length(dbc) == 33
+      dbc = DBCData(dbc_file(:TalentTab), :talenttab)
+      @test dbc.name === :TalentTab
+      @test dbc.schema === :talenttab
+      @test isa(dbc, DBCData{TalenttabData})
+      @test length(dbc.rows) == 33
 
-      dbc = read_dbc(dbc_file(:Talent), :talent)
-      @test isa(dbc, Vector{TalentData})
-      @test length(dbc) == 892
+      dbc = DBCData(dbc_file(:Talent), :talent)
+      @test isa(dbc, DBCData{TalentData})
+      @test length(dbc.rows) == 892
 
-      dbc = read_dbc(dbc_file(:Map), :map)
-      @test isa(dbc, Vector{MapData})
-      @test length(dbc) == 135
+      dbc = DBCData(dbc_file(:Map), :map)
+      @test isa(dbc, DBCData{MapData})
+      @test length(dbc.rows) == 135
 
-      dbc = read_dbc(dbc_file(:Spell), :spell)
-      @test isa(dbc, Vector{SpellData})
-      @test length(dbc) > 49000
+      dbc = DBCData(dbc_file(:Spell), :spell)
+      @test isa(dbc, DBCData{SpellData})
+      @test length(dbc.rows) > 49000
+
+      file = DBCFile(dbc_file(:Map), :map)
+      @test file.name === :Map
+      @test file.schema === :map
+      @test read(file) == DBCData(dbc_file(:Map), :map)
     end
 
     @testset "Writing DBC files" begin
-      dbc = read_dbc(dbc_file(:TalentTab), :talenttab)
-      buffer = IOBuffer()
-      write_dbc(buffer, dbc)
-      seekstart(buffer)
-      dbc2 = read_dbc(buffer, :talenttab)
+      dbc = DBCData(dbc_file(:TalentTab), :talenttab)
+      file = DBCFile(dbc)
+      dbc2 = read(file)
       @test dbc == dbc2
 
-      dbc = read_dbc(dbc_file(:Spell), :spell)
-      buffer = IOBuffer()
-      write_dbc(buffer, dbc)
-      seekstart(buffer)
-      dbc2 = read_dbc(buffer, :spell)
+      dbc = DBCData(dbc_file(:Spell), :spell)
+      file = DBCFile(dbc)
+      dbc2 = read(file)
       @test dbc == dbc2
     end
   end
 
   @testset "MPQ files" begin
+    # Missing features:
+    # - Sector checksum verification.
+    # Missing tests:
+    # - Sector-based encryption/decryption.
+
     @testset "Hash computations" begin
       @test WoW.SEED_BUFFER[1] === 0x55c636e2
       @test WoW.SEED_BUFFER[2] === 0x2be0170
@@ -106,18 +111,18 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS"))
       talent_tabs_dbc = read(archive["DBFilesClient\\TalentTab.dbc"])
-      talent_tabs = read_dbc(talent_tabs_dbc, :talenttab)
-      ref = read_dbc(dbc_file(:TalentTab), :talenttab)
+      talent_tabs = DBCData(talent_tabs_dbc, :TalentTab, :talenttab)
+      ref = DBCData(dbc_file(:TalentTab), :talenttab)
       @test talent_tabs == ref
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS-3"))
       map_dbc = read(archive["DBFilesClient\\Map.dbc"])
-      map = read_dbc(map_dbc, :map)
-      ref = read_dbc(dbc_file(:Map), :map)
+      map = DBCData(map_dbc, :Map, :map)
+      ref = DBCData(dbc_file(:Map), :map)
       @test map == ref
       spell_dbc = read(archive["DBFilesClient\\Spell.dbc"])
-      spell = read_dbc(spell_dbc, :spell)
-      ref = read_dbc(dbc_file(:Spell), :spell)
+      spell = DBCData(spell_dbc, :Spell, :spell)
+      ref = DBCData(dbc_file(:Spell), :spell)
       @test spell == ref
     end
 
@@ -183,6 +188,29 @@ mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-
       archive2 = MPQArchive(buffer)
       data2 = read(archive2["DBFilesClient\\TalentTab.dbc"])
       @test data2 == data
+    end
+
+    @testset "MPQ collections" begin
+      collection = MPQCollection([mpq_file("enUS/patch-enUS-3"), mpq_file("enUS/locale-enUS")])
+      file = MPQFile(collection, "DBFilesClient\\Achievement.dbc")
+      @test file === MPQFile(collection.archives[1], file.filename)
+      file = MPQFile(collection, "Fonts\\FRIENDS.TTF")
+      @test file === MPQFile(collection.archives[1], file.filename)
+      file = MPQFile(collection, "Fonts\\MORPHEUS.TTF")
+      @test file === MPQFile(collection.archives[2], file.filename)
+
+      mpq_files = WoW.ClientMPQFiles(DATA_DIRECTORY)
+      sorted = WoW.files_sorted_by_priority(mpq_files)
+      priority(file) = length(sorted) - findfirst(==(file), sorted)
+      @test priority("enUS/patch-enUS-3.MPQ") > priority("enUS/patch-enUS-2.MPQ")
+      @test priority("enUS/patch-enUS-3.MPQ") > priority("patch-3.MPQ")
+      @test priority("patch-3.MPQ") > priority("patch-2.MPQ")
+      @test priority("patch-2.MPQ") > priority("patch.MPQ")
+      @test priority("lichking.MPQ") > priority("expansion.MPQ")
+      @test priority("common-2.MPQ") > priority("common.MPQ")
+      collection = MPQCollection(DATA_DIRECTORY)
+      @test length(collection.archives) > 10
+      @test length(collection.file_sources) > 200000
     end
   end
 end;

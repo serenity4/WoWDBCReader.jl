@@ -1,6 +1,8 @@
 # This file was automatically generated with `generator/generate_schemas.jl`.
 
-struct AchievementData
+abstract type DBCDataType end
+
+struct AchievementData <: DBCDataType
     ID::Int32
     Faction::Int32
     Instance_Id::Int32
@@ -65,7 +67,7 @@ struct AchievementData
     Shares_Criteria::Int32
 end
 
-struct Achievement_categoryData
+struct Achievement_categoryData <: DBCDataType
     ID::Int32
     Parent::Int32
     Name_Lang_enUS::String
@@ -88,7 +90,7 @@ struct Achievement_categoryData
     Ui_Order::Int32
 end
 
-struct Achievement_criteriaData
+struct Achievement_criteriaData <: DBCDataType
     ID::Int32
     Achievement_Id::Int32
     Type::Int32
@@ -122,7 +124,7 @@ struct Achievement_criteriaData
     Ui_Order::Int32
 end
 
-struct AreagroupData
+struct AreagroupData <: DBCDataType
     ID::Int32
     AreaID_1::Int32
     AreaID_2::Int32
@@ -133,7 +135,7 @@ struct AreagroupData
     NextAreaID::Int32
 end
 
-struct AreapoiData
+struct AreapoiData <: DBCDataType
     ID::Int32
     Importance::Int32
     Icon_1::Int32
@@ -190,7 +192,7 @@ struct AreapoiData
     WorldMapLink::Int32
 end
 
-struct AreatableData
+struct AreatableData <: DBCDataType
     ID::Int32
     ContinentID::Int32
     ParentAreaID::Int32
@@ -229,7 +231,7 @@ struct AreatableData
     Lightid::Int32
 end
 
-struct AuctionhouseData
+struct AuctionhouseData <: DBCDataType
     ID::Int32
     FactionID::Int32
     DepositRate::Int32
@@ -253,12 +255,12 @@ struct AuctionhouseData
     Name_Lang_Mask::UInt32
 end
 
-struct BankbagslotpricesData
+struct BankbagslotpricesData <: DBCDataType
     ID::Int32
     Cost::Int32
 end
 
-struct BarbershopstyleData
+struct BarbershopstyleData <: DBCDataType
     ID::Int32
     Type::Int32
     DisplayName_Lang_enUS::String
@@ -301,7 +303,7 @@ struct BarbershopstyleData
     Data::Int32
 end
 
-struct BattlemasterlistData
+struct BattlemasterlistData <: DBCDataType
     ID::Int32
     MapID_1::Int32
     MapID_2::Int32
@@ -336,13 +338,13 @@ struct BattlemasterlistData
     Maxlevel::Int32
 end
 
-struct CharbaseinfoData
+struct CharbaseinfoData <: DBCDataType
     ID::Int32
     RaceID::UInt32
     ClassID::UInt32
 end
 
-struct CharstartoutfitData
+struct CharstartoutfitData <: DBCDataType
     ID::Int32
     RaceID::UInt32
     ClassID::UInt32
@@ -422,7 +424,7 @@ struct CharstartoutfitData
     InventoryType_24::Int32
 end
 
-struct ChartitlesData
+struct ChartitlesData <: DBCDataType
     ID::Int32
     Condition_ID::Int32
     Name_Lang_enUS::String
@@ -462,7 +464,7 @@ struct ChartitlesData
     Mask_ID::Int32
 end
 
-struct ChatchannelsData
+struct ChatchannelsData <: DBCDataType
     ID::Int32
     Flags::Int32
     FactionGroup::Int32
@@ -502,7 +504,7 @@ struct ChatchannelsData
     Shortcut_Lang_Mask::UInt32
 end
 
-struct ChrclassesData
+struct ChrclassesData <: DBCDataType
     ID::Int32
     Field01::Int32
     DisplayPower::Int32
@@ -565,7 +567,7 @@ struct ChrclassesData
     Required_Expansion::Int32
 end
 
-struct ChrracesData
+struct ChrracesData <: DBCDataType
     ID::Int32
     Flags::Int32
     FactionID::Int32
@@ -637,7 +639,7 @@ struct ChrracesData
     Required_Expansion::Int32
 end
 
-struct CinematiccameraData
+struct CinematiccameraData <: DBCDataType
     ID::Int32
     model::String
     soundEntry::Int32
@@ -647,7 +649,7 @@ struct CinematiccameraData
     rotation::Float32
 end
 
-struct CinematicsequencesData
+struct CinematicsequencesData <: DBCDataType
     ID::Int32
     SoundID::Int32
     Camera_1::Int32
@@ -660,7 +662,7 @@ struct CinematicsequencesData
     Camera_8::Int32
 end
 
-struct CreaturedisplayinfoData
+struct CreaturedisplayinfoData <: DBCDataType
     ID::Int32
     ModelID::Int32
     SoundID::Int32
@@ -679,7 +681,7 @@ struct CreaturedisplayinfoData
     ObjectEffectPackageID::Int32
 end
 
-struct CreaturedisplayinfoextraData
+struct CreaturedisplayinfoextraData <: DBCDataType
     ID::Int32
     DisplayRaceID::Int32
     DisplaySexID::Int32
@@ -703,7 +705,7 @@ struct CreaturedisplayinfoextraData
     BakeName::String
 end
 
-struct CreaturefamilyData
+struct CreaturefamilyData <: DBCDataType
     ID::Int32
     MinScale::Float32
     MinScaleLevel::Int32
@@ -734,7 +736,7 @@ struct CreaturefamilyData
     IconFile::String
 end
 
-struct CreaturemodeldataData
+struct CreaturemodeldataData <: DBCDataType
     ID::Int32
     Flags::Int32
     ModelName::String
@@ -765,7 +767,7 @@ struct CreaturemodeldataData
     MissileCollisionRaise::Float32
 end
 
-struct CreaturespelldataData
+struct CreaturespelldataData <: DBCDataType
     ID::Int32
     Spells_1::Int32
     Spells_2::Int32
@@ -777,7 +779,7 @@ struct CreaturespelldataData
     Availability_4::Int32
 end
 
-struct CreaturetypeData
+struct CreaturetypeData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -799,14 +801,14 @@ struct CreaturetypeData
     Flags::Int32
 end
 
-struct CurrencytypesData
+struct CurrencytypesData <: DBCDataType
     ID::Int32
     ItemID::Int32
     CategoryID::Int32
     BitIndex::Int32
 end
 
-struct DestructiblemodeldataData
+struct DestructiblemodeldataData <: DBCDataType
     ID::Int32
     State0Wmo::Int32
     State0DestructionDoodadSet::Int32
@@ -828,7 +830,7 @@ struct DestructiblemodeldataData
     Field18::Int32
 end
 
-struct DungeonencounterData
+struct DungeonencounterData <: DBCDataType
     ID::Int32
     MapID::Int32
     Difficulty::Int32
@@ -854,7 +856,7 @@ struct DungeonencounterData
     SpellIconID::Int32
 end
 
-struct DurabilitycostsData
+struct DurabilitycostsData <: DBCDataType
     ID::Int32
     WeaponSubClassCost_1::Int32
     WeaponSubClassCost_2::Int32
@@ -887,12 +889,12 @@ struct DurabilitycostsData
     ArmorSubClassCost_8::Int32
 end
 
-struct DurabilityqualityData
+struct DurabilityqualityData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct EmotesData
+struct EmotesData <: DBCDataType
     ID::Int32
     EmoteSlashCommand::String
     AnimID::Int32
@@ -902,7 +904,7 @@ struct EmotesData
     EventSoundID::Int32
 end
 
-struct EmotestextData
+struct EmotestextData <: DBCDataType
     ID::Int32
     Name::String
     EmoteID::Int32
@@ -924,7 +926,7 @@ struct EmotestextData
     EmoteText_16::Int32
 end
 
-struct FactionData
+struct FactionData <: DBCDataType
     ID::Int32
     ReputationIndex::Int32
     ReputationRaceMask_1::Int32
@@ -984,7 +986,7 @@ struct FactionData
     Description_Lang_Mask::UInt32
 end
 
-struct FactiontemplateData
+struct FactiontemplateData <: DBCDataType
     ID::Int32
     Faction::Int32
     Flags::Int32
@@ -1001,7 +1003,7 @@ struct FactiontemplateData
     Friend_4::Int32
 end
 
-struct GameobjectdisplayinfoData
+struct GameobjectdisplayinfoData <: DBCDataType
     ID::Int32
     ModelName::String
     Sound_1::Int32
@@ -1023,7 +1025,7 @@ struct GameobjectdisplayinfoData
     ObjectEffectPackageID::Int32
 end
 
-struct GempropertiesData
+struct GempropertiesData <: DBCDataType
     ID::Int32
     Enchant_Id::Int32
     Maxcount_Inv::Int32
@@ -1031,75 +1033,75 @@ struct GempropertiesData
     Type::Int32
 end
 
-struct GlyphpropertiesData
+struct GlyphpropertiesData <: DBCDataType
     ID::Int32
     SpellID::Int32
     GlyphSlotFlags::Int32
     SpellIconID::Int32
 end
 
-struct GlyphslotData
+struct GlyphslotData <: DBCDataType
     ID::Int32
     Type::Int32
     Tooltip::Int32
 end
 
-struct GtbarbershopcostbaseData
+struct GtbarbershopcostbaseData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtchancetomeleecritData
+struct GtchancetomeleecritData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtchancetomeleecritbaseData
+struct GtchancetomeleecritbaseData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtchancetospellcritData
+struct GtchancetospellcritData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtchancetospellcritbaseData
+struct GtchancetospellcritbaseData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtcombatratingsData
+struct GtcombatratingsData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtnpcmanacostscalerData
+struct GtnpcmanacostscalerData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtoctclasscombatratingscalarData
+struct GtoctclasscombatratingscalarData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtoctregenhpData
+struct GtoctregenhpData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtregenhppersptData
+struct GtregenhppersptData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct GtregenmppersptData
+struct GtregenmppersptData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct HolidaysData
+struct HolidaysData <: DBCDataType
     ID::Int32
     Duration_1::Int32
     Duration_2::Int32
@@ -1157,7 +1159,7 @@ struct HolidaysData
     Flags::Int32
 end
 
-struct ItemData
+struct ItemData <: DBCDataType
     ID::Int32
     ClassID::Int32
     SubclassID::Int32
@@ -1168,7 +1170,7 @@ struct ItemData
     SheatheType::Int32
 end
 
-struct ItembagfamilyData
+struct ItembagfamilyData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -1189,7 +1191,7 @@ struct ItembagfamilyData
     Name_Lang_Mask::UInt32
 end
 
-struct ItemdisplayinfoData
+struct ItemdisplayinfoData <: DBCDataType
     ID::Int32
     ModelName_1::String
     ModelName_2::String
@@ -1217,7 +1219,7 @@ struct ItemdisplayinfoData
     ParticleColorID::Int32
 end
 
-struct ItemextendedcostData
+struct ItemextendedcostData <: DBCDataType
     ID::Int32
     HonorPoints::Int32
     ArenaPoints::Int32
@@ -1236,7 +1238,7 @@ struct ItemextendedcostData
     ItemPurchaseGroup::Int32
 end
 
-struct ItemlimitcategoryData
+struct ItemlimitcategoryData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -1259,7 +1261,7 @@ struct ItemlimitcategoryData
     Flags::Int32
 end
 
-struct ItemrandompropertiesData
+struct ItemrandompropertiesData <: DBCDataType
     ID::Int32
     Name::String
     Enchantment_1::Int32
@@ -1286,7 +1288,7 @@ struct ItemrandompropertiesData
     Name_Lang_Mask::UInt32
 end
 
-struct ItemrandomsuffixData
+struct ItemrandomsuffixData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -1318,7 +1320,7 @@ struct ItemrandomsuffixData
     AllocationPct_5::Int32
 end
 
-struct ItemsetData
+struct ItemsetData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -1374,7 +1376,7 @@ struct ItemsetData
     RequiredSkillRank::Int32
 end
 
-struct LfgdungeonsData
+struct LfgdungeonsData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -1426,7 +1428,7 @@ struct LfgdungeonsData
     Description_Lang_Mask::UInt32
 end
 
-struct LightData
+struct LightData <: DBCDataType
     ID::Int32
     ContinentID::Int32
     X::Float32
@@ -1444,7 +1446,7 @@ struct LightData
     LightParamsID_8::Int32
 end
 
-struct LiquidtypeData
+struct LiquidtypeData <: DBCDataType
     ID::Int32
     Name::String
     Flags::Int32
@@ -1492,7 +1494,7 @@ struct LiquidtypeData
     Int_4::Int32
 end
 
-struct LockData
+struct LockData <: DBCDataType
     ID::Int32
     Type_1::Int32
     Type_2::Int32
@@ -1528,7 +1530,7 @@ struct LockData
     Action_8::Int32
 end
 
-struct MailtemplateData
+struct MailtemplateData <: DBCDataType
     ID::Int32
     Subject_Lang_enUS::String
     Subject_Lang_enGB::String
@@ -1566,7 +1568,7 @@ struct MailtemplateData
     Body_Lang_Mask::UInt32
 end
 
-struct MapData
+struct MapData <: DBCDataType
     ID::Int32
     Directory::String
     InstanceType::Int32
@@ -1635,7 +1637,7 @@ struct MapData
     MaxPlayers::Int32
 end
 
-struct MapdifficultyData
+struct MapdifficultyData <: DBCDataType
     ID::Int32
     MapID::Int32
     Difficulty::Int32
@@ -1661,13 +1663,13 @@ struct MapdifficultyData
     Difficultystring::String
 end
 
-struct MovieData
+struct MovieData <: DBCDataType
     ID::Int32
     Filename::String
     Volume::Int32
 end
 
-struct OverridespelldataData
+struct OverridespelldataData <: DBCDataType
     ID::Int32
     Spells_1::Int32
     Spells_2::Int32
@@ -1682,7 +1684,7 @@ struct OverridespelldataData
     Flags::Int32
 end
 
-struct PowerdisplayData
+struct PowerdisplayData <: DBCDataType
     ID::Int32
     ActualType::Int32
     GlobalstringBaseTag::String
@@ -1691,7 +1693,7 @@ struct PowerdisplayData
     Blue::UInt32
 end
 
-struct PvpdifficultyData
+struct PvpdifficultyData <: DBCDataType
     ID::Int32
     MapID::Int32
     RangeIndex::Int32
@@ -1700,7 +1702,7 @@ struct PvpdifficultyData
     Difficulty::Int32
 end
 
-struct QuestfactionrewardData
+struct QuestfactionrewardData <: DBCDataType
     ID::Int32
     Difficulty_1::Int32
     Difficulty_2::Int32
@@ -1714,7 +1716,7 @@ struct QuestfactionrewardData
     Difficulty_10::Int32
 end
 
-struct QuestsortData
+struct QuestsortData <: DBCDataType
     ID::Int32
     SortName_Lang_enUS::String
     SortName_Lang_enGB::String
@@ -1735,7 +1737,7 @@ struct QuestsortData
     SortName_Lang_Mask::UInt32
 end
 
-struct QuestxpData
+struct QuestxpData <: DBCDataType
     ID::Int32
     Difficulty_1::Int32
     Difficulty_2::Int32
@@ -1749,7 +1751,7 @@ struct QuestxpData
     Difficulty_10::Int32
 end
 
-struct RandproppointsData
+struct RandproppointsData <: DBCDataType
     ID::Int32
     Epic_1::Int32
     Epic_2::Int32
@@ -1768,7 +1770,7 @@ struct RandproppointsData
     Good_5::Int32
 end
 
-struct ScalingstatdistributionData
+struct ScalingstatdistributionData <: DBCDataType
     ID::Int32
     StatID_1::Int32
     StatID_2::Int32
@@ -1793,7 +1795,7 @@ struct ScalingstatdistributionData
     Maxlevel::Int32
 end
 
-struct ScalingstatvaluesData
+struct ScalingstatvaluesData <: DBCDataType
     ID::Int32
     Charlevel::Int32
     ShoulderBudget::Int32
@@ -1820,7 +1822,7 @@ struct ScalingstatvaluesData
     PlateChestArmor::Int32
 end
 
-struct SkilllineData
+struct SkilllineData <: DBCDataType
     ID::Int32
     CategoryID::Int32
     SkillCostsID::Int32
@@ -1879,7 +1881,7 @@ struct SkilllineData
     CanLink::Int32
 end
 
-struct SkilllineabilityData
+struct SkilllineabilityData <: DBCDataType
     ID::Int32
     SkillLine::Int32
     Spell::Int32
@@ -1895,7 +1897,7 @@ struct SkilllineabilityData
     TradeSkillCategoryID::Int32
 end
 
-struct SkillraceclassinfoData
+struct SkillraceclassinfoData <: DBCDataType
     ID::Int32
     SkillID::Int32
     RaceMask::Int32
@@ -1906,7 +1908,7 @@ struct SkillraceclassinfoData
     SkillCostIndex::Int32
 end
 
-struct SkilltiersData
+struct SkilltiersData <: DBCDataType
     ID::Int32
     Cost_1::Int32
     Cost_2::Int32
@@ -1942,7 +1944,7 @@ struct SkilltiersData
     Value_16::Int32
 end
 
-struct SoundentriesData
+struct SoundentriesData <: DBCDataType
     ID::Int32
     SoundType::Int32
     Name::String
@@ -1975,7 +1977,7 @@ struct SoundentriesData
     SoundEntriesAdvancedID::Int32
 end
 
-struct SpellData
+struct SpellData <: DBCDataType
     ID::Int32
     Category::UInt32
     DispelType::UInt32
@@ -2212,19 +2214,19 @@ struct SpellData
     SpellDifficultyID::UInt32
 end
 
-struct SpellcasttimesData
+struct SpellcasttimesData <: DBCDataType
     ID::Int32
     Base::Int32
     PerLevel::Int32
     Minimum::Int32
 end
 
-struct SpellcategoryData
+struct SpellcategoryData <: DBCDataType
     ID::Int32
     Flags::Int32
 end
 
-struct SpelldifficultyData
+struct SpelldifficultyData <: DBCDataType
     ID::Int32
     DifficultySpellID_1::Int32
     DifficultySpellID_2::Int32
@@ -2232,14 +2234,14 @@ struct SpelldifficultyData
     DifficultySpellID_4::UInt32
 end
 
-struct SpelldurationData
+struct SpelldurationData <: DBCDataType
     ID::Int32
     Duration::Int32
     DurationPerLevel::Int32
     MaxDuration::Int32
 end
 
-struct SpellfocusobjectData
+struct SpellfocusobjectData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -2260,7 +2262,7 @@ struct SpellfocusobjectData
     Name_Lang_Mask::UInt32
 end
 
-struct SpellitemenchantmentData
+struct SpellitemenchantmentData <: DBCDataType
     ID::Int32
     Charges::Int32
     Effect_1::Int32
@@ -2301,7 +2303,7 @@ struct SpellitemenchantmentData
     MinLevel::Int32
 end
 
-struct SpellitemenchantmentconditionData
+struct SpellitemenchantmentconditionData <: DBCDataType
     ID::Int32
     Lt_OperandType_1::UInt32
     Lt_OperandType_2::UInt32
@@ -2335,14 +2337,14 @@ struct SpellitemenchantmentconditionData
     Logic_5::UInt32
 end
 
-struct SpellradiusData
+struct SpellradiusData <: DBCDataType
     ID::Int32
     Radius::Float32
     RadiusPerLevel::Float32
     RadiusMax::Float32
 end
 
-struct SpellrangeData
+struct SpellrangeData <: DBCDataType
     ID::Int32
     RangeMin_1::Float32
     RangeMin_2::Float32
@@ -2385,7 +2387,7 @@ struct SpellrangeData
     DisplayNameShort_Lang_Mask::UInt32
 end
 
-struct SpellrunecostData
+struct SpellrunecostData <: DBCDataType
     ID::Int32
     Blood::Int32
     Unholy::Int32
@@ -2393,7 +2395,7 @@ struct SpellrunecostData
     RunicPower::Int32
 end
 
-struct SpellshapeshiftformData
+struct SpellshapeshiftformData <: DBCDataType
     ID::Int32
     BonusActionBar::Int32
     Name_Lang_enUS::String
@@ -2431,12 +2433,12 @@ struct SpellshapeshiftformData
     PresetSpellID_8::Int32
 end
 
-struct StableslotpricesData
+struct StableslotpricesData <: DBCDataType
     ID::Int32
     Cost::Int32
 end
 
-struct SummonpropertiesData
+struct SummonpropertiesData <: DBCDataType
     ID::Int32
     Control::Int32
     Faction::Int32
@@ -2445,7 +2447,7 @@ struct SummonpropertiesData
     Flags::Int32
 end
 
-struct TalentData
+struct TalentData <: DBCDataType
     ID::Int32
     TabID::Int32
     TierID::Int32
@@ -2471,7 +2473,7 @@ struct TalentData
     CategoryMask_2::Int32
 end
 
-struct TalenttabData
+struct TalenttabData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -2498,7 +2500,7 @@ struct TalenttabData
     BackgroundFile::String
 end
 
-struct TaxinodesData
+struct TaxinodesData <: DBCDataType
     ID::Int32
     ContinentID::Int32
     X::Float32
@@ -2525,14 +2527,14 @@ struct TaxinodesData
     MountCreatureID_2::Int32
 end
 
-struct TaxipathData
+struct TaxipathData <: DBCDataType
     ID::Int32
     FromTaxiNode::Int32
     ToTaxiNode::Int32
     Cost::Int32
 end
 
-struct TaxipathnodeData
+struct TaxipathnodeData <: DBCDataType
     ID::Int32
     PathID::Int32
     NodeIndex::Int32
@@ -2546,12 +2548,12 @@ struct TaxipathnodeData
     DepartureEventID::Int32
 end
 
-struct TeamcontributionpointsData
+struct TeamcontributionpointsData <: DBCDataType
     ID::Int32
     Data::Float32
 end
 
-struct TotemcategoryData
+struct TotemcategoryData <: DBCDataType
     ID::Int32
     Name_Lang_enUS::String
     Name_Lang_enGB::String
@@ -2574,7 +2576,7 @@ struct TotemcategoryData
     TotemCategoryMask::Int32
 end
 
-struct TransportanimationData
+struct TransportanimationData <: DBCDataType
     ID::Int32
     TransportID::Int32
     TimeIndex::Int32
@@ -2584,7 +2586,7 @@ struct TransportanimationData
     SequenceID::Int32
 end
 
-struct TransportrotationData
+struct TransportrotationData <: DBCDataType
     ID::Int32
     GameObjectsID::Int32
     TimeIndex::Int32
@@ -2594,7 +2596,7 @@ struct TransportrotationData
     RotW::Float32
 end
 
-struct VehicleData
+struct VehicleData <: DBCDataType
     ID::Int32
     Flags::Int32
     TurnSpeed::Float32
@@ -2637,7 +2639,7 @@ struct VehicleData
     PowerDisplayID_3::Int32
 end
 
-struct VehicleseatData
+struct VehicleseatData <: DBCDataType
     ID::Int32
     Flags::Int32
     AttachmentID::Int32
@@ -2698,7 +2700,7 @@ struct VehicleseatData
     CameraSeatZoomMax::Float32
 end
 
-struct WmoareatableData
+struct WmoareatableData <: DBCDataType
     ID::Int32
     WMOID::Int32
     NameSetID::Int32
@@ -2729,7 +2731,7 @@ struct WmoareatableData
     AreaName_Lang_Mask::UInt32
 end
 
-struct WorldmapareaData
+struct WorldmapareaData <: DBCDataType
     ID::Int32
     MapID::Int32
     AreaID::Int32
@@ -2743,7 +2745,7 @@ struct WorldmapareaData
     ParentWorldMapID::Int32
 end
 
-struct WorldmapoverlayData
+struct WorldmapoverlayData <: DBCDataType
     ID::Int32
     MapAreaID::Int32
     AreaID_1::Int32

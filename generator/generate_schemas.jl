@@ -15,16 +15,17 @@ function datatype(type::String)
 end
 
 function generate_schema_types()
-  dest = joinpath(dirname(@__DIR__), "src", "schemas.jl")
+  dest = joinpath(dirname(@__DIR__), "src", "dbc", "schemas.jl")
   open(dest, "w+") do io
     types = Symbol[]
     println(io, "# This file was automatically generated with `generator/generate_schemas.jl`.\n")
+    println(io, "abstract type DBCDataType end\n")
     for file in readdir(schema_directory(); join = true)
       schema_name = first(splitext(basename(file)))
       name = schema_type(schema_name)
       push!(types, name)
       schema = JSON3.read(file)
-      type = Expr(:struct, false, name)
+      type = Expr(:struct, false, :($name <: DBCDataType))
       fields = Expr(:block)
       push!(type.args, fields)
       for field in schema

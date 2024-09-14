@@ -64,10 +64,10 @@ function Base.read(io::IO, ::Type{DBCData{T}}; name::Symbol) where {T<:DBCDataTy
   p = position(io)
   strings, indices = read_strings(io, string_block_size)
   seek(io, p)
-  rows = T[]
+  rows = Vector{T}(undef, record_count)
   for i in 1:record_count
     seek(io, p + (i - 1)record_size)
-    push!(rows, read_dbc_row(io, strings, indices, T))
+    rows[i] = read_dbc_row(io, strings, indices, T)
   end
   DBCData(name, rows)
 end

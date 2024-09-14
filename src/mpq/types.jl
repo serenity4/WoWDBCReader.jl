@@ -148,7 +148,7 @@ function Base.show(io::IO, archive::MPQArchive)
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString, hash_entry::MPQHashTableEntry, block::MPQBlock)
-  MPQFile(archive, filename, hash_entry.locale, block.flags, nothing, Ref(block), UInt8[], false)
+  MPQFile(archive, convert(String, filename), hash_entry.locale, block.flags, nothing, Ref(block), UInt8[], false)
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString, data::AbstractVector{UInt8}; locale::Optional{MPQLocale} = nothing, flags::MPQFileFlags = MPQFileFlags(), compression::Optional{MPQCompressionFlags} = DEFAULT_COMPRESSION_METHOD, encrypt::Bool = false)

@@ -16,7 +16,7 @@ uint Name13 string
 uint Name14 string
 uint Name15 string
 uint Name16 string
-uint Flags
+uint NameFlags
 uint ItemId1
 uint ItemId2
 uint ItemId3

@@ -46,7 +46,7 @@ function generate_schema_types()
           @assert type == "uint" && items[end] == "string"
           type = "string"
         end
-        loc_part = match(r"(.*)(?:enUS|en_US|1)$", items[2])
+        loc_part = match(r"(.*)(enUS|en_US|1|0)$", items[2])
         if i + 16 ≤ n && !isnothing(loc_part) && (type == "string" || type == "uint") && all(@view lines[(i + 1):(i + 15)]) do next
             next = strip(strip(next), '\t')
             endswith(next, type) || startswith(next, type)
@@ -57,7 +57,7 @@ function generate_schema_types()
             _name == base * "Mask" || _name == base * "Flags" || _name == base * "Flag"
           end
           i += 17
-          name = rstrip(name, '1')
+          name = replace(name, Regex("$(loc_part[2])\$") => "")
           name = nc_convert(SnakeCaseLower, name)
           type = :LString
         else

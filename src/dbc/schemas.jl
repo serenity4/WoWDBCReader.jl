@@ -574,23 +574,7 @@ struct ItemClassData <: DBCDataType
     id::UInt32
     secondary_id::UInt32
     is_weapon::UInt32
-    name_1::String
-    name_2::String
-    name_3::String
-    name_4::String
-    name_5::String
-    name_6::String
-    name_7::String
-    name_8::String
-    name_9::String
-    name_10::String
-    name_11::String
-    name_12::String
-    name_13::String
-    name_14::String
-    name_15::String
-    name_16::String
-    flags::UInt32
+    name::LString
 end
 
 struct ItemDisplayInfoData <: DBCDataType
@@ -642,23 +626,7 @@ end
 
 struct ItemSetData <: DBCDataType
     id::UInt32
-    name_1::String
-    name_2::String
-    name_3::String
-    name_4::String
-    name_5::String
-    name_6::String
-    name_7::String
-    name_8::String
-    name_9::String
-    name_10::String
-    name_11::String
-    name_12::String
-    name_13::String
-    name_14::String
-    name_15::String
-    name_16::String
-    flags::UInt32
+    name::LString
     item_id_1::UInt32
     item_id_2::UInt32
     item_id_3::UInt32
@@ -906,10 +874,10 @@ struct MapData <: DBCDataType
     instance_type::UInt32
     flags::UInt32
     pvp::UInt32
-    map_name_langen_us::LString
+    map_name_lang::LString
     area_table_id::UInt32
-    map_description_0_langen_us::LString
-    map_description_1_langen_us::LString
+    map_description_0_lang::LString
+    map_description_1_lang::LString
     loading_screen_id::UInt32
     minimap_icon_scale::Float32
     corpse_map_id::Int32
@@ -1190,74 +1158,10 @@ struct SpellData <: DBCDataType
     spell_icon_id::UInt32
     active_icon_id::UInt32
     spell_priority::UInt32
-    spell_name_0::String
-    spell_name_1::String
-    spell_name_2::String
-    spell_name_3::String
-    spell_name_4::String
-    spell_name_5::String
-    spell_name_6::String
-    spell_name_7::String
-    spell_name_8::String
-    spell_name_flag_0::UInt32
-    spell_name_flag_1::UInt32
-    spell_name_flag_2::UInt32
-    spell_name_flag_3::UInt32
-    spell_name_flag_4::UInt32
-    spell_name_flag_5::UInt32
-    spell_name_flag_6::UInt32
-    spell_name_flag_7::UInt32
-    spell_rank_0::String
-    spell_rank_1::String
-    spell_rank_2::String
-    spell_rank_3::String
-    spell_rank_4::String
-    spell_rank_5::String
-    spell_rank_6::String
-    spell_rank_7::String
-    spell_rank_8::String
-    spell_rank_flags_0::UInt32
-    spell_rank_flags_1::UInt32
-    spell_rank_flags_2::UInt32
-    spell_rank_flags_3::UInt32
-    spell_rank_flags_4::UInt32
-    spell_rank_flags_5::UInt32
-    spell_rank_flags_6::UInt32
-    spell_rank_flags_7::UInt32
-    spell_description_0::String
-    spell_description_1::String
-    spell_description_2::String
-    spell_description_3::String
-    spell_description_4::String
-    spell_description_5::String
-    spell_description_6::String
-    spell_description_7::String
-    spell_description_8::String
-    spell_description_flags_0::UInt32
-    spell_description_flags_1::UInt32
-    spell_description_flags_2::UInt32
-    spell_description_flags_3::UInt32
-    spell_description_flags_4::UInt32
-    spell_description_flags_5::UInt32
-    spell_description_flags_6::UInt32
-    spell_description_flags_7::UInt32
-    spell_tool_tip_0::String
-    spell_tool_tip_1::String
-    spell_tool_tip_2::String
-    spell_tool_tip_3::String
-    spell_tool_tip_4::String
-    spell_tool_tip_5::String
-    spell_tool_tip_6::String
-    spell_tool_tip_7::String
-    spell_tool_tip_8::String
-    spell_tool_tip_flags_0::UInt32
-    spell_tool_tip_flags_1::UInt32
-    spell_tool_tip_flags_2::UInt32
-    spell_tool_tip_flags_3::UInt32
-    spell_tool_tip_flags_4::UInt32
-    spell_tool_tip_flags_5::UInt32
-    spell_tool_tip_flags_6::UInt32
-    spell_tool_tip_flags_7::UInt32
+    spell_name::LString
+    spell_rank::LString
+    spell_description::LString
+    spell_tool_tip::LString
     mana_cost_percentage::UInt32
     start_recovery_category::UInt32
     start_recovery_time::UInt32
@@ -1332,23 +1236,7 @@ end
 
 struct SpellFocusObjectData <: DBCDataType
     id::UInt32
-    name_1::String
-    name_2::String
-    name_3::String
-    name_4::String
-    name_5::String
-    name_6::String
-    name_7::String
-    name_8::String
-    name_9::String
-    name_10::String
-    name_11::String
-    name_12::String
-    name_13::String
-    name_14::String
-    name_15::String
-    name_16::String
-    flags::UInt32
+    name::LString
 end
 
 struct SpellIconData <: DBCDataType
@@ -1371,23 +1259,7 @@ struct SpellItemEnchantmentData <: DBCDataType
     object_id_1::UInt32
     object_id_2::UInt32
     object_id_3::UInt32
-    s_ref_name_0::String
-    s_ref_name_1::String
-    s_ref_name_2::String
-    s_ref_name_3::String
-    s_ref_name_4::String
-    s_ref_name_5::String
-    s_ref_name_6::String
-    s_ref_name_7::String
-    s_ref_name_8::String
-    s_ref_name_9::String
-    s_ref_name_10::String
-    s_ref_name_11::String
-    s_ref_name_12::String
-    s_ref_name_13::String
-    s_ref_name_14::String
-    s_ref_name_15::String
-    s_ref_name_flags::UInt32
+    s_ref_name::LString
     item_visuals::UInt32
     flags::UInt32
     item_cache::UInt32
@@ -1622,23 +1494,7 @@ end
 
 struct TalentTabData <: DBCDataType
     id::UInt32
-    name_1::String
-    name_2::String
-    name_3::String
-    name_4::String
-    name_5::String
-    name_6::String
-    name_7::String
-    name_8::String
-    name_9::String
-    name_10::String
-    name_11::String
-    name_12::String
-    name_13::String
-    name_14::String
-    name_15::String
-    name_16::String
-    flags::UInt32
+    name::LString
     icon_id::UInt32
     race_mask::UInt32
     class_mask::UInt32

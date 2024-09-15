@@ -144,14 +144,14 @@ uint SpellName5 string
 uint SpellName6 string
 uint SpellName7 string
 uint SpellName8 string
-uint SpellNameFlag0
-uint SpellNameFlag1
-uint SpellNameFlag2
-uint SpellNameFlag3
-uint SpellNameFlag4
-uint SpellNameFlag5
-uint SpellNameFlag6
-uint SpellNameFlag7
+uint SpellName9 string
+uint SpellName10 string
+uint SpellName11 string
+uint SpellName12 string
+uint SpellName13 string
+uint SpellName14 string
+uint SpellName15 string
+uint SpellNameFlags
 uint SpellRank0 string
 uint SpellRank1 string
 uint SpellRank2 string
@@ -161,14 +161,14 @@ uint SpellRank5 string
 uint SpellRank6 string
 uint SpellRank7 string
 uint SpellRank8 string
-uint SpellRankFlags0
-uint SpellRankFlags1
-uint SpellRankFlags2
-uint SpellRankFlags3
-uint SpellRankFlags4
-uint SpellRankFlags5
-uint SpellRankFlags6
-uint SpellRankFlags7
+uint SpellRank9 string
+uint SpellRank10 string
+uint SpellRank11 string
+uint SpellRank12 string
+uint SpellRank13 string
+uint SpellRank14 string
+uint SpellRank15 string
+uint SpellRankFlags
 uint SpellDescription0 string
 uint SpellDescription1 string
 uint SpellDescription2 string
@@ -178,14 +178,14 @@ uint SpellDescription5 string
 uint SpellDescription6 string
 uint SpellDescription7 string
 uint SpellDescription8 string
-uint SpellDescriptionFlags0
-uint SpellDescriptionFlags1
-uint SpellDescriptionFlags2
-uint SpellDescriptionFlags3
-uint SpellDescriptionFlags4
-uint SpellDescriptionFlags5
-uint SpellDescriptionFlags6
-uint SpellDescriptionFlags7
+uint SpellDescription9 string
+uint SpellDescription10 string
+uint SpellDescription11 string
+uint SpellDescription12 string
+uint SpellDescription13 string
+uint SpellDescription14 string
+uint SpellDescription15 string
+uint SpellDescriptionFlags
 uint SpellToolTip0 string
 uint SpellToolTip1 string
 uint SpellToolTip2 string
@@ -195,14 +195,14 @@ uint SpellToolTip5 string
 uint SpellToolTip6 string
 uint SpellToolTip7 string
 uint SpellToolTip8 string
-uint SpellToolTipFlags0
-uint SpellToolTipFlags1
-uint SpellToolTipFlags2
-uint SpellToolTipFlags3
-uint SpellToolTipFlags4
-uint SpellToolTipFlags5
-uint SpellToolTipFlags6
-uint SpellToolTipFlags7
+uint SpellToolTip9 string
+uint SpellToolTip10 string
+uint SpellToolTip11 string
+uint SpellToolTip12 string
+uint SpellToolTip13 string
+uint SpellToolTip14 string
+uint SpellToolTip15 string
+uint SpellToolTipFlags
 uint ManaCostPercentage
 uint StartRecoveryCategory
 uint StartRecoveryTime

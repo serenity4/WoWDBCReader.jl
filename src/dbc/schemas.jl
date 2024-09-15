@@ -3,1855 +3,1836 @@
 abstract type DBCDataType end
 
 struct AchievementData <: DBCDataType
-    ID::Int32
-    Faction::Int32
-    Instance_Id::Int32
-    Supercedes::Int32
-    Title::LString
-    Description::LString
-    Category::Int32
-    Points::Int32
-    Ui_Order::Int32
-    Flags::Int32
-    IconID::Int32
-    Reward::LString
-    Minimum_Criteria::Int32
-    Shares_Criteria::Int32
+    id::UInt32
+    required_faction::Int32
+    map_id::Int32
+    parent_achievement::UInt32
+    name::LString
+    description::LString
+    category_id::UInt32
+    points::UInt32
+    order_in_category::UInt32
+    flags::UInt32
+    icon::UInt32
+    title_reward::LString
+    count::UInt32
+    ref_achievement::UInt32
 end
 
-struct Achievement_categoryData <: DBCDataType
-    ID::Int32
-    Parent::Int32
-    Name::LString
-    Ui_Order::Int32
+struct AchievementCategoryData <: DBCDataType
+    id::UInt32
+    parent_category::Int32
+    name::LString
+    sort_order::UInt32
 end
 
-struct Achievement_criteriaData <: DBCDataType
-    ID::Int32
-    Achievement_Id::Int32
-    Type::Int32
-    Asset_Id::Int32
-    Quantity::Int32
-    Start_Event::Int32
-    Start_Asset::Int32
-    Fail_Event::Int32
-    Fail_Asset::Int32
-    Description::LString
-    Flags::Int32
-    Timer_Start_Event::Int32
-    Timer_Asset_Id::Int32
-    Timer_Time::Int32
-    Ui_Order::Int32
+struct AchievementCriteriaData <: DBCDataType
+    id::UInt32
+    referred_achievement::UInt32
+    required_type::UInt32
+    asset_type::UInt32
+    asset_count::UInt32
+    start_event::UInt32
+    start_asset::UInt32
+    fail_event::UInt32
+    fail_asset::UInt32
+    name::LString
+    flags::UInt32
+    timed_type::UInt32
+    timer_start_event::UInt32
+    time_limit::UInt32
+    show_order::UInt32
 end
 
-struct AreagroupData <: DBCDataType
-    ID::Int32
-    AreaID_1::Int32
-    AreaID_2::Int32
-    AreaID_3::Int32
-    AreaID_4::Int32
-    AreaID_5::Int32
-    AreaID_6::Int32
-    NextAreaID::Int32
+struct AnimationDataData <: DBCDataType
+    id::UInt32
+    name::String
+    weapon_flags::UInt32
+    body_flags::UInt32
+    flags::UInt32
+    fallback_animation_id::UInt32
+    behaviour_id::UInt32
+    behaviour_tier::UInt32
 end
 
-struct AreapoiData <: DBCDataType
-    ID::Int32
-    Importance::Int32
-    Icon_1::Int32
-    Icon_2::Int32
-    Icon_3::Int32
-    Icon_4::Int32
-    Icon_5::Int32
-    Icon_6::Int32
-    Icon_7::Int32
-    Icon_8::Int32
-    Icon_9::Int32
-    FactionID::Int32
-    X::Float32
-    Y::Float32
-    Z::Float32
-    ContinentID::Int32
-    Flags::Int32
-    AreaID::Int32
-    Name::LString
-    Description::LString
-    WorldStateID::Int32
-    WorldMapLink::Int32
+struct AreaGroupData <: DBCDataType
+    id::UInt32
+    area_id_1::UInt32
+    area_id_2::UInt32
+    area_id_3::UInt32
+    area_id_4::UInt32
+    area_id_5::UInt32
+    area_id_6::UInt32
+    next_group::UInt32
 end
 
-struct AreatableData <: DBCDataType
-    ID::Int32
-    ContinentID::Int32
-    ParentAreaID::Int32
-    AreaBit::Int32
-    Flags::Int32
-    SoundProviderPref::Int32
-    SoundProviderPrefUnderwater::Int32
-    AmbienceID::Int32
-    ZoneMusic::Int32
-    IntroSound::Int32
-    ExplorationLevel::Int32
-    AreaName::LString
-    FactionGroupMask::Int32
-    LiquidTypeID_1::Int32
-    LiquidTypeID_2::Int32
-    LiquidTypeID_3::Int32
-    LiquidTypeID_4::Int32
-    MinElevation::Float32
-    Ambient_Multiplier::Float32
-    Lightid::Int32
+struct AreaTableData <: DBCDataType
+    id::UInt32
+    map::UInt32
+    zone::UInt32
+    explore_flag::UInt32
+    flags::UInt32
+    sound_preferences::UInt32
+    sound_preferences_underwater::UInt32
+    sound_ambience::UInt32
+    zone_music::UInt32
+    zone_intro_music::UInt32
+    arealevel::UInt32
+    name::LString
+    faction_group::UInt32
+    liquid_type_1::UInt32
+    liquid_type_2::UInt32
+    liquid_type_3::UInt32
+    liquid_type_4::UInt32
+    min_elevation::Float32
+    ambient_multiplier::Float32
+    light::UInt32
 end
 
-struct AuctionhouseData <: DBCDataType
-    ID::Int32
-    FactionID::Int32
-    DepositRate::Int32
-    ConsignmentRate::Int32
-    Name::LString
+struct AreaTriggerData <: DBCDataType
+    id::UInt32
+    continent_id::UInt32
+    x::Float32
+    y::Float32
+    z::Float32
+    radius::Float32
+    box_length::Float32
+    box_width::Float32
+    box_height::Float32
+    box_yaw::Float32
 end
 
-struct BankbagslotpricesData <: DBCDataType
-    ID::Int32
-    Cost::Int32
+struct CharStartOutfitData <: DBCDataType
+    id::UInt32
+    race::UInt8
+    class::UInt8
+    gender::UInt8
+    outfit_id::UInt8
+    item_id_1::Int32
+    item_id_2::Int32
+    item_id_3::Int32
+    item_id_4::Int32
+    item_id_5::Int32
+    item_id_6::Int32
+    item_id_7::Int32
+    item_id_8::Int32
+    item_id_9::Int32
+    item_id_10::Int32
+    item_id_11::Int32
+    item_id_12::Int32
+    item_id_13::Int32
+    item_id_14::Int32
+    item_id_15::Int32
+    item_id_16::Int32
+    item_id_17::Int32
+    item_id_18::Int32
+    item_id_19::Int32
+    item_id_20::Int32
+    item_id_21::Int32
+    item_id_22::Int32
+    item_id_23::Int32
+    item_id_24::Int32
+    display_info_1::Int32
+    display_info_2::Int32
+    display_info_3::Int32
+    display_info_4::Int32
+    display_info_5::Int32
+    display_info_6::Int32
+    display_info_7::Int32
+    display_info_8::Int32
+    display_info_9::Int32
+    display_info_10::Int32
+    display_info_11::Int32
+    display_info_12::Int32
+    display_info_13::Int32
+    display_info_14::Int32
+    display_info_15::Int32
+    display_info_16::Int32
+    display_info_17::Int32
+    display_info_18::Int32
+    display_info_19::Int32
+    display_info_20::Int32
+    display_info_21::Int32
+    display_info_22::Int32
+    display_info_23::Int32
+    display_info_24::Int32
+    inventory_type_1::Int32
+    inventory_type_2::Int32
+    inventory_type_3::Int32
+    inventory_type_4::Int32
+    inventory_type_5::Int32
+    inventory_type_6::Int32
+    inventory_type_7::Int32
+    inventory_type_8::Int32
+    inventory_type_9::Int32
+    inventory_type_10::Int32
+    inventory_type_11::Int32
+    inventory_type_12::Int32
+    inventory_type_13::Int32
+    inventory_type_14::Int32
+    inventory_type_15::Int32
+    inventory_type_16::Int32
+    inventory_type_17::Int32
+    inventory_type_18::Int32
+    inventory_type_19::Int32
+    inventory_type_20::Int32
+    inventory_type_21::Int32
+    inventory_type_22::Int32
+    inventory_type_23::Int32
+    inventory_type_24::Int32
 end
 
-struct BarbershopstyleData <: DBCDataType
-    ID::Int32
-    Type::Int32
-    DisplayName::LString
-    Description::LString
-    Cost_Modifier::Float32
-    Race::Int32
-    Sex::Int32
-    Data::Int32
+struct CharTitlesData <: DBCDataType
+    id::UInt32
+    unk_1::Int32
+    male_title::LString
+    female_title::LString
+    title_mask_id::Int32
 end
 
-struct BattlemasterlistData <: DBCDataType
-    ID::Int32
-    MapID_1::Int32
-    MapID_2::Int32
-    MapID_3::Int32
-    MapID_4::Int32
-    MapID_5::Int32
-    MapID_6::Int32
-    MapID_7::Int32
-    MapID_8::Int32
-    InstanceType::Int32
-    GroupsAllowed::Int32
-    Name::LString
-    MaxGroupSize::Int32
-    HolidayWorldState::Int32
-    Minlevel::Int32
-    Maxlevel::Int32
+struct ChatChannelsData <: DBCDataType
+    id::UInt32
+    flags::UInt32
+    faction_group::UInt32
+    name::LString
+    short_name::LString
 end
 
-struct CharbaseinfoData <: DBCDataType
-    ID::Int32
-    RaceID::UInt32
-    ClassID::UInt32
+struct ChrClassesData <: DBCDataType
+    id::UInt32
+    field_01::UInt32
+    display_power::UInt32
+    pet_name_token::UInt32
+    name::LString
+    name_female::LString
+    name_male::LString
+    file_name::String
+    spell_class_set::UInt32
+    flags::UInt32
+    cinematic_sequence_id::UInt32
+    required_expansion::UInt32
 end
 
-struct CharstartoutfitData <: DBCDataType
-    ID::Int32
-    RaceID::UInt32
-    ClassID::UInt32
-    SexID::UInt32
-    OutfitID::UInt32
-    ItemID_1::Int32
-    ItemID_2::Int32
-    ItemID_3::Int32
-    ItemID_4::Int32
-    ItemID_5::Int32
-    ItemID_6::Int32
-    ItemID_7::Int32
-    ItemID_8::Int32
-    ItemID_9::Int32
-    ItemID_10::Int32
-    ItemID_11::Int32
-    ItemID_12::Int32
-    ItemID_13::Int32
-    ItemID_14::Int32
-    ItemID_15::Int32
-    ItemID_16::Int32
-    ItemID_17::Int32
-    ItemID_18::Int32
-    ItemID_19::Int32
-    ItemID_20::Int32
-    ItemID_21::Int32
-    ItemID_22::Int32
-    ItemID_23::Int32
-    ItemID_24::Int32
-    DisplayItemID_1::Int32
-    DisplayItemID_2::Int32
-    DisplayItemID_3::Int32
-    DisplayItemID_4::Int32
-    DisplayItemID_5::Int32
-    DisplayItemID_6::Int32
-    DisplayItemID_7::Int32
-    DisplayItemID_8::Int32
-    DisplayItemID_9::Int32
-    DisplayItemID_10::Int32
-    DisplayItemID_11::Int32
-    DisplayItemID_12::Int32
-    DisplayItemID_13::Int32
-    DisplayItemID_14::Int32
-    DisplayItemID_15::Int32
-    DisplayItemID_16::Int32
-    DisplayItemID_17::Int32
-    DisplayItemID_18::Int32
-    DisplayItemID_19::Int32
-    DisplayItemID_20::Int32
-    DisplayItemID_21::Int32
-    DisplayItemID_22::Int32
-    DisplayItemID_23::Int32
-    DisplayItemID_24::Int32
-    InventoryType_1::Int32
-    InventoryType_2::Int32
-    InventoryType_3::Int32
-    InventoryType_4::Int32
-    InventoryType_5::Int32
-    InventoryType_6::Int32
-    InventoryType_7::Int32
-    InventoryType_8::Int32
-    InventoryType_9::Int32
-    InventoryType_10::Int32
-    InventoryType_11::Int32
-    InventoryType_12::Int32
-    InventoryType_13::Int32
-    InventoryType_14::Int32
-    InventoryType_15::Int32
-    InventoryType_16::Int32
-    InventoryType_17::Int32
-    InventoryType_18::Int32
-    InventoryType_19::Int32
-    InventoryType_20::Int32
-    InventoryType_21::Int32
-    InventoryType_22::Int32
-    InventoryType_23::Int32
-    InventoryType_24::Int32
+struct ChrRacesData <: DBCDataType
+    id::UInt32
+    flags::UInt32
+    faction_id::UInt32
+    exploreation_sound_id::UInt32
+    male_display_id::UInt32
+    female_display_id::UInt32
+    client_prefix::String
+    base_language::UInt32
+    creature_type::UInt32
+    res_sickness_spell_id::UInt32
+    spalsh_sound_id::UInt32
+    client_file_string::String
+    cinematic_sequence_id::UInt32
+    alliance::UInt32
+    name::LString
+    name_female::LString
+    name_male::LString
+    facial_hair_custom_1::String
+    facial_hair_custom_2::String
+    hair_customisation::String
+    required_expansion::UInt32
 end
 
-struct ChartitlesData <: DBCDataType
-    ID::Int32
-    Condition_ID::Int32
-    Name::LString
-    Name1::LString
-    Mask_ID::Int32
+struct CinematicCameraData <: DBCDataType
+    id::UInt32
+    file_path::String
+    voiceover::UInt32
+    x::Float32
+    y::Float32
+    z::Float32
+    o::Float32
 end
 
-struct ChatchannelsData <: DBCDataType
-    ID::Int32
-    Flags::Int32
-    FactionGroup::Int32
-    Name::LString
-    Shortcut::LString
+struct CinematicSequencesData <: DBCDataType
+    id::UInt32
+    sound_id::UInt32
+    camera_1::UInt32
+    camera_2::UInt32
+    camera_3::UInt32
+    camera_4::UInt32
+    camera_5::UInt32
+    camera_6::UInt32
+    camera_7::UInt32
+    camera_8::UInt32
 end
 
-struct ChrclassesData <: DBCDataType
-    ID::Int32
-    Field01::Int32
-    DisplayPower::Int32
-    PetNameToken::Int32
-    Name::LString
-    Name_Female::LString
-    Name_Male::LString
-    Filename::String
-    SpellClassSet::Int32
-    Flags::Int32
-    CinematicSequenceID::Int32
-    Required_Expansion::Int32
+struct CreatureDisplayInfoData <: DBCDataType
+    id::UInt32
+    model_id::UInt32
+    sound_id::UInt32
+    extended_display_info_id::UInt32
+    creature_model_scale::Float32
+    creature_model_alpha::UInt32
+    texture_variation_1::String
+    texture_variation_2::String
+    texture_variation_3::String
+    portrait_texture_name::String
+    blood_level::Int32
+    blood_id::UInt32
+    npc_sound_id::UInt32
+    particle_color_id::UInt32
+    creature_geoset_data::UInt32
+    object_effect_package_id::UInt32
 end
 
-struct ChrracesData <: DBCDataType
-    ID::Int32
-    Flags::Int32
-    FactionID::Int32
-    ExplorationSoundID::Int32
-    MaleDisplayId::Int32
-    FemaleDisplayId::Int32
-    ClientPrefix::String
-    BaseLanguage::Int32
-    CreatureType::Int32
-    ResSicknessSpellID::Int32
-    SplashSoundID::Int32
-    ClientFilestring::String
-    CinematicSequenceID::Int32
-    Alliance::Int32
-    Name::LString
-    Name_Female::LString
-    Name_Male::LString
-    FacialHairCustomization_1::String
-    FacialHairCustomization_2::String
-    HairCustomization::String
-    Required_Expansion::Int32
+struct CreatureDisplayInfoExtraData <: DBCDataType
+    id::UInt32
+    display_race_id::UInt32
+    display_sex_id::UInt32
+    skin_id::UInt32
+    face_id::UInt32
+    hair_style_id::UInt32
+    hair_color_id::UInt32
+    facial_hair_id::UInt32
+    head_display_id::UInt32
+    shoulders_display_id::UInt32
+    shirt_display_id::UInt32
+    chest_display_id::UInt32
+    belt_display_id::UInt32
+    legs_display_id::UInt32
+    boots_display_id::UInt32
+    bracers_display_id::UInt32
+    gloves_display_id::UInt32
+    tabard_display_id::UInt32
+    cape_display_id::UInt32
+    flags::UInt32
+    baked_texture_i_dblp::String
 end
 
-struct CinematiccameraData <: DBCDataType
-    ID::Int32
-    model::String
-    soundEntry::Int32
-    locationX::Float32
-    locationY::Float32
-    locationZ::Float32
-    rotation::Float32
+struct CreatureModelDataData <: DBCDataType
+    id::UInt32
+    flags::UInt32
+    model_path::String
+    size_class::UInt32
+    model_scale::Float32
+    blood_id::UInt32
+    footprint_texture_id::UInt32
+    footprint_texture_length::Float32
+    footprint_texture_width::Float32
+    footprint_particle_scale::Float32
+    foley_material_id::UInt32
+    footstep_shake_size::UInt32
+    death_thud_shake_size::UInt32
+    sound_data::UInt32
+    collision_width::Float32
+    collision_height::Float32
+    mount_height::Float32
+    geo_box_min_x::Float32
+    geo_box_min_y::Float32
+    geo_box_min_z::Float32
+    geo_box_max_x::Float32
+    geo_box_max_y::Float32
+    geo_box_max_z::Float32
+    world_effect_scale::Float32
+    attached_effect_scale::Float32
+    missile_collision_radius::Float32
+    missile_collision_push::Float32
+    missile_collision_raise::Float32
 end
 
-struct CinematicsequencesData <: DBCDataType
-    ID::Int32
-    SoundID::Int32
-    Camera_1::Int32
-    Camera_2::Int32
-    Camera_3::Int32
-    Camera_4::Int32
-    Camera_5::Int32
-    Camera_6::Int32
-    Camera_7::Int32
-    Camera_8::Int32
+struct CreatureSoundDataData <: DBCDataType
+    id::UInt32
+    sound_exertion_id::UInt32
+    sound_exertion_critical_id::UInt32
+    sound_injury_id::UInt32
+    sound_injury_critical_id::UInt32
+    sound_injury_crushing_blow_id::UInt32
+    sound_death_id::UInt32
+    sound_stun_id::UInt32
+    sound_stand_id::UInt32
+    sound_footstep_id::UInt32
+    sound_aggro_id::UInt32
+    sound_wing_flap_id::UInt32
+    sound_wing_glide_id::UInt32
+    sound_alert_id::UInt32
+    sound_fidget_1::UInt32
+    sound_fidget_2::UInt32
+    sound_fidget_3::UInt32
+    sound_fidget_4::UInt32
+    sound_fidget_5::UInt32
+    custom_attack_1::UInt32
+    custom_attack_2::UInt32
+    custom_attack_3::UInt32
+    custom_attack_4::UInt32
+    npc_sound_id::UInt32
+    loop_sound_id::UInt32
+    creature_impact_type::UInt32
+    sound_jump_start_id::UInt32
+    sound_jump_end_id::UInt32
+    sound_pet_attack_id::UInt32
+    sound_pet_order_id::UInt32
+    sound_pet_dismiss_id::UInt32
+    fidget_delay_seconds_min::UInt32
+    fidget_delay_seconds_max::UInt32
+    birth_sound_id::UInt32
+    spell_cast_directed_sound_id::UInt32
+    submerge_sound_id::UInt32
+    submerged_sound_id::UInt32
+    creature_sound_data_id_pet::UInt32
 end
 
-struct CreaturedisplayinfoData <: DBCDataType
-    ID::Int32
-    ModelID::Int32
-    SoundID::Int32
-    ExtendedDisplayInfoID::Int32
-    CreatureModelScale::Float32
-    CreatureModelAlpha::Int32
-    TextureVariation_1::String
-    TextureVariation_2::String
-    TextureVariation_3::String
-    PortraitTextureName::String
-    BloodLevel::Int32
-    BloodID::Int32
-    NPCSoundID::Int32
-    ParticleColorID::Int32
-    CreatureGeosetData::Int32
-    ObjectEffectPackageID::Int32
+struct CurrencyCategoryData <: DBCDataType
+    id::UInt32
+    flags::UInt32
+    name::LString
 end
 
-struct CreaturedisplayinfoextraData <: DBCDataType
-    ID::Int32
-    DisplayRaceID::Int32
-    DisplaySexID::Int32
-    SkinID::Int32
-    FaceID::Int32
-    HairStyleID::Int32
-    HairColorID::Int32
-    FacialHairID::Int32
-    NPCItemDisplay1::Int32
-    NPCItemDisplay2::Int32
-    NPCItemDisplay3::Int32
-    NPCItemDisplay4::Int32
-    NPCItemDisplay5::Int32
-    NPCItemDisplay6::Int32
-    NPCItemDisplay7::Int32
-    NPCItemDisplay8::Int32
-    NPCItemDisplay9::Int32
-    NPCItemDisplay10::Int32
-    NPCItemDisplay11::Int32
-    Flags::Int32
-    BakeName::String
+struct CurrencyTypesData <: DBCDataType
+    id::UInt32
+    item::UInt32
+    category::UInt32
+    bit_index::UInt32
 end
 
-struct CreaturefamilyData <: DBCDataType
-    ID::Int32
-    MinScale::Float32
-    MinScaleLevel::Int32
-    MaxScale::Float32
-    MaxScaleLevel::Int32
-    SkillLine_1::Int32
-    SkillLine_2::Int32
-    PetFoodMask::Int32
-    PetTalentType::Int32
-    CategoryEnumID::Int32
-    Name::LString
-    IconFile::String
-end
-
-struct CreaturemodeldataData <: DBCDataType
-    ID::Int32
-    Flags::Int32
-    ModelName::String
-    SizeClass::Int32
-    ModelScale::Float32
-    BloodID::Int32
-    FootprintTextureID::Int32
-    FootprintTextureLength::Float32
-    FootprintTextureWidth::Float32
-    FootprintParticleScale::Float32
-    FoleyMaterialID::Int32
-    FootstepShakeSize::Int32
-    DeathThudShakeSize::Int32
-    SoundID::Int32
-    CollisionWidth::Float32
-    CollisionHeight::Float32
-    MountHeight::Float32
-    GeoBoxMinX::Float32
-    GeoBoxMinY::Float32
-    GeoBoxMinZ::Float32
-    GeoBoxMaxX::Float32
-    GeoBoxMaxY::Float32
-    GeoBoxMaxZ::Float32
-    WorldEffectScale::Float32
-    AttachedEffectScale::Float32
-    MissileCollisionRadius::Float32
-    MissileCollisionPush::Float32
-    MissileCollisionRaise::Float32
-end
-
-struct CreaturespelldataData <: DBCDataType
-    ID::Int32
-    Spells_1::Int32
-    Spells_2::Int32
-    Spells_3::Int32
-    Spells_4::Int32
-    Availability_1::Int32
-    Availability_2::Int32
-    Availability_3::Int32
-    Availability_4::Int32
-end
-
-struct CreaturetypeData <: DBCDataType
-    ID::Int32
-    Name::LString
-    Flags::Int32
-end
-
-struct CurrencytypesData <: DBCDataType
-    ID::Int32
-    ItemID::Int32
-    CategoryID::Int32
-    BitIndex::Int32
-end
-
-struct DestructiblemodeldataData <: DBCDataType
-    ID::Int32
-    State0Wmo::Int32
-    State0DestructionDoodadSet::Int32
-    State0ImpactEffectDoodadSet::Int32
-    State0AmbientDoodadSet::Int32
-    State1Wmo::Int32
-    State1DestructionDoodadSet::Int32
-    State1ImpactEffectDoodadSet::Int32
-    State1AmbientDoodadSet::Int32
-    State2Wmo::Int32
-    State2DestructionDoodadSet::Int32
-    State2ImpactEffectDoodadSet::Int32
-    State2AmbientDoodadSet::Int32
-    State3Wmo::Int32
-    State3DestructionDoodadSet::Int32
-    State3ImpactEffectDoodadSet::Int32
-    State3AmbientDoodadSet::Int32
-    Field17::Int32
-    Field18::Int32
-end
-
-struct DungeonencounterData <: DBCDataType
-    ID::Int32
-    MapID::Int32
-    Difficulty::Int32
-    OrderIndex::Int32
-    Bit::Int32
-    Name::LString
-    SpellIconID::Int32
-end
-
-struct DurabilitycostsData <: DBCDataType
-    ID::Int32
-    WeaponSubClassCost_1::Int32
-    WeaponSubClassCost_2::Int32
-    WeaponSubClassCost_3::Int32
-    WeaponSubClassCost_4::Int32
-    WeaponSubClassCost_5::Int32
-    WeaponSubClassCost_6::Int32
-    WeaponSubClassCost_7::Int32
-    WeaponSubClassCost_8::Int32
-    WeaponSubClassCost_9::Int32
-    WeaponSubClassCost_10::Int32
-    WeaponSubClassCost_11::Int32
-    WeaponSubClassCost_12::Int32
-    WeaponSubClassCost_13::Int32
-    WeaponSubClassCost_14::Int32
-    WeaponSubClassCost_15::Int32
-    WeaponSubClassCost_16::Int32
-    WeaponSubClassCost_17::Int32
-    WeaponSubClassCost_18::Int32
-    WeaponSubClassCost_19::Int32
-    WeaponSubClassCost_20::Int32
-    WeaponSubClassCost_21::Int32
-    ArmorSubClassCost_1::Int32
-    ArmorSubClassCost_2::Int32
-    ArmorSubClassCost_3::Int32
-    ArmorSubClassCost_4::Int32
-    ArmorSubClassCost_5::Int32
-    ArmorSubClassCost_6::Int32
-    ArmorSubClassCost_7::Int32
-    ArmorSubClassCost_8::Int32
-end
-
-struct DurabilityqualityData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct EmotesData <: DBCDataType
-    ID::Int32
-    EmoteSlashCommand::String
-    AnimID::Int32
-    EmoteFlags::Int32
-    EmoteSpecProc::Int32
-    EmoteSpecProcParam::Int32
-    EventSoundID::Int32
-end
-
-struct EmotestextData <: DBCDataType
-    ID::Int32
-    Name::String
-    EmoteID::Int32
-    EmoteText_1::Int32
-    EmoteText_2::Int32
-    EmoteText_3::Int32
-    EmoteText_4::Int32
-    EmoteText_5::Int32
-    EmoteText_6::Int32
-    EmoteText_7::Int32
-    EmoteText_8::Int32
-    EmoteText_9::Int32
-    EmoteText_10::Int32
-    EmoteText_11::Int32
-    EmoteText_12::Int32
-    EmoteText_13::Int32
-    EmoteText_14::Int32
-    EmoteText_15::Int32
-    EmoteText_16::Int32
+struct DungeonEncounterData <: DBCDataType
+    id::UInt32
+    map_id::UInt32
+    difficulty::UInt32
+    order_index::Int32
+    bit::UInt32
+    name::LString
+    icon_id::UInt32
 end
 
 struct FactionData <: DBCDataType
-    ID::Int32
-    ReputationIndex::Int32
-    ReputationRaceMask_1::Int32
-    ReputationRaceMask_2::Int32
-    ReputationRaceMask_3::Int32
-    ReputationRaceMask_4::Int32
-    ReputationClassMask_1::Int32
-    ReputationClassMask_2::Int32
-    ReputationClassMask_3::Int32
-    ReputationClassMask_4::Int32
-    ReputationBase_1::Int32
-    ReputationBase_2::Int32
-    ReputationBase_3::Int32
-    ReputationBase_4::Int32
-    ReputationFlags_1::Int32
-    ReputationFlags_2::Int32
-    ReputationFlags_3::Int32
-    ReputationFlags_4::Int32
-    ParentFactionID::Int32
-    ParentFactionMod_1::Float32
-    ParentFactionMod_2::Float32
-    ParentFactionCap_1::Int32
-    ParentFactionCap_2::Int32
-    Name::LString
-    Description::LString
+    id::UInt32
+    reputation_index::Int32
+    reputation_race_mask_1::Int32
+    reputation_race_mask_2::Int32
+    reputation_race_mask_3::Int32
+    reputation_race_mask_4::Int32
+    reputation_class_mask_1::Int32
+    reputation_class_mask_2::Int32
+    reputation_class_mask_3::Int32
+    reputation_class_mask_4::Int32
+    reputation_base_1::Int32
+    reputation_base_2::Int32
+    reputation_base_3::Int32
+    reputation_base_4::Int32
+    reputation_flags_1::Int32
+    reputation_flags_2::Int32
+    reputation_flags_3::Int32
+    reputation_flags_4::Int32
+    parent_faction_id::UInt32
+    parent_faction_mod_1::Float32
+    parent_faction_mod_2::Float32
+    parent_faction_cap_1::Int32
+    parent_faction_cap_2::Int32
+    name::LString
+    description::LString
 end
 
-struct FactiontemplateData <: DBCDataType
-    ID::Int32
-    Faction::Int32
-    Flags::Int32
-    FactionGroup::Int32
-    FriendGroup::Int32
-    EnemyGroup::Int32
-    Enemies_1::Int32
-    Enemies_2::Int32
-    Enemies_3::Int32
-    Enemies_4::Int32
-    Friend_1::Int32
-    Friend_2::Int32
-    Friend_3::Int32
-    Friend_4::Int32
+struct FactionGroupData <: DBCDataType
+    id::UInt32
+    mask_id::Int32
+    internal_name::String
+    name::LString
 end
 
-struct GameobjectdisplayinfoData <: DBCDataType
-    ID::Int32
-    ModelName::String
-    Sound_1::Int32
-    Sound_2::Int32
-    Sound_3::Int32
-    Sound_4::Int32
-    Sound_5::Int32
-    Sound_6::Int32
-    Sound_7::Int32
-    Sound_8::Int32
-    Sound_9::Int32
-    Sound_10::Int32
-    GeoBoxMinX::Float32
-    GeoBoxMinY::Float32
-    GeoBoxMinZ::Float32
-    GeoBoxMaxX::Float32
-    GeoBoxMaxY::Float32
-    GeoBoxMaxZ::Float32
-    ObjectEffectPackageID::Int32
+struct FactionTemplateData <: DBCDataType
+    id::UInt32
+    faction::Int32
+    flags::Int32
+    faction_group::Int32
+    friend_group::Int32
+    enemy_group::Int32
+    enemies_1::Int32
+    enemies_2::Int32
+    enemies_3::Int32
+    enemies_4::Int32
+    friends_1::Int32
+    friends_2::Int32
+    friends_3::Int32
+    friends_4::Int32
 end
 
-struct GempropertiesData <: DBCDataType
-    ID::Int32
-    Enchant_Id::Int32
-    Maxcount_Inv::Int32
-    Maxcount_Item::Int32
-    Type::Int32
+struct FileDataData <: DBCDataType
+    id::UInt32
+    file_name::String
+    file_path::String
 end
 
-struct GlyphpropertiesData <: DBCDataType
-    ID::Int32
-    SpellID::Int32
-    GlyphSlotFlags::Int32
-    SpellIconID::Int32
+struct GameObjectDisplayInfoData <: DBCDataType
+    id::UInt32
+    model_name::String
+    sound_1::UInt32
+    sound_2::UInt32
+    sound_3::UInt32
+    sound_4::UInt32
+    sound_5::UInt32
+    sound_6::UInt32
+    sound_7::UInt32
+    sound_8::UInt32
+    sound_9::UInt32
+    sound_10::UInt32
+    geo_box_min_x::Float32
+    geo_box_min_y::Float32
+    geo_box_min_z::Float32
+    geo_box_max_x::Float32
+    geo_box_max_y::Float32
+    geo_box_max_z::Float32
+    object_effect_package_id::UInt32
 end
 
-struct GlyphslotData <: DBCDataType
-    ID::Int32
-    Type::Int32
-    Tooltip::Int32
+struct GameTipsData <: DBCDataType
+    id::UInt32
+    name::LString
 end
 
-struct GtbarbershopcostbaseData <: DBCDataType
-    ID::Int32
-    Data::Float32
+struct GemPropertiesData <: DBCDataType
+    id::UInt32
+    spell_item_enchantment_ref::UInt32
+    max_countinv::UInt32
+    max_countitem::UInt32
+    gem_type::UInt32
 end
 
-struct GtchancetomeleecritData <: DBCDataType
-    ID::Int32
-    Data::Float32
+struct HolidayDescriptionsData <: DBCDataType
+    id::UInt32
+    description::LString
 end
 
-struct GtchancetomeleecritbaseData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtchancetospellcritData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtchancetospellcritbaseData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtcombatratingsData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtnpcmanacostscalerData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtoctclasscombatratingscalarData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtoctregenhpData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtregenhppersptData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct GtregenmppersptData <: DBCDataType
-    ID::Int32
-    Data::Float32
+struct HolidayNamesData <: DBCDataType
+    id::UInt32
+    name::LString
 end
 
 struct HolidaysData <: DBCDataType
-    ID::Int32
-    Duration_1::Int32
-    Duration_2::Int32
-    Duration_3::Int32
-    Duration_4::Int32
-    Duration_5::Int32
-    Duration_6::Int32
-    Duration_7::Int32
-    Duration_8::Int32
-    Duration_9::Int32
-    Duration_10::Int32
-    Date_1::Int32
-    Date_2::Int32
-    Date_3::Int32
-    Date_4::Int32
-    Date_5::Int32
-    Date_6::Int32
-    Date_7::Int32
-    Date_8::Int32
-    Date_9::Int32
-    Date_10::Int32
-    Date_11::Int32
-    Date_12::Int32
-    Date_13::Int32
-    Date_14::Int32
-    Date_15::Int32
-    Date_16::Int32
-    Date_17::Int32
-    Date_18::Int32
-    Date_19::Int32
-    Date_20::Int32
-    Date_21::Int32
-    Date_22::Int32
-    Date_23::Int32
-    Date_24::Int32
-    Date_25::Int32
-    Date_26::Int32
-    Region::Int32
-    Looping::Int32
-    CalendarFlags_1::Int32
-    CalendarFlags_2::Int32
-    CalendarFlags_3::Int32
-    CalendarFlags_4::Int32
-    CalendarFlags_5::Int32
-    CalendarFlags_6::Int32
-    CalendarFlags_7::Int32
-    CalendarFlags_8::Int32
-    CalendarFlags_9::Int32
-    CalendarFlags_10::Int32
-    HolidayNameID::Int32
-    HolidayDescriptionID::Int32
-    TextureFilename::String
-    Priority::Int32
-    CalendarFilterType::Int32
-    Flags::Int32
+    id::UInt32
+    duration_1::Int32
+    duration_2::Int32
+    duration_3::Int32
+    duration_4::Int32
+    duration_5::Int32
+    duration_6::Int32
+    duration_7::Int32
+    duration_8::Int32
+    duration_9::Int32
+    duration_10::Int32
+    event_date_1::Int32
+    event_date_2::Int32
+    event_date_3::Int32
+    event_date_4::Int32
+    event_date_5::Int32
+    event_date_6::Int32
+    event_date_7::Int32
+    event_date_8::Int32
+    event_date_9::Int32
+    event_date_10::Int32
+    event_date_11::Int32
+    event_date_12::Int32
+    event_date_13::Int32
+    event_date_14::Int32
+    event_date_15::Int32
+    event_date_16::Int32
+    event_date_17::Int32
+    event_date_18::Int32
+    event_date_19::Int32
+    event_date_20::Int32
+    event_date_21::Int32
+    event_date_22::Int32
+    event_date_23::Int32
+    event_date_24::Int32
+    event_date_25::Int32
+    event_date_26::Int32
+    region::Int32
+    looping::Int32
+    calendar_flags_1::Int32
+    calendar_flags_2::Int32
+    calendar_flags_3::Int32
+    calendar_flags_4::Int32
+    calendar_flags_5::Int32
+    calendar_flags_6::Int32
+    calendar_flags_7::Int32
+    calendar_flags_8::Int32
+    calendar_flags_9::Int32
+    calendar_flags_10::Int32
+    event_calendar_name::UInt32
+    event_calendar_description::UInt32
+    event_calendar_overlay::String
+    priority::Int32
+    event_scheduler_type::Int32
+    event_flags::Int32
 end
 
 struct ItemData <: DBCDataType
-    ID::Int32
-    ClassID::Int32
-    SubclassID::Int32
-    Sound_Override_Subclassid::Int32
-    Material::Int32
-    DisplayInfoID::Int32
-    InventoryType::Int32
-    SheatheType::Int32
+    item_id::UInt32
+    item_class::UInt32
+    item_sub_class::UInt32
+    soundoverridesubclassid::Int32
+    material_id::Int32
+    item_display_info::UInt32
+    inventory_slot_id::UInt32
+    sheath_id::UInt32
 end
 
-struct ItembagfamilyData <: DBCDataType
-    ID::Int32
-    Name::LString
+struct ItemClassData <: DBCDataType
+    id::UInt32
+    secondary_id::UInt32
+    is_weapon::UInt32
+    name_1::String
+    name_2::String
+    name_3::String
+    name_4::String
+    name_5::String
+    name_6::String
+    name_7::String
+    name_8::String
+    name_9::String
+    name_10::String
+    name_11::String
+    name_12::String
+    name_13::String
+    name_14::String
+    name_15::String
+    name_16::String
+    flags::UInt32
 end
 
-struct ItemdisplayinfoData <: DBCDataType
-    ID::Int32
-    ModelName_1::String
-    ModelName_2::String
-    ModelTexture_1::String
-    ModelTexture_2::String
-    InventoryIcon_1::String
-    InventoryIcon_2::String
-    GeosetGroup_1::Int32
-    GeosetGroup_2::Int32
-    GeosetGroup_3::Int32
-    Flags::Int32
-    SpellVisualID::Int32
-    GroupSoundIndex::Int32
-    HelmetGeosetVis_1::Int32
-    HelmetGeosetVis_2::Int32
-    Texture_1::String
-    Texture_2::String
-    Texture_3::String
-    Texture_4::String
-    Texture_5::String
-    Texture_6::String
-    Texture_7::String
-    Texture_8::String
-    ItemVisual::Int32
-    ParticleColorID::Int32
+struct ItemDisplayInfoData <: DBCDataType
+    id::UInt32
+    left_model::String
+    right_model::String
+    left_model_texture::String
+    right_model_texture::String
+    inventory_icon_1::String
+    inventory_icon_2::String
+    geoset_group_1::UInt32
+    geoset_group_2::UInt32
+    geoset_group_3::UInt32
+    flags::UInt32
+    spell_visual_id::UInt32
+    group_sound_index::UInt32
+    helmet_geoset_visual_1::UInt32
+    helmet_geoset_visual_2::UInt32
+    upper_arm_texture::String
+    lower_arm_texture::String
+    hands_texture::String
+    upper_torso_texture::String
+    lower_torso_texture::String
+    upper_leg_texture::String
+    lower_leg_texture::String
+    foot_texture::String
+    item_visual::UInt32
+    particle_color_id::UInt32
 end
 
-struct ItemextendedcostData <: DBCDataType
-    ID::Int32
-    HonorPoints::Int32
-    ArenaPoints::Int32
-    ArenaBracket::Int32
-    ItemID_1::Int32
-    ItemID_2::Int32
-    ItemID_3::Int32
-    ItemID_4::Int32
-    ItemID_5::Int32
-    ItemCount_1::Int32
-    ItemCount_2::Int32
-    ItemCount_3::Int32
-    ItemCount_4::Int32
-    ItemCount_5::Int32
-    RequiredArenaRating::Int32
-    ItemPurchaseGroup::Int32
+struct ItemExtendedCostData <: DBCDataType
+    id::UInt32
+    cost_honour::UInt32
+    cost_arena::UInt32
+    unknown_1::UInt32
+    required_item_1::UInt32
+    required_item_2::UInt32
+    required_item_3::UInt32
+    required_item_4::UInt32
+    required_item_5::UInt32
+    required_item_count_1::UInt32
+    required_item_count_2::UInt32
+    required_item_count_3::UInt32
+    required_item_count_4::UInt32
+    required_item_count_5::UInt32
+    personal_rating::UInt32
+    purchase_group::UInt32
 end
 
-struct ItemlimitcategoryData <: DBCDataType
-    ID::Int32
-    Name::LString
-    Quantity::Int32
-    Flags::Int32
+struct ItemSetData <: DBCDataType
+    id::UInt32
+    name_1::String
+    name_2::String
+    name_3::String
+    name_4::String
+    name_5::String
+    name_6::String
+    name_7::String
+    name_8::String
+    name_9::String
+    name_10::String
+    name_11::String
+    name_12::String
+    name_13::String
+    name_14::String
+    name_15::String
+    name_16::String
+    flags::UInt32
+    item_id_1::UInt32
+    item_id_2::UInt32
+    item_id_3::UInt32
+    item_id_4::UInt32
+    item_id_5::UInt32
+    item_id_6::UInt32
+    item_id_7::UInt32
+    item_id_8::UInt32
+    item_id_9::UInt32
+    item_id_10::UInt32
+    item_id_11::UInt32
+    item_id_12::UInt32
+    item_id_13::UInt32
+    item_id_14::UInt32
+    item_id_15::UInt32
+    item_id_16::UInt32
+    item_id_17::UInt32
+    set_bonus_1::UInt32
+    set_bonus_2::UInt32
+    set_bonus_3::UInt32
+    set_bonus_4::UInt32
+    set_bonus_5::UInt32
+    set_bonus_6::UInt32
+    set_bonus_7::UInt32
+    set_bonus_8::UInt32
+    set_bonus_threshold_1::UInt32
+    set_bonus_threshold_2::UInt32
+    set_bonus_threshold_3::UInt32
+    set_bonus_threshold_4::UInt32
+    set_bonus_threshold_5::UInt32
+    set_bonus_threshold_6::UInt32
+    set_bonus_threshold_7::UInt32
+    set_bonus_threshold_8::UInt32
+    required_skill::UInt32
+    required_skill_rank::UInt32
 end
 
-struct ItemrandompropertiesData <: DBCDataType
-    ID::Int32
-    Name::String
-    Enchantment_1::Int32
-    Enchantment_2::Int32
-    Enchantment_3::Int32
-    Enchantment_4::Int32
-    Enchantment_5::Int32
-    _Name::LString
+struct ItemSubClassData <: DBCDataType
+    class::UInt32
+    sub_class::UInt32
+    prerequisite_proficiency::UInt32
+    postrequisite_proficiency::UInt32
+    flags::UInt32
+    display_flags::UInt32
+    weapon_parry_seq::UInt32
+    weapon_ready_seq::UInt32
+    weapon_attack_seq::UInt32
+    weapon_swing_size::UInt32
+    display_name::LString
+    verbose_name::LString
 end
 
-struct ItemrandomsuffixData <: DBCDataType
-    ID::Int32
-    Name::LString
-    InternalName::String
-    Enchantment_1::Int32
-    Enchantment_2::Int32
-    Enchantment_3::Int32
-    Enchantment_4::Int32
-    Enchantment_5::Int32
-    AllocationPct_1::Int32
-    AllocationPct_2::Int32
-    AllocationPct_3::Int32
-    AllocationPct_4::Int32
-    AllocationPct_5::Int32
+struct LFGDungeonGroupData <: DBCDataType
+    id::UInt32
+    name::LString
+    order::UInt32
+    parent::UInt32
+    type::UInt32
 end
 
-struct ItemsetData <: DBCDataType
-    ID::Int32
-    Name::LString
-    ItemID_1::Int32
-    ItemID_2::Int32
-    ItemID_3::Int32
-    ItemID_4::Int32
-    ItemID_5::Int32
-    ItemID_6::Int32
-    ItemID_7::Int32
-    ItemID_8::Int32
-    ItemID_9::Int32
-    ItemID_10::Int32
-    ItemID_11::Int32
-    ItemID_12::Int32
-    ItemID_13::Int32
-    ItemID_14::Int32
-    ItemID_15::Int32
-    ItemID_16::Int32
-    ItemID_17::Int32
-    SetSpellID_1::Int32
-    SetSpellID_2::Int32
-    SetSpellID_3::Int32
-    SetSpellID_4::Int32
-    SetSpellID_5::Int32
-    SetSpellID_6::Int32
-    SetSpellID_7::Int32
-    SetSpellID_8::Int32
-    SetThreshold_1::Int32
-    SetThreshold_2::Int32
-    SetThreshold_3::Int32
-    SetThreshold_4::Int32
-    SetThreshold_5::Int32
-    SetThreshold_6::Int32
-    SetThreshold_7::Int32
-    SetThreshold_8::Int32
-    RequiredSkill::Int32
-    RequiredSkillRank::Int32
-end
-
-struct LfgdungeonsData <: DBCDataType
-    ID::Int32
-    Name::LString
-    MinLevel::Int32
-    MaxLevel::Int32
-    Target_Level::Int32
-    Target_Level_Min::Int32
-    Target_Level_Max::Int32
-    MapID::Int32
-    Difficulty::Int32
-    Flags::Int32
-    TypeID::Int32
-    Faction::Int32
-    TextureFilename::String
-    ExpansionLevel::Int32
-    Order_Index::Int32
-    Group_Id::Int32
-    Description::LString
+struct LFGDungeonsData <: DBCDataType
+    id::UInt32
+    name::LString
+    min_level::UInt32
+    max_level::UInt32
+    target_level::UInt32
+    target_level_min::UInt32
+    target_level_max::UInt32
+    map_id::UInt32
+    difficulty::UInt32
+    flags::UInt32
+    type_id::UInt32
+    faction::Int32
+    texture::String
+    expansion::UInt32
+    order_id::UInt32
+    group_id::UInt32
+    tooltip::LString
 end
 
 struct LightData <: DBCDataType
-    ID::Int32
-    ContinentID::Int32
-    X::Float32
-    Y::Float32
-    Z::Float32
-    FalloffStart::Float32
-    FalloffEnd::Float32
-    LightParamsID_1::Int32
-    LightParamsID_2::Int32
-    LightParamsID_3::Int32
-    LightParamsID_4::Int32
-    LightParamsID_5::Int32
-    LightParamsID_6::Int32
-    LightParamsID_7::Int32
-    LightParamsID_8::Int32
+    id::UInt32
+    map_id::Int32
+    pos_x::Float32
+    pos_y::Float32
+    pos_z::Float32
+    falloff_start::Float32
+    falloff_end::Float32
+    params_clear::Int32
+    params_clear_underwater::Int32
+    params_storm::Int32
+    params_storm_underwater::Int32
+    params_death::Int32
+    params_unk_1::Int32
+    params_unk_2::Int32
+    params_unk_3::Int32
 end
 
-struct LiquidtypeData <: DBCDataType
-    ID::Int32
-    Name::String
-    Flags::Int32
-    Type::Int32
-    SoundID::Int32
-    SpellID::Int32
-    MaxDarkenDepth::Float32
-    FogDarkenintensity::Float32
-    AmbDarkenintensity::Float32
-    DirDarkenintensity::Float32
-    LightID::Int32
-    ParticleScale::Float32
-    ParticleMovement::Int32
-    ParticleTexSlots::Int32
-    MaterialID::Int32
-    Texture_1::String
-    Texture_2::String
-    Texture_3::String
-    Texture_4::String
-    Texture_5::String
-    Texture_6::String
-    Color_1::Int32
-    Color_2::Int32
-    Float_1::Float32
-    Float_2::Float32
-    Float_3::Float32
-    Float_4::Float32
-    Float_5::Float32
-    Float_6::Float32
-    Float_7::Float32
-    Float_8::Float32
-    Float_9::Float32
-    Float_10::Float32
-    Float_11::Float32
-    Float_12::Float32
-    Float_13::Float32
-    Float_14::Float32
-    Float_15::Float32
-    Float_16::Float32
-    Float_17::Float32
-    Float_18::Float32
-    Int_1::Int32
-    Int_2::Int32
-    Int_3::Int32
-    Int_4::Int32
+struct LightFloatBandData <: DBCDataType
+    id::UInt32
+    num_entries::Int32
+    time_value_1::UInt32
+    time_value_2::UInt32
+    time_value_3::UInt32
+    time_value_4::UInt32
+    time_value_5::UInt32
+    time_value_6::UInt32
+    time_value_7::UInt32
+    time_value_8::UInt32
+    time_value_9::UInt32
+    time_value_10::UInt32
+    time_value_11::UInt32
+    time_value_12::UInt32
+    time_value_13::UInt32
+    time_value_14::UInt32
+    time_value_15::UInt32
+    time_value_16::UInt32
+    float_value_1::Float32
+    float_value_2::Float32
+    float_value_3::Float32
+    float_value_4::Float32
+    float_value_5::Float32
+    float_value_6::Float32
+    float_value_7::Float32
+    float_value_8::Float32
+    float_value_9::Float32
+    float_value_10::Float32
+    float_value_11::Float32
+    float_value_12::Float32
+    float_value_13::Float32
+    float_value_14::Float32
+    float_value_15::Float32
+    float_value_16::Float32
+end
+
+struct LightIntBandData <: DBCDataType
+    id::UInt32
+    num_entries::Int32
+    time_value_1::UInt32
+    time_value_2::UInt32
+    time_value_3::UInt32
+    time_value_4::UInt32
+    time_value_5::UInt32
+    time_value_6::UInt32
+    time_value_7::UInt32
+    time_value_8::UInt32
+    time_value_9::UInt32
+    time_value_10::UInt32
+    time_value_11::UInt32
+    time_value_12::UInt32
+    time_value_13::UInt32
+    time_value_14::UInt32
+    time_value_15::UInt32
+    time_value_16::UInt32
+    colour_value_1::UInt32
+    colour_value_2::UInt32
+    colour_value_3::UInt32
+    colour_value_4::UInt32
+    colour_value_5::UInt32
+    colour_value_6::UInt32
+    colour_value_7::UInt32
+    colour_value_8::UInt32
+    colour_value_9::UInt32
+    colour_value_10::UInt32
+    colour_value_11::UInt32
+    colour_value_12::UInt32
+    colour_value_13::UInt32
+    colour_value_14::UInt32
+    colour_value_15::UInt32
+    colour_value_16::UInt32
+end
+
+struct LightParamsData <: DBCDataType
+    id::UInt32
+    higlight_sky::UInt32
+    skybox_id::UInt32
+    cloud_type::Int32
+    glow::Float32
+    water_shallow_alpha::Float32
+    water_deep_alpha::Float32
+    ocean_shallow_alpha::Float32
+    ocean_deep_alpha::Float32
+end
+
+struct LightSkyboxData <: DBCDataType
+    id::UInt32
+    name::String
+    flags::UInt32
+end
+
+struct LoadingScreensData <: DBCDataType
+    id::UInt32
+    name::String
+    file_name::String
+    has_wide_screen::UInt32
 end
 
 struct LockData <: DBCDataType
-    ID::Int32
-    Type_1::Int32
-    Type_2::Int32
-    Type_3::Int32
-    Type_4::Int32
-    Type_5::Int32
-    Type_6::Int32
-    Type_7::Int32
-    Type_8::Int32
-    Index_1::Int32
-    Index_2::Int32
-    Index_3::Int32
-    Index_4::Int32
-    Index_5::Int32
-    Index_6::Int32
-    Index_7::Int32
-    Index_8::Int32
-    Skill_1::Int32
-    Skill_2::Int32
-    Skill_3::Int32
-    Skill_4::Int32
-    Skill_5::Int32
-    Skill_6::Int32
-    Skill_7::Int32
-    Skill_8::Int32
-    Action_1::Int32
-    Action_2::Int32
-    Action_3::Int32
-    Action_4::Int32
-    Action_5::Int32
-    Action_6::Int32
-    Action_7::Int32
-    Action_8::Int32
+    id::UInt32
+    type_1::UInt32
+    type_2::UInt32
+    type_3::UInt32
+    type_4::UInt32
+    type_5::UInt32
+    type_6::UInt32
+    type_7::UInt32
+    type_8::UInt32
+    index_1::UInt32
+    index_2::UInt32
+    index_3::UInt32
+    index_4::UInt32
+    index_5::UInt32
+    index_6::UInt32
+    index_7::UInt32
+    index_8::UInt32
+    skill_1::UInt32
+    skill_2::UInt32
+    skill_3::UInt32
+    skill_4::UInt32
+    skill_5::UInt32
+    skill_6::UInt32
+    skill_7::UInt32
+    skill_8::UInt32
+    action_1::UInt32
+    action_2::UInt32
+    action_3::UInt32
+    action_4::UInt32
+    action_5::UInt32
+    action_6::UInt32
+    action_7::UInt32
+    action_8::UInt32
 end
 
-struct MailtemplateData <: DBCDataType
-    ID::Int32
-    Subject::LString
-    Body::LString
+struct LockTypeData <: DBCDataType
+    id::UInt32
+    name::LString
+    resource_name::LString
+    verb::LString
+    cursor_name::String
 end
 
 struct MapData <: DBCDataType
-    ID::Int32
-    Directory::String
-    InstanceType::Int32
-    Flags::Int32
-    PVP::Int32
-    MapName::LString
-    AreaTableID::Int32
-    MapDescription0::LString
-    MapDescription1::LString
-    LoadingScreenID::Int32
-    MinimapIconScale::Float32
-    CorpseMapID::Int32
-    CorpseX::Float32
-    CorpseY::Float32
-    TimeOfDayOverride::Int32
-    ExpansionID::Int32
-    RaidOffset::Int32
-    MaxPlayers::Int32
+    id::UInt32
+    directory_name::String
+    instance_type::UInt32
+    flags::UInt32
+    pvp::UInt32
+    map_name_langen_us::LString
+    area_table_id::UInt32
+    map_description_0_langen_us::LString
+    map_description_1_langen_us::LString
+    loading_screen_id::UInt32
+    minimap_icon_scale::Float32
+    corpse_map_id::Int32
+    corpse_x::Float32
+    corpse_y::Float32
+    time_of_day_override::Int32
+    expansion_id::UInt32
+    raid_offset::UInt32
+    max_players::UInt32
 end
 
-struct MapdifficultyData <: DBCDataType
-    ID::Int32
-    MapID::Int32
-    Difficulty::Int32
-    Message::LString
-    RaidDuration::Int32
-    MaxPlayers::Int32
-    Difficultystring::String
+struct MapDifficultyData <: DBCDataType
+    id::UInt32
+    map::UInt32
+    difficulty::Int32
+    message::LString
+    raid_duration_seconds::UInt32
+    max_players::UInt32
+    difficulty_string::String
 end
 
 struct MovieData <: DBCDataType
-    ID::Int32
-    Filename::String
-    Volume::Int32
+    id::UInt32
+    movie_path::String
+    volume::Int32
 end
 
-struct OverridespelldataData <: DBCDataType
-    ID::Int32
-    Spells_1::Int32
-    Spells_2::Int32
-    Spells_3::Int32
-    Spells_4::Int32
-    Spells_5::Int32
-    Spells_6::Int32
-    Spells_7::Int32
-    Spells_8::Int32
-    Spells_9::Int32
-    Spells_10::Int32
-    Flags::Int32
+struct MovieFileDataData <: DBCDataType
+    id::UInt32
+    resolution::UInt32
 end
 
-struct PowerdisplayData <: DBCDataType
-    ID::Int32
-    ActualType::Int32
-    GlobalstringBaseTag::String
-    Red::UInt32
-    Green::UInt32
-    Blue::UInt32
+struct MovieVariationData <: DBCDataType
+    id::UInt32
+    movie_id::UInt32
+    file_data_id::UInt32
 end
 
-struct PvpdifficultyData <: DBCDataType
-    ID::Int32
-    MapID::Int32
-    RangeIndex::Int32
-    MinLevel::Int32
-    MaxLevel::Int32
-    Difficulty::Int32
+struct OverrideSpellDataData <: DBCDataType
+    id::UInt32
+    spellid_1::UInt32
+    spellid_2::UInt32
+    spellid_3::UInt32
+    spellid_4::UInt32
+    spellid_5::UInt32
+    spellid_6::UInt32
+    spellid_7::UInt32
+    spellid_8::UInt32
+    spellid_9::UInt32
+    spellid_10::UInt32
+    flags::UInt32
 end
 
-struct QuestfactionrewardData <: DBCDataType
-    ID::Int32
-    Difficulty_1::Int32
-    Difficulty_2::Int32
-    Difficulty_3::Int32
-    Difficulty_4::Int32
-    Difficulty_5::Int32
-    Difficulty_6::Int32
-    Difficulty_7::Int32
-    Difficulty_8::Int32
-    Difficulty_9::Int32
-    Difficulty_10::Int32
+struct QuestSortData <: DBCDataType
+    id::UInt32
+    name::LString
 end
 
-struct QuestsortData <: DBCDataType
-    ID::Int32
-    SortName::LString
+struct ScreenEffectData <: DBCDataType
+    id::UInt32
+    name::String
+    type::UInt32
+    colour::UInt32
+    screen_edge_size::UInt32
+    black_white_value::UInt32
+    unknown::UInt32
+    light_id::Int32
+    sound_ambience_id::UInt32
+    sound_music_id::UInt32
 end
 
-struct QuestxpData <: DBCDataType
-    ID::Int32
-    Difficulty_1::Int32
-    Difficulty_2::Int32
-    Difficulty_3::Int32
-    Difficulty_4::Int32
-    Difficulty_5::Int32
-    Difficulty_6::Int32
-    Difficulty_7::Int32
-    Difficulty_8::Int32
-    Difficulty_9::Int32
-    Difficulty_10::Int32
+struct SkillLineData <: DBCDataType
+    id::UInt32
+    category::UInt32
+    cost_id::UInt32
+    name::LString
+    description::LString
+    spell_icon::UInt32
+    tooltip::LString
+    can_link::UInt32
 end
 
-struct RandproppointsData <: DBCDataType
-    ID::Int32
-    Epic_1::Int32
-    Epic_2::Int32
-    Epic_3::Int32
-    Epic_4::Int32
-    Epic_5::Int32
-    Superior_1::Int32
-    Superior_2::Int32
-    Superior_3::Int32
-    Superior_4::Int32
-    Superior_5::Int32
-    Good_1::Int32
-    Good_2::Int32
-    Good_3::Int32
-    Good_4::Int32
-    Good_5::Int32
+struct SkillLineAbilityData <: DBCDataType
+    id::UInt32
+    skill_id::UInt32
+    spell_id::UInt32
+    chr_races::UInt32
+    chr_classes::UInt32
+    unk_1::UInt32
+    unk_2::UInt32
+    required_skill_value::UInt32
+    spell_id_parent::UInt32
+    acquire_method::UInt32
+    skill_grey_level::UInt32
+    skill_green_level::UInt32
+    character_points_1::UInt32
+    character_points_2::UInt32
 end
 
-struct ScalingstatdistributionData <: DBCDataType
-    ID::Int32
-    StatID_1::Int32
-    StatID_2::Int32
-    StatID_3::Int32
-    StatID_4::Int32
-    StatID_5::Int32
-    StatID_6::Int32
-    StatID_7::Int32
-    StatID_8::Int32
-    StatID_9::Int32
-    StatID_10::Int32
-    Bonus_1::Int32
-    Bonus_2::Int32
-    Bonus_3::Int32
-    Bonus_4::Int32
-    Bonus_5::Int32
-    Bonus_6::Int32
-    Bonus_7::Int32
-    Bonus_8::Int32
-    Bonus_9::Int32
-    Bonus_10::Int32
-    Maxlevel::Int32
+struct SkillRaceClassInfoData <: DBCDataType
+    id::UInt32
+    skill_line_dbc_record::UInt32
+    race_mask::UInt32
+    class_mask::UInt32
+    flags::UInt32
+    min_level::UInt32
+    skill_tier_id::UInt32
+    skill_cost_index::UInt32
 end
 
-struct ScalingstatvaluesData <: DBCDataType
-    ID::Int32
-    Charlevel::Int32
-    ShoulderBudget::Int32
-    TrinketBudget::Int32
-    WeaponBudget1H::Int32
-    RangedBudget::Int32
-    ClothShoulderArmor::Int32
-    LeatherShoulderArmor::Int32
-    MailShoulderArmor::Int32
-    PlateShoulderArmor::Int32
-    WeaponDPS1H::Int32
-    WeaponDPS2H::Int32
-    SpellcasterDPS1H::Int32
-    SpellcasterDPS2H::Int32
-    RangedDPS::Int32
-    WandDPS::Int32
-    SpellPower::Int32
-    PrimaryBudget::Int32
-    TertiaryBudget::Int32
-    ClothCloakArmor::Int32
-    ClothChestArmor::Int32
-    LeatherChestArmor::Int32
-    MailChestArmor::Int32
-    PlateChestArmor::Int32
-end
-
-struct SkilllineData <: DBCDataType
-    ID::Int32
-    CategoryID::Int32
-    SkillCostsID::Int32
-    DisplayName::LString
-    Description::LString
-    SpellIconID::Int32
-    AlternateVerb::LString
-    CanLink::Int32
-end
-
-struct SkilllineabilityData <: DBCDataType
-    ID::Int32
-    SkillLine::Int32
-    Spell::Int32
-    RaceMask::Int32
-    ClassMask::Int32
-    MinSkillLineRank::Int32
-    SupercededBySpell::Int32
-    AcquireMethod::Int32
-    TrivialSkillLineRankHigh::Int32
-    TrivialSkillLineRankLow::Int32
-    CharacterPoints_1::Int32
-    CharacterPoints_2::Int32
-    TradeSkillCategoryID::Int32
-end
-
-struct SkillraceclassinfoData <: DBCDataType
-    ID::Int32
-    SkillID::Int32
-    RaceMask::Int32
-    ClassMask::Int32
-    Flags::Int32
-    MinLevel::Int32
-    SkillTierID::Int32
-    SkillCostIndex::Int32
-end
-
-struct SkilltiersData <: DBCDataType
-    ID::Int32
-    Cost_1::Int32
-    Cost_2::Int32
-    Cost_3::Int32
-    Cost_4::Int32
-    Cost_5::Int32
-    Cost_6::Int32
-    Cost_7::Int32
-    Cost_8::Int32
-    Cost_9::Int32
-    Cost_10::Int32
-    Cost_11::Int32
-    Cost_12::Int32
-    Cost_13::Int32
-    Cost_14::Int32
-    Cost_15::Int32
-    Cost_16::Int32
-    Value_1::Int32
-    Value_2::Int32
-    Value_3::Int32
-    Value_4::Int32
-    Value_5::Int32
-    Value_6::Int32
-    Value_7::Int32
-    Value_8::Int32
-    Value_9::Int32
-    Value_10::Int32
-    Value_11::Int32
-    Value_12::Int32
-    Value_13::Int32
-    Value_14::Int32
-    Value_15::Int32
-    Value_16::Int32
-end
-
-struct SoundentriesData <: DBCDataType
-    ID::Int32
-    SoundType::Int32
-    Name::String
-    File_1::String
-    File_2::String
-    File_3::String
-    File_4::String
-    File_5::String
-    File_6::String
-    File_7::String
-    File_8::String
-    File_9::String
-    File_10::String
-    Freq_1::Int32
-    Freq_2::Int32
-    Freq_3::Int32
-    Freq_4::Int32
-    Freq_5::Int32
-    Freq_6::Int32
-    Freq_7::Int32
-    Freq_8::Int32
-    Freq_9::Int32
-    Freq_10::Int32
-    DirectoryBase::String
-    Volumefloat::Float32
-    Flags::Int32
-    MinDistance::Float32
-    DistanceCutoff::Float32
-    EAXDef::Int32
-    SoundEntriesAdvancedID::Int32
+struct SoundEntriesData <: DBCDataType
+    id::UInt32
+    sound_type::UInt32
+    sound_name::String
+    name_1::String
+    name_2::String
+    name_3::String
+    name_4::String
+    name_5::String
+    name_6::String
+    name_7::String
+    name_8::String
+    name_9::String
+    name_10::String
+    freq_1::UInt32
+    freq_2::UInt32
+    freq_3::UInt32
+    freq_4::UInt32
+    freq_5::UInt32
+    freq_6::UInt32
+    freq_7::UInt32
+    freq_8::UInt32
+    freq_9::UInt32
+    freq_10::UInt32
+    file_path::String
+    volume::Float32
+    flags::UInt32
+    min_distance::Float32
+    max_distance::Float32
+    eax_def::UInt32
+    sound_entries_advanced_id::UInt32
 end
 
 struct SpellData <: DBCDataType
-    ID::Int32
-    Category::UInt32
-    DispelType::UInt32
-    Mechanic::UInt32
-    Attributes::UInt32
-    AttributesEx::UInt32
-    AttributesEx2::UInt32
-    AttributesEx3::UInt32
-    AttributesEx4::UInt32
-    AttributesEx5::UInt32
-    AttributesEx6::UInt32
-    AttributesEx7::UInt32
-    ShapeshiftMask::UInt32
-    unk_320_2::Int32
-    ShapeshiftExclude::UInt32
-    unk_320_3::Int32
-    Targets::UInt32
-    TargetCreatureType::UInt32
-    RequiresSpellFocus::UInt32
-    FacingCasterFlags::UInt32
-    CasterAuraState::UInt32
-    TargetAuraState::UInt32
-    ExcludeCasterAuraState::UInt32
-    ExcludeTargetAuraState::UInt32
-    CasterAuraSpell::UInt32
-    TargetAuraSpell::UInt32
-    ExcludeCasterAuraSpell::UInt32
-    ExcludeTargetAuraSpell::UInt32
-    CastingTimeIndex::UInt32
-    RecoveryTime::UInt32
-    CategoryRecoveryTime::UInt32
-    InterruptFlags::UInt32
-    AuraInterruptFlags::UInt32
-    ChannelInterruptFlags::UInt32
-    ProcTypeMask::UInt32
-    ProcChance::UInt32
-    ProcCharges::UInt32
-    MaxLevel::UInt32
-    BaseLevel::UInt32
-    SpellLevel::UInt32
-    DurationIndex::UInt32
-    PowerType::Int32
-    ManaCost::UInt32
-    ManaCostPerLevel::UInt32
-    ManaPerSecond::UInt32
-    ManaPerSecondPerLevel::UInt32
-    RangeIndex::UInt32
-    Speed::Float32
-    ModalNextSpell::UInt32
-    CumulativeAura::UInt32
-    Totem_1::UInt32
-    Totem_2::UInt32
-    Reagent_1::Int32
-    Reagent_2::Int32
-    Reagent_3::Int32
-    Reagent_4::Int32
-    Reagent_5::Int32
-    Reagent_6::Int32
-    Reagent_7::Int32
-    Reagent_8::Int32
-    ReagentCount_1::Int32
-    ReagentCount_2::Int32
-    ReagentCount_3::Int32
-    ReagentCount_4::Int32
-    ReagentCount_5::Int32
-    ReagentCount_6::Int32
-    ReagentCount_7::Int32
-    ReagentCount_8::Int32
-    EquippedItemClass::Int32
-    EquippedItemSubclass::Int32
-    EquippedItemInvTypes::Int32
-    Effect_1::UInt32
-    Effect_2::UInt32
-    Effect_3::UInt32
-    EffectDieSides_1::Int32
-    EffectDieSides_2::Int32
-    EffectDieSides_3::Int32
-    EffectRealPointsPerLevel_1::Float32
-    EffectRealPointsPerLevel_2::Float32
-    EffectRealPointsPerLevel_3::Float32
-    EffectBasePoints_1::Int32
-    EffectBasePoints_2::Int32
-    EffectBasePoints_3::Int32
-    EffectMechanic_1::UInt32
-    EffectMechanic_2::UInt32
-    EffectMechanic_3::UInt32
-    ImplicitTargetA_1::UInt32
-    ImplicitTargetA_2::UInt32
-    ImplicitTargetA_3::UInt32
-    ImplicitTargetB_1::UInt32
-    ImplicitTargetB_2::UInt32
-    ImplicitTargetB_3::UInt32
-    EffectRadiusIndex_1::UInt32
-    EffectRadiusIndex_2::UInt32
-    EffectRadiusIndex_3::UInt32
-    EffectAura_1::UInt32
-    EffectAura_2::UInt32
-    EffectAura_3::UInt32
-    EffectAuraPeriod_1::UInt32
-    EffectAuraPeriod_2::UInt32
-    EffectAuraPeriod_3::UInt32
-    EffectMultipleValue_1::Float32
-    EffectMultipleValue_2::Float32
-    EffectMultipleValue_3::Float32
-    EffectChainTargets_1::UInt32
-    EffectChainTargets_2::UInt32
-    EffectChainTargets_3::UInt32
-    EffectItemType_1::UInt32
-    EffectItemType_2::UInt32
-    EffectItemType_3::UInt32
-    EffectMiscValue_1::Int32
-    EffectMiscValue_2::Int32
-    EffectMiscValue_3::Int32
-    EffectMiscValueB_1::Int32
-    EffectMiscValueB_2::Int32
-    EffectMiscValueB_3::Int32
-    EffectTriggerSpell_1::UInt32
-    EffectTriggerSpell_2::UInt32
-    EffectTriggerSpell_3::UInt32
-    EffectPointsPerCombo_1::Float32
-    EffectPointsPerCombo_2::Float32
-    EffectPointsPerCombo_3::Float32
-    EffectSpellClassMaskA_1::UInt32
-    EffectSpellClassMaskA_2::UInt32
-    EffectSpellClassMaskA_3::UInt32
-    EffectSpellClassMaskB_1::UInt32
-    EffectSpellClassMaskB_2::UInt32
-    EffectSpellClassMaskB_3::UInt32
-    EffectSpellClassMaskC_1::UInt32
-    EffectSpellClassMaskC_2::UInt32
-    EffectSpellClassMaskC_3::UInt32
-    SpellVisualID_1::UInt32
-    SpellVisualID_2::UInt32
-    SpellIconID::UInt32
-    ActiveIconID::UInt32
-    SpellPriority::UInt32
-    Name::LString
-    NameSubtext::LString
-    Description::LString
-    AuraDescription::LString
-    ManaCostPct::UInt32
-    StartRecoveryCategory::UInt32
-    StartRecoveryTime::UInt32
-    MaxTargetLevel::UInt32
-    SpellClassSet::UInt32
-    SpellClassMask_1::UInt32
-    SpellClassMask_2::UInt32
-    SpellClassMask_3::UInt32
-    MaxTargets::UInt32
-    DefenseType::UInt32
-    PreventionType::UInt32
-    StanceBarOrder::UInt32
-    EffectChainAmplitude_1::Float32
-    EffectChainAmplitude_2::Float32
-    EffectChainAmplitude_3::Float32
-    MinFactionID::UInt32
-    MinReputation::UInt32
-    RequiredAuraVision::UInt32
-    RequiredTotemCategoryID_1::UInt32
-    RequiredTotemCategoryID_2::UInt32
-    RequiredAreasID::Int32
-    SchoolMask::UInt32
-    RuneCostID::UInt32
-    SpellMissileID::UInt32
-    PowerDisplayID::Int32
-    EffectBonusMultiplier_1::Float32
-    EffectBonusMultiplier_2::Float32
-    EffectBonusMultiplier_3::Float32
-    SpellDescriptionVariableID::UInt32
-    SpellDifficultyID::UInt32
+    id::UInt32
+    category::UInt32
+    dispel::UInt32
+    mechanic::UInt32
+    attributes::UInt32
+    attributes_ex::UInt32
+    attributes_ex_2::UInt32
+    attributes_ex_3::UInt32
+    attributes_ex_4::UInt32
+    attributes_ex_5::UInt32
+    attributes_ex_6::UInt32
+    attributes_ex_7::UInt32
+    stances::UInt32
+    unknown_1::UInt32
+    stances_not::UInt32
+    unknown_2::UInt32
+    targets::UInt32
+    target_creature_type::UInt32
+    requires_spell_focus::UInt32
+    facing_caster_flags::UInt32
+    caster_aura_state::UInt32
+    target_aura_state::UInt32
+    caster_aura_state_not::UInt32
+    target_aura_state_not::UInt32
+    caster_aura_spell::UInt32
+    target_aura_spell::UInt32
+    exclude_caster_aura_spell::UInt32
+    exclude_target_aura_spell::UInt32
+    casting_time_index::UInt32
+    recovery_time::UInt32
+    category_recovery_time::UInt32
+    interrupt_flags::UInt32
+    aura_interrupt_flags::UInt32
+    channel_interrupt_flags::UInt32
+    proc_flags::UInt32
+    proc_chance::UInt32
+    proc_charges::UInt32
+    maximum_level::UInt32
+    base_level::UInt32
+    spell_level::UInt32
+    duration_index::UInt32
+    power_type::UInt32
+    mana_cost::UInt32
+    mana_cost_per_level::UInt32
+    mana_per_second::UInt32
+    mana_per_second_per_level::UInt32
+    range_index::UInt32
+    speed::Float32
+    modal_next_spell::UInt32
+    stack_amount::UInt32
+    totem_1::UInt32
+    totem_2::UInt32
+    reagent_1::Int32
+    reagent_2::Int32
+    reagent_3::Int32
+    reagent_4::Int32
+    reagent_5::Int32
+    reagent_6::Int32
+    reagent_7::Int32
+    reagent_8::Int32
+    reagent_count_1::UInt32
+    reagent_count_2::UInt32
+    reagent_count_3::UInt32
+    reagent_count_4::UInt32
+    reagent_count_5::UInt32
+    reagent_count_6::UInt32
+    reagent_count_7::UInt32
+    reagent_count_8::UInt32
+    equipped_item_class::Int32
+    equipped_item_sub_class_mask::Int32
+    equipped_item_inventory_type_mask::Int32
+    effect_1::UInt32
+    effect_2::UInt32
+    effect_3::UInt32
+    effect_die_sides_1::Int32
+    effect_die_sides_2::Int32
+    effect_die_sides_3::Int32
+    effect_real_points_per_level_1::Float32
+    effect_real_points_per_level_2::Float32
+    effect_real_points_per_level_3::Float32
+    effect_base_points_1::Int32
+    effect_base_points_2::Int32
+    effect_base_points_3::Int32
+    effect_mechanic_1::UInt32
+    effect_mechanic_2::UInt32
+    effect_mechanic_3::UInt32
+    effect_implicit_target_a_1::UInt32
+    effect_implicit_target_a_2::UInt32
+    effect_implicit_target_a_3::UInt32
+    effect_implicit_target_b_1::UInt32
+    effect_implicit_target_b_2::UInt32
+    effect_implicit_target_b_3::UInt32
+    effect_radius_index_1::UInt32
+    effect_radius_index_2::UInt32
+    effect_radius_index_3::UInt32
+    effect_apply_aura_name_1::UInt32
+    effect_apply_aura_name_2::UInt32
+    effect_apply_aura_name_3::UInt32
+    effect_amplitude_1::UInt32
+    effect_amplitude_2::UInt32
+    effect_amplitude_3::UInt32
+    effect_multiple_value_1::Float32
+    effect_multiple_value_2::Float32
+    effect_multiple_value_3::Float32
+    effect_chain_target_1::UInt32
+    effect_chain_target_2::UInt32
+    effect_chain_target_3::UInt32
+    effect_item_type_1::UInt32
+    effect_item_type_2::UInt32
+    effect_item_type_3::UInt32
+    effect_misc_value_1::Int32
+    effect_misc_value_2::Int32
+    effect_misc_value_3::Int32
+    effect_misc_value_b_1::Int32
+    effect_misc_value_b_2::Int32
+    effect_misc_value_b_3::Int32
+    effect_trigger_spell_1::UInt32
+    effect_trigger_spell_2::UInt32
+    effect_trigger_spell_3::UInt32
+    effect_points_per_combo_point_1::Float32
+    effect_points_per_combo_point_2::Float32
+    effect_points_per_combo_point_3::Float32
+    effect_spell_class_mask_a_1::UInt32
+    effect_spell_class_mask_a_2::UInt32
+    effect_spell_class_mask_a_3::UInt32
+    effect_spell_class_mask_b_1::UInt32
+    effect_spell_class_mask_b_2::UInt32
+    effect_spell_class_mask_b_3::UInt32
+    effect_spell_class_mask_c_1::UInt32
+    effect_spell_class_mask_c_2::UInt32
+    effect_spell_class_mask_c_3::UInt32
+    spell_visual_1::UInt32
+    spell_visual_2::UInt32
+    spell_icon_id::UInt32
+    active_icon_id::UInt32
+    spell_priority::UInt32
+    spell_name_0::String
+    spell_name_1::String
+    spell_name_2::String
+    spell_name_3::String
+    spell_name_4::String
+    spell_name_5::String
+    spell_name_6::String
+    spell_name_7::String
+    spell_name_8::String
+    spell_name_flag_0::UInt32
+    spell_name_flag_1::UInt32
+    spell_name_flag_2::UInt32
+    spell_name_flag_3::UInt32
+    spell_name_flag_4::UInt32
+    spell_name_flag_5::UInt32
+    spell_name_flag_6::UInt32
+    spell_name_flag_7::UInt32
+    spell_rank_0::String
+    spell_rank_1::String
+    spell_rank_2::String
+    spell_rank_3::String
+    spell_rank_4::String
+    spell_rank_5::String
+    spell_rank_6::String
+    spell_rank_7::String
+    spell_rank_8::String
+    spell_rank_flags_0::UInt32
+    spell_rank_flags_1::UInt32
+    spell_rank_flags_2::UInt32
+    spell_rank_flags_3::UInt32
+    spell_rank_flags_4::UInt32
+    spell_rank_flags_5::UInt32
+    spell_rank_flags_6::UInt32
+    spell_rank_flags_7::UInt32
+    spell_description_0::String
+    spell_description_1::String
+    spell_description_2::String
+    spell_description_3::String
+    spell_description_4::String
+    spell_description_5::String
+    spell_description_6::String
+    spell_description_7::String
+    spell_description_8::String
+    spell_description_flags_0::UInt32
+    spell_description_flags_1::UInt32
+    spell_description_flags_2::UInt32
+    spell_description_flags_3::UInt32
+    spell_description_flags_4::UInt32
+    spell_description_flags_5::UInt32
+    spell_description_flags_6::UInt32
+    spell_description_flags_7::UInt32
+    spell_tool_tip_0::String
+    spell_tool_tip_1::String
+    spell_tool_tip_2::String
+    spell_tool_tip_3::String
+    spell_tool_tip_4::String
+    spell_tool_tip_5::String
+    spell_tool_tip_6::String
+    spell_tool_tip_7::String
+    spell_tool_tip_8::String
+    spell_tool_tip_flags_0::UInt32
+    spell_tool_tip_flags_1::UInt32
+    spell_tool_tip_flags_2::UInt32
+    spell_tool_tip_flags_3::UInt32
+    spell_tool_tip_flags_4::UInt32
+    spell_tool_tip_flags_5::UInt32
+    spell_tool_tip_flags_6::UInt32
+    spell_tool_tip_flags_7::UInt32
+    mana_cost_percentage::UInt32
+    start_recovery_category::UInt32
+    start_recovery_time::UInt32
+    maximum_target_level::UInt32
+    spell_family_name::UInt32
+    spell_family_flags::UInt32
+    spell_family_flags_1::UInt32
+    spell_family_flags_2::UInt32
+    maximum_affected_targets::UInt32
+    damage_class::UInt32
+    prevention_type::UInt32
+    stance_bar_order::UInt32
+    effect_damage_multiplier_1::Float32
+    effect_damage_multiplier_2::Float32
+    effect_damage_multiplier_3::Float32
+    minimum_faction_id::UInt32
+    minimum_reputation::UInt32
+    required_aura_vision::UInt32
+    totem_category_1::UInt32
+    totem_category_2::UInt32
+    area_group_id::UInt32
+    school_mask::UInt32
+    rune_cost_id::UInt32
+    spell_missile_id::UInt32
+    power_display_id::UInt32
+    effect_bonus_multiplier_1::Float32
+    effect_bonus_multiplier_2::Float32
+    effect_bonus_multiplier_3::Float32
+    spell_description_variable_id::UInt32
+    spell_difficulty_id::UInt32
 end
 
-struct SpellcasttimesData <: DBCDataType
-    ID::Int32
-    Base::Int32
-    PerLevel::Int32
-    Minimum::Int32
+struct SpellCastTimesData <: DBCDataType
+    id::UInt32
+    casting_time::Int32
+    casting_time_per_level::Int32
+    minimum_casting_time::Int32
 end
 
-struct SpellcategoryData <: DBCDataType
-    ID::Int32
-    Flags::Int32
+struct SpellCategoryData <: DBCDataType
+    id::UInt32
+    flags::UInt32
 end
 
-struct SpelldifficultyData <: DBCDataType
-    ID::Int32
-    DifficultySpellID_1::Int32
-    DifficultySpellID_2::Int32
-    DifficultySpellID_3::Int32
-    DifficultySpellID_4::UInt32
+struct SpellDescriptionVariablesData <: DBCDataType
+    id::UInt32
+    formula::String
 end
 
-struct SpelldurationData <: DBCDataType
-    ID::Int32
-    Duration::Int32
-    DurationPerLevel::Int32
-    MaxDuration::Int32
+struct SpellDifficultyData <: DBCDataType
+    id::UInt32
+    difficulties_1::UInt32
+    difficulties_2::UInt32
+    difficulties_3::UInt32
+    difficulties_4::UInt32
 end
 
-struct SpellfocusobjectData <: DBCDataType
-    ID::Int32
-    Name::LString
+struct SpellDispelTypeData <: DBCDataType
+    id::UInt32
+    name::LString
+    combinations::UInt32
+    immunity_possible::UInt32
+    internal_name::UInt32
 end
 
-struct SpellitemenchantmentData <: DBCDataType
-    ID::Int32
-    Charges::Int32
-    Effect_1::Int32
-    Effect_2::Int32
-    Effect_3::Int32
-    EffectPointsMin_1::Int32
-    EffectPointsMin_2::Int32
-    EffectPointsMin_3::Int32
-    EffectPointsMax_1::Int32
-    EffectPointsMax_2::Int32
-    EffectPointsMax_3::Int32
-    EffectArg_1::Int32
-    EffectArg_2::Int32
-    EffectArg_3::Int32
-    Name::LString
-    ItemVisual::Int32
-    Flags::Int32
-    Src_ItemID::Int32
-    Condition_Id::Int32
-    RequiredSkillID::Int32
-    RequiredSkillRank::Int32
-    MinLevel::Int32
+struct SpellDurationData <: DBCDataType
+    id::UInt32
+    base_duration::UInt32
+    per_level::Int32
+    maximum_duration::Int32
 end
 
-struct SpellitemenchantmentconditionData <: DBCDataType
-    ID::Int32
-    Lt_OperandType_1::UInt32
-    Lt_OperandType_2::UInt32
-    Lt_OperandType_3::UInt32
-    Lt_OperandType_4::UInt32
-    Lt_OperandType_5::UInt32
-    Lt_Operand_1::Int32
-    Lt_Operand_2::Int32
-    Lt_Operand_3::Int32
-    Lt_Operand_4::Int32
-    Lt_Operand_5::Int32
-    Operator_1::UInt32
-    Operator_2::UInt32
-    Operator_3::UInt32
-    Operator_4::UInt32
-    Operator_5::UInt32
-    Rt_OperandType_1::UInt32
-    Rt_OperandType_2::UInt32
-    Rt_OperandType_3::UInt32
-    Rt_OperandType_4::UInt32
-    Rt_OperandType_5::UInt32
-    Rt_Operand_1::Int32
-    Rt_Operand_2::Int32
-    Rt_Operand_3::Int32
-    Rt_Operand_4::Int32
-    Rt_Operand_5::Int32
-    Logic_1::UInt32
-    Logic_2::UInt32
-    Logic_3::UInt32
-    Logic_4::UInt32
-    Logic_5::UInt32
+struct SpellFocusObjectData <: DBCDataType
+    id::UInt32
+    name_1::String
+    name_2::String
+    name_3::String
+    name_4::String
+    name_5::String
+    name_6::String
+    name_7::String
+    name_8::String
+    name_9::String
+    name_10::String
+    name_11::String
+    name_12::String
+    name_13::String
+    name_14::String
+    name_15::String
+    name_16::String
+    flags::UInt32
 end
 
-struct SpellradiusData <: DBCDataType
-    ID::Int32
-    Radius::Float32
-    RadiusPerLevel::Float32
-    RadiusMax::Float32
+struct SpellIconData <: DBCDataType
+    id::UInt32
+    name::String
 end
 
-struct SpellrangeData <: DBCDataType
-    ID::Int32
-    RangeMin_1::Float32
-    RangeMin_2::Float32
-    RangeMax_1::Float32
-    RangeMax_2::Float32
-    Flags::Int32
-    DisplayName::LString
-    DisplayNameShort::LString
+struct SpellItemEnchantmentData <: DBCDataType
+    id::UInt32
+    charges::UInt32
+    spell_dispel_type_1::UInt32
+    spell_dispel_type_2::UInt32
+    spell_dispel_type_3::UInt32
+    min_amount_1::UInt32
+    min_amount_2::UInt32
+    min_amount_3::UInt32
+    max_amount_1::UInt32
+    max_amount_2::UInt32
+    max_amount_3::UInt32
+    object_id_1::UInt32
+    object_id_2::UInt32
+    object_id_3::UInt32
+    s_ref_name_0::String
+    s_ref_name_1::String
+    s_ref_name_2::String
+    s_ref_name_3::String
+    s_ref_name_4::String
+    s_ref_name_5::String
+    s_ref_name_6::String
+    s_ref_name_7::String
+    s_ref_name_8::String
+    s_ref_name_9::String
+    s_ref_name_10::String
+    s_ref_name_11::String
+    s_ref_name_12::String
+    s_ref_name_13::String
+    s_ref_name_14::String
+    s_ref_name_15::String
+    s_ref_name_flags::UInt32
+    item_visuals::UInt32
+    flags::UInt32
+    item_cache::UInt32
+    spell_item_enchantment_condition::UInt32
+    skill_line::UInt32
+    skill_level::UInt32
+    required_level::UInt32
 end
 
-struct SpellrunecostData <: DBCDataType
-    ID::Int32
-    Blood::Int32
-    Unholy::Int32
-    Frost::Int32
-    RunicPower::Int32
+struct SpellMechanicData <: DBCDataType
+    id::UInt32
+    name::LString
 end
 
-struct SpellshapeshiftformData <: DBCDataType
-    ID::Int32
-    BonusActionBar::Int32
-    Name::LString
-    Flags::Int32
-    CreatureType::Int32
-    AttackIconID::Int32
-    CombatRoundTime::Int32
-    CreatureDisplayID_1::Int32
-    CreatureDisplayID_2::Int32
-    CreatureDisplayID_3::Int32
-    CreatureDisplayID_4::Int32
-    PresetSpellID_1::Int32
-    PresetSpellID_2::Int32
-    PresetSpellID_3::Int32
-    PresetSpellID_4::Int32
-    PresetSpellID_5::Int32
-    PresetSpellID_6::Int32
-    PresetSpellID_7::Int32
-    PresetSpellID_8::Int32
+struct SpellMissileData <: DBCDataType
+    id::UInt32
+    flags::UInt32
+    default_pitch_min::Float32
+    default_pitch_max::Float32
+    default_speed_min::Float32
+    default_speed_max::Float32
+    randomize_facing_min::Float32
+    randomize_facing_max::Float32
+    randomize_pitch_min::Float32
+    randomize_pitch_max::Float32
+    randomize_speed_min::Float32
+    randomize_speed_max::Float32
+    gravity::Float32
+    max_duration::Float32
+    collision_radius::Float32
 end
 
-struct StableslotpricesData <: DBCDataType
-    ID::Int32
-    Cost::Int32
+struct SpellMissileMotionData <: DBCDataType
+    id::UInt32
+    name::String
+    script::String
+    flags::Int32
+    missile_count::Int32
 end
 
-struct SummonpropertiesData <: DBCDataType
-    ID::Int32
-    Control::Int32
-    Faction::Int32
-    Title::Int32
-    Slot::Int32
-    Flags::Int32
+struct SpellRadiusData <: DBCDataType
+    id::UInt32
+    radius::Float32
+    radius_per_level::Float32
+    maximum_radius::Float32
+end
+
+struct SpellRangeData <: DBCDataType
+    id::UInt32
+    minimum_range_hostile::Float32
+    minimum_range_friend::Float32
+    maximum_range_hostile::Float32
+    maximum_range_friend::Float32
+    type::Int32
+    name::LString
+    short_name::LString
+end
+
+struct SpellRuneCostData <: DBCDataType
+    id::UInt32
+    rune_cost_1::UInt32
+    rune_cost_2::UInt32
+    rune_cost_3::UInt32
+    rune_power_gain::UInt32
+end
+
+struct SpellShapeshiftFormData <: DBCDataType
+    id::UInt32
+    action_bar::UInt32
+    name::LString
+    creature_type_1::Int32
+    creature_type_2::Int32
+    spell_icon::Int32
+    combat_round_time::Int32
+    display_1::UInt32
+    display_2::UInt32
+    display_3::UInt32
+    display_4::UInt32
+    preset_spell_id_1::UInt32
+    preset_spell_id_2::UInt32
+    preset_spell_id_3::UInt32
+    preset_spell_id_4::UInt32
+    preset_spell_id_5::UInt32
+    preset_spell_id_6::UInt32
+    preset_spell_id_7::UInt32
+    preset_spell_id_8::UInt32
+end
+
+struct SpellVisualData <: DBCDataType
+    id::UInt32
+    precast_kit::UInt32
+    cast_kit::UInt32
+    impact_kit::UInt32
+    state_kit::UInt32
+    state_done_kit::UInt32
+    channel_kit::UInt32
+    has_missile::Int32
+    missile_model::UInt32
+    missile_path_type::UInt32
+    missile_destination_attachment::UInt32
+    missile_sound::UInt32
+    anim_event_sound_id::UInt32
+    flags::UInt32
+    caster_impact_kit::UInt32
+    target_impact_kit::UInt32
+    missile_attachment::UInt32
+    missile_follow_ground_height::UInt32
+    missile_follow_drop_speed::UInt32
+    missile_follow_approach::UInt32
+    missile_follow_ground_flags::UInt32
+    missile_motion::UInt32
+    missile_targeting_kit::UInt32
+    instant_area_kit::UInt32
+    impact_area_kit::UInt32
+    persistent_area_kit::UInt32
+    missile_cast_offset_x::Float32
+    missile_cast_offset_y::Float32
+    missile_cast_offset_z::Float32
+    missile_impact_offset_x::Float32
+    missile_impact_offset_y::Float32
+    missile_impact_offset_z::Float32
+end
+
+struct SpellVisualEffectNameData <: DBCDataType
+    id::UInt32
+    name::String
+    file_path::String
+    area_effect_size::Float32
+    scale::Float32
+    min_allowed_scale::Float32
+    max_allowed_scale::Float32
+end
+
+struct SpellVisualKitData <: DBCDataType
+    id::UInt32
+    start_anim_id::UInt32
+    animation_id::UInt32
+    head_effect::UInt32
+    chest_effect::UInt32
+    base_effect::UInt32
+    left_hand_effect::UInt32
+    right_hand_effect::UInt32
+    breath_effect::UInt32
+    left_weapon_effect::UInt32
+    right_weapon_effect::UInt32
+    special_effect_1::UInt32
+    special_effect_2::UInt32
+    special_effect_3::UInt32
+    world_effect::UInt32
+    sound_id::UInt32
+    shake_id::UInt32
+    char_proc_1::UInt32
+    char_proc_2::UInt32
+    char_proc_3::UInt32
+    char_proc_4::UInt32
+    char_param_zero_1::Float32
+    char_param_zero_2::Float32
+    char_param_zero_3::Float32
+    char_param_zero_4::Float32
+    char_param_one_1::Float32
+    char_param_one_2::Float32
+    char_param_one_3::Float32
+    char_param_one_4::Float32
+    char_param_two_1::Float32
+    char_param_two_2::Float32
+    char_param_two_3::Float32
+    char_param_two_4::Float32
+    char_param_three_1::Float32
+    char_param_three_2::Float32
+    char_param_three_3::Float32
+    char_param_three_4::Float32
+    flags::UInt32
+end
+
+struct SpellVisualKitAreaModelData <: DBCDataType
+    id::UInt32
+    name::String
+    enum_id::UInt32
+end
+
+struct SpellVisualKitModelAttachData <: DBCDataType
+    id::UInt32
+    parent_spell_visual_kit_id::UInt32
+    spell_visual_effect_name_id::UInt32
+    attachment_id::UInt32
+    offset_x::Float32
+    offset_y::Float32
+    offset_z::Float32
+    yaw::Float32
+    pitch::Float32
+    roll::Float32
+end
+
+struct SpellVisualPrecastTransitionsData <: DBCDataType
+    id::UInt32
+    precast_load_anim_name::String
+    precast_hold_anim_name::String
+end
+
+struct StationeryData <: DBCDataType
+    id::UInt32
+    item_id::UInt32
+    texture::String
+    flags::UInt32
 end
 
 struct TalentData <: DBCDataType
-    ID::Int32
-    TabID::Int32
-    TierID::Int32
-    ColumnIndex::Int32
-    SpellRank_1::Int32
-    SpellRank_2::Int32
-    SpellRank_3::Int32
-    SpellRank_4::Int32
-    SpellRank_5::Int32
-    SpellRank_6::Int32
-    SpellRank_7::Int32
-    SpellRank_8::Int32
-    SpellRank_9::Int32
-    PrereqTalent_1::Int32
-    PrereqTalent_2::Int32
-    PrereqTalent_3::Int32
-    PrereqRank_1::Int32
-    PrereqRank_2::Int32
-    PrereqRank_3::Int32
-    Flags::Int32
-    RequiredSpellID::Int32
-    CategoryMask_1::Int32
-    CategoryMask_2::Int32
+    id::UInt32
+    talent_tab_id::UInt32
+    tier_id::UInt32
+    column_index::UInt32
+    spell_rank_1::UInt32
+    spell_rank_2::UInt32
+    spell_rank_3::UInt32
+    spell_rank_4::UInt32
+    spell_rank_5::UInt32
+    spell_rank_6::UInt32
+    spell_rank_7::UInt32
+    spell_rank_8::UInt32
+    spell_rank_9::UInt32
+    prereq_talent_1::UInt32
+    prereq_talent_2::UInt32
+    prereq_talent_3::UInt32
+    prereq_rank_1::UInt32
+    prereq_rank_2::UInt32
+    prereq_rank_3::UInt32
+    flags::UInt32
+    required_spell_id::UInt32
+    allow_for_pet_flags_1::UInt32
+    allow_for_pet_flags_2::UInt32
 end
 
-struct TalenttabData <: DBCDataType
-    ID::Int32
-    Name::LString
-    SpellIconID::Int32
-    RaceMask::Int32
-    ClassMask::Int32
-    PetTalentMask::Int32
-    OrderIndex::Int32
-    BackgroundFile::String
+struct TalentTabData <: DBCDataType
+    id::UInt32
+    name_1::String
+    name_2::String
+    name_3::String
+    name_4::String
+    name_5::String
+    name_6::String
+    name_7::String
+    name_8::String
+    name_9::String
+    name_10::String
+    name_11::String
+    name_12::String
+    name_13::String
+    name_14::String
+    name_15::String
+    name_16::String
+    flags::UInt32
+    icon_id::UInt32
+    race_mask::UInt32
+    class_mask::UInt32
+    creature_family_category::UInt32
+    order_index::UInt32
+    background_file_name::String
 end
 
-struct TaxinodesData <: DBCDataType
-    ID::Int32
-    ContinentID::Int32
-    X::Float32
-    Y::Float32
-    Z::Float32
-    Name::LString
-    MountCreatureID_1::Int32
-    MountCreatureID_2::Int32
+struct TaxiNodesData <: DBCDataType
+    id::UInt32
+    map::Int32
+    x::Float32
+    y::Float32
+    z::Float32
+    name::LString
+    mount_1::UInt32
+    mount_2::UInt32
 end
 
-struct TaxipathData <: DBCDataType
-    ID::Int32
-    FromTaxiNode::Int32
-    ToTaxiNode::Int32
-    Cost::Int32
+struct TaxiPathData <: DBCDataType
+    id::UInt32
+    from_taxi_node::UInt32
+    to_taxi_node::UInt32
+    cost::UInt32
 end
 
-struct TaxipathnodeData <: DBCDataType
-    ID::Int32
-    PathID::Int32
-    NodeIndex::Int32
-    ContinentID::Int32
-    LocX::Float32
-    LocY::Float32
-    LocZ::Float32
-    Flags::Int32
-    Delay::Int32
-    ArrivalEventID::Int32
-    DepartureEventID::Int32
+struct TaxiPathNodeData <: DBCDataType
+    id::UInt32
+    path_id::UInt32
+    node_index::UInt32
+    map_id::UInt32
+    x::Float32
+    y::Float32
+    z::Float32
+    flags::UInt32
+    delay::UInt32
+    arrival_event_id::UInt32
+    departure_event_id::UInt32
 end
 
-struct TeamcontributionpointsData <: DBCDataType
-    ID::Int32
-    Data::Float32
-end
-
-struct TotemcategoryData <: DBCDataType
-    ID::Int32
-    Name::LString
-    TotemCategoryType::Int32
-    TotemCategoryMask::Int32
-end
-
-struct TransportanimationData <: DBCDataType
-    ID::Int32
-    TransportID::Int32
-    TimeIndex::Int32
-    PosX::Float32
-    PosY::Float32
-    PosZ::Float32
-    SequenceID::Int32
-end
-
-struct TransportrotationData <: DBCDataType
-    ID::Int32
-    GameObjectsID::Int32
-    TimeIndex::Int32
-    RotX::Float32
-    RotY::Float32
-    RotZ::Float32
-    RotW::Float32
+struct TotemCategoryData <: DBCDataType
+    id::UInt32
+    name::LString
+    category_type::UInt32
+    category_mask::UInt32
 end
 
 struct VehicleData <: DBCDataType
-    ID::Int32
-    Flags::Int32
-    TurnSpeed::Float32
-    PitchSpeed::Float32
-    PitchMin::Float32
-    PitchMax::Float32
-    SeatID_1::Int32
-    SeatID_2::Int32
-    SeatID_3::Int32
-    SeatID_4::Int32
-    SeatID_5::Int32
-    SeatID_6::Int32
-    SeatID_7::Int32
-    SeatID_8::Int32
-    MouseLookOffsetPitch::Float32
-    CameraFadeDistScalarMin::Float32
-    CameraFadeDistScalarMax::Float32
-    CameraPitchOffset::Float32
-    FacingLimitRight::Float32
-    FacingLimitLeft::Float32
-    MsslTrgtTurnLingering::Float32
-    MsslTrgtPitchLingering::Float32
-    MsslTrgtMouseLingering::Float32
-    MsslTrgtEndOpacity::Float32
-    MsslTrgtArcSpeed::Float32
-    MsslTrgtArcRepeat::Float32
-    MsslTrgtArcWidth::Float32
-    MsslTrgtImpactRadius_1::Float32
-    MsslTrgtImpactRadius_2::Float32
-    MsslTrgtArcTexture::String
-    MsslTrgtImpactTexture::String
-    MsslTrgtImpactModel_1::String
-    MsslTrgtImpactModel_2::String
-    CameraYawOffset::Float32
-    UilocomotionType::Int32
-    MsslTrgtImpactTexRadius::Float32
-    VehicleUIIndicatorID::Int32
-    PowerDisplayID_1::Int32
-    PowerDisplayID_2::Int32
-    PowerDisplayID_3::Int32
+    id::UInt32
+    flags::UInt32
+    turn_speed::Float32
+    pitch_speed::Float32
+    pitch_min::Float32
+    pitch_max::Float32
+    seat_id_1::UInt32
+    seat_id_2::UInt32
+    seat_id_3::UInt32
+    seat_id_4::UInt32
+    seat_id_5::UInt32
+    seat_id_6::UInt32
+    seat_id_7::UInt32
+    seat_id_8::UInt32
+    mouse_look_offset_pitch::Float32
+    camera_fade_dist_scalar_min::Float32
+    camera_fade_dist_scalar_max::Float32
+    camera_pitch_offset::Float32
+    facing_limit_right::Float32
+    facing_limit_left::Float32
+    mssl_trgt_turn_lingering::Float32
+    mssl_trgt_pitch_lingering::Float32
+    mssl_trgt_mouse_lingering::Float32
+    mssl_trgt_end_opacity::Float32
+    mssl_trgt_arc_speed::Float32
+    mssl_trgt_arc_repeat::Float32
+    mssl_trgt_arc_width::Float32
+    mssl_trgt_impact_radius_1::Float32
+    mssl_trgt_impact_radius_2::Float32
+    mssl_trgt_arc_texture::String
+    mssl_trgt_impact_texture::String
+    mssl_trgt_impact_model_1::String
+    mssl_trgt_impact_model_2::String
+    camera_yaw_offset::Float32
+    ui_locomotion_type::UInt32
+    mssl_trgt_impact_tex_radius::Float32
+    ui_seat_indicator_type::UInt32
+    power_display_1::Int32
+    power_display_2::Int32
+    power_display_3::Int32
 end
 
-struct VehicleseatData <: DBCDataType
-    ID::Int32
-    Flags::Int32
-    AttachmentID::Int32
-    AttachmentOffsetX::Float32
-    AttachmentOffsetY::Float32
-    AttachmentOffsetZ::Float32
-    EnterPreDelay::Float32
-    EnterSpeed::Float32
-    EnterGravity::Float32
-    EnterMinDuration::Float32
-    EnterMaxDuration::Float32
-    EnterMinArcHeight::Float32
-    EnterMaxArcHeight::Float32
-    EnterAnimStart::Int32
-    EnterAnimLoop::Int32
-    RideAnimStart::Int32
-    RideAnimLoop::Int32
-    RideUpperAnimStart::Int32
-    RideUpperAnimLoop::Int32
-    ExitPreDelay::Float32
-    ExitSpeed::Float32
-    ExitGravity::Float32
-    ExitMinDuration::Float32
-    ExitMaxDuration::Float32
-    ExitMinArcHeight::Float32
-    ExitMaxArcHeight::Float32
-    ExitAnimStart::Int32
-    ExitAnimLoop::Int32
-    ExitAnimEnd::Int32
-    PassengerYaw::Float32
-    PassengerPitch::Float32
-    PassengerRoll::Float32
-    PassengerAttachmentID::Int32
-    VehicleEnterAnim::Int32
-    VehicleExitAnim::Int32
-    VehicleRideAnimLoop::Int32
-    VehicleEnterAnimBone::Int32
-    VehicleExitAnimBone::Int32
-    VehicleRideAnimLoopBone::Int32
-    VehicleEnterAnimDelay::Float32
-    VehicleExitAnimDelay::Float32
-    VehicleAbilityDisplay::Int32
-    EnterUISoundID::Int32
-    ExitUISoundID::Int32
-    UiSkin::Int32
-    FlagsB::Int32
-    CameraEnteringDelay::Float32
-    CameraEnteringDuration::Float32
-    CameraExitingDelay::Float32
-    CameraExitingDuration::Float32
-    CameraOffsetX::Float32
-    CameraOffsetY::Float32
-    CameraOffsetZ::Float32
-    CameraPosChaseRate::Float32
-    CameraFacingChaseRate::Float32
-    CameraEnteringZoom::Float32
-    CameraSeatZoomMin::Float32
-    CameraSeatZoomMax::Float32
+struct VehicleSeatData <: DBCDataType
+    id::UInt32
+    flags::Int32
+    attachment_id::Int32
+    attachment_offset_x::Float32
+    attachment_offset_y::Float32
+    attachment_offset_z::Float32
+    enter_pre_delay::Float32
+    enter_speed::Float32
+    enter_gravity::Float32
+    enter_min_duration::Float32
+    enter_max_duration::Float32
+    enter_min_arc_height::Float32
+    enter_max_arc_height::Float32
+    enter_anim_start::Int32
+    enter_anim_loop::Int32
+    ride_anim_start::Int32
+    ride_anim_loop::Int32
+    ride_upper_anim_start::Int32
+    ride_upper_anim_loop::Int32
+    exit_pre_delay::Float32
+    exit_speed::Float32
+    exit_gravity::Float32
+    exit_min_duration::Float32
+    exit_max_duration::Float32
+    exit_min_arc_height::Float32
+    exit_max_arc_height::Float32
+    exit_anim_start::Int32
+    exit_anim_loop::Int32
+    exit_anim_end::Int32
+    passenger_yaw::Float32
+    passenger_pitch::Float32
+    passenger_roll::Float32
+    passenger_attachment_id::Int32
+    vehicle_enter_anim::Int32
+    vehicle_exit_anim::Int32
+    vehicle_ride_anim_loop::Int32
+    vehicle_enter_anim_bone::Int32
+    vehicle_exit_anim_bone::Int32
+    vehicle_ride_anim_loop_bone::Int32
+    vehicle_enter_anim_delay::Float32
+    vehicle_exit_anim_delay::Float32
+    vehicle_ability_display::UInt32
+    enter_ui_sound_id::UInt32
+    exit_ui_sound_id::UInt32
+    ui_skin::UInt32
+    flags_b::Int32
+    camera_entering_delay::Float32
+    camera_entering_duration::Float32
+    camera_exiting_delay::Float32
+    camera_exiting_duration::Float32
+    camera_offset_x::Float32
+    camera_offset_y::Float32
+    camera_offset_z::Float32
+    camera_pos_chase_rate::Float32
+    camera_facing_chase_rate::Float32
+    camera_entering_zoom::Float32
+    camera_seat_zoom_min::Float32
+    camera_seat_zoom_max::Float32
 end
 
-struct WmoareatableData <: DBCDataType
-    ID::Int32
-    WMOID::Int32
-    NameSetID::Int32
-    WMOGroupID::Int32
-    SoundProviderPref::Int32
-    SoundProviderPrefUnderwater::Int32
-    AmbienceID::Int32
-    ZoneMusic::Int32
-    IntroSound::Int32
-    Flags::Int32
-    AreaTableID::Int32
-    AreaName::LString
+struct WMOAreaTableData <: DBCDataType
+    id::Int32
+    wmo_id::Int32
+    name_set_id::Int32
+    wmo_group_id::Int32
+    sound_provider_pref::UInt32
+    sound_provider_pref_underwater::UInt32
+    ambience_id::UInt32
+    zone_music::UInt32
+    intro_sound::UInt32
+    flags::UInt32
+    area_table_id::UInt32
+    name::LString
 end
 
-struct WorldmapareaData <: DBCDataType
-    ID::Int32
-    MapID::Int32
-    AreaID::Int32
-    AreaName::String
-    LocLeft::Float32
-    LocRight::Float32
-    LocTop::Float32
-    LocBottom::Float32
-    DisplayMapID::Int32
-    DefaultDungeonFloor::Int32
-    ParentWorldMapID::Int32
+struct WorldStateUIData <: DBCDataType
+    id::UInt32
+    map_id::UInt32
+    area_id::UInt32
+    phase_shift::UInt32
+    icon::String
+    text::LString
+    tooltip::LString
+    world_state::Int32
+    type::Int32
+    dynamic_icon::String
+    dynamic_tooltip::LString
+    extended_ui_state_var::UInt32
+    extended_ui_state_var_neutral::UInt32
+    extended_ui_state_var_unk_1::UInt32
+    extended_ui_state_var_unk_2::UInt32
 end
 
-struct WorldmapoverlayData <: DBCDataType
-    ID::Int32
-    MapAreaID::Int32
-    AreaID_1::Int32
-    AreaID_2::Int32
-    AreaID_3::Int32
-    AreaID_4::Int32
-    MapPointX::Int32
-    MapPointY::Int32
-    TextureName::String
-    TextureWidth::Int32
-    TextureHeight::Int32
-    OffsetX::Int32
-    OffsetY::Int32
-    HitRectTop::Int32
-    HitRectLeft::Int32
-    HitRectBottom::Int32
-    HitRectRight::Int32
+struct ZoneMusicData <: DBCDataType
+    id::UInt32
+    name::String
+    silence_min_day::UInt32
+    silence_min_night::UInt32
+    silence_max_day::UInt32
+    silence_max_night::UInt32
+    day_music::UInt32
+    night_music::UInt32
 end
 
 
-export AchievementData, Achievement_categoryData, Achievement_criteriaData, AreagroupData, AreapoiData, AreatableData, AuctionhouseData, BankbagslotpricesData, BarbershopstyleData, BattlemasterlistData, CharbaseinfoData, CharstartoutfitData, ChartitlesData, ChatchannelsData, ChrclassesData, ChrracesData, CinematiccameraData, CinematicsequencesData, CreaturedisplayinfoData, CreaturedisplayinfoextraData, CreaturefamilyData, CreaturemodeldataData, CreaturespelldataData, CreaturetypeData, CurrencytypesData, DestructiblemodeldataData, DungeonencounterData, DurabilitycostsData, DurabilityqualityData, EmotesData, EmotestextData, FactionData, FactiontemplateData, GameobjectdisplayinfoData, GempropertiesData, GlyphpropertiesData, GlyphslotData, GtbarbershopcostbaseData, GtchancetomeleecritData, GtchancetomeleecritbaseData, GtchancetospellcritData, GtchancetospellcritbaseData, GtcombatratingsData, GtnpcmanacostscalerData, GtoctclasscombatratingscalarData, GtoctregenhpData, GtregenhppersptData, GtregenmppersptData, HolidaysData, ItemData, ItembagfamilyData, ItemdisplayinfoData, ItemextendedcostData, ItemlimitcategoryData, ItemrandompropertiesData, ItemrandomsuffixData, ItemsetData, LfgdungeonsData, LightData, LiquidtypeData, LockData, MailtemplateData, MapData, MapdifficultyData, MovieData, OverridespelldataData, PowerdisplayData, PvpdifficultyData, QuestfactionrewardData, QuestsortData, QuestxpData, RandproppointsData, ScalingstatdistributionData, ScalingstatvaluesData, SkilllineData, SkilllineabilityData, SkillraceclassinfoData, SkilltiersData, SoundentriesData, SpellData, SpellcasttimesData, SpellcategoryData, SpelldifficultyData, SpelldurationData, SpellfocusobjectData, SpellitemenchantmentData, SpellitemenchantmentconditionData, SpellradiusData, SpellrangeData, SpellrunecostData, SpellshapeshiftformData, StableslotpricesData, SummonpropertiesData, TalentData, TalenttabData, TaxinodesData, TaxipathData, TaxipathnodeData, TeamcontributionpointsData, TotemcategoryData, TransportanimationData, TransportrotationData, VehicleData, VehicleseatData, WmoareatableData, WorldmapareaData, WorldmapoverlayData
+export AchievementData, AchievementCategoryData, AchievementCriteriaData, AnimationDataData, AreaGroupData, AreaTableData, AreaTriggerData, CharStartOutfitData, CharTitlesData, ChatChannelsData, ChrClassesData, ChrRacesData, CinematicCameraData, CinematicSequencesData, CreatureDisplayInfoData, CreatureDisplayInfoExtraData, CreatureModelDataData, CreatureSoundDataData, CurrencyCategoryData, CurrencyTypesData, DungeonEncounterData, FactionData, FactionGroupData, FactionTemplateData, FileDataData, GameObjectDisplayInfoData, GameTipsData, GemPropertiesData, HolidayDescriptionsData, HolidayNamesData, HolidaysData, ItemData, ItemClassData, ItemDisplayInfoData, ItemExtendedCostData, ItemSetData, ItemSubClassData, LFGDungeonGroupData, LFGDungeonsData, LightData, LightFloatBandData, LightIntBandData, LightParamsData, LightSkyboxData, LoadingScreensData, LockData, LockTypeData, MapData, MapDifficultyData, MovieData, MovieFileDataData, MovieVariationData, OverrideSpellDataData, QuestSortData, ScreenEffectData, SkillLineData, SkillLineAbilityData, SkillRaceClassInfoData, SoundEntriesData, SpellData, SpellCastTimesData, SpellCategoryData, SpellDescriptionVariablesData, SpellDifficultyData, SpellDispelTypeData, SpellDurationData, SpellFocusObjectData, SpellIconData, SpellItemEnchantmentData, SpellMechanicData, SpellMissileData, SpellMissileMotionData, SpellRadiusData, SpellRangeData, SpellRuneCostData, SpellShapeshiftFormData, SpellVisualData, SpellVisualEffectNameData, SpellVisualKitData, SpellVisualKitAreaModelData, SpellVisualKitModelAttachData, SpellVisualPrecastTransitionsData, StationeryData, TalentData, TalentTabData, TaxiNodesData, TaxiPathData, TaxiPathNodeData, TotemCategoryData, VehicleData, VehicleSeatData, WMOAreaTableData, WorldStateUIData, ZoneMusicData

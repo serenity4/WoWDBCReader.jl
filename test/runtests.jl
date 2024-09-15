@@ -56,37 +56,35 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
   @testset "DBC files" begin
     @testset "Reading DBC files" begin
-      dbc = DBCData(dbc_file(:TalentTab), :talenttab)
+      dbc = DBCData(dbc_file(:TalentTab))
       @test dbc.name === :TalentTab
-      @test dbc.schema === :talenttab
-      @test isa(dbc, DBCData{TalenttabData})
+      @test isa(dbc, DBCData{TalentTabData})
       @test length(dbc.rows) == 33
 
-      dbc = DBCData(dbc_file(:Talent), :talent)
+      dbc = DBCData(dbc_file(:Talent))
       @test isa(dbc, DBCData{TalentData})
       @test length(dbc.rows) == 892
 
-      dbc = DBCData(dbc_file(:Map), :map)
+      dbc = DBCData(dbc_file(:Map))
       @test isa(dbc, DBCData{MapData})
       @test length(dbc.rows) == 135
 
-      dbc = DBCData(dbc_file(:Spell), :spell)
+      dbc = DBCData(dbc_file(:Spell))
       @test isa(dbc, DBCData{SpellData})
       @test length(dbc.rows) > 49000
 
-      file = DBCFile(dbc_file(:Map), :map)
+      file = DBCFile(dbc_file(:Map))
       @test file.name === :Map
-      @test file.schema === :map
-      @test read(file) == DBCData(dbc_file(:Map), :map)
+      @test read(file) == DBCData(dbc_file(:Map))
     end
 
     @testset "Writing DBC files" begin
-      dbc = DBCData(dbc_file(:TalentTab), :talenttab)
+      dbc = DBCData(dbc_file(:TalentTab))
       file = DBCFile(dbc)
       dbc2 = read(file)
       @test dbc == dbc2
 
-      dbc = DBCData(dbc_file(:Spell), :spell)
+      dbc = DBCData(dbc_file(:Spell))
       file = DBCFile(dbc)
       dbc2 = read(file)
       @test dbc == dbc2
@@ -155,18 +153,18 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS"))
       talent_tabs_dbc = read(archive["DBFilesClient\\TalentTab.dbc"])
-      talent_tabs = DBCData(talent_tabs_dbc, :TalentTab, :talenttab)
-      ref = DBCData(dbc_file(:TalentTab), :talenttab)
+      talent_tabs = DBCData(talent_tabs_dbc, :TalentTab)
+      ref = DBCData(dbc_file(:TalentTab))
       @test talent_tabs == ref
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS-3"))
       map_dbc = read(archive["DBFilesClient\\Map.dbc"])
-      map = DBCData(map_dbc, :Map, :map)
-      ref = DBCData(dbc_file(:Map), :map)
+      map = DBCData(map_dbc, :Map)
+      ref = DBCData(dbc_file(:Map))
       @test map == ref
       spell_dbc = read(archive["DBFilesClient\\Spell.dbc"])
-      spell = DBCData(spell_dbc, :Spell, :spell)
-      ref = DBCData(dbc_file(:Spell), :spell)
+      spell = DBCData(spell_dbc, :Spell)
+      ref = DBCData(dbc_file(:Spell))
       @test spell == ref
     end
 

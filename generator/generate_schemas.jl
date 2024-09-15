@@ -1,16 +1,18 @@
 using JSON3
 
-schema_directory(model = "azerothcore") = joinpath(@__DIR__, "schemas", model)
+include("naming_conventions.jl")
 
-schema_type(schema) = Symbol(uppercasefirst(string(schema)), :Data)
+schema_directory(model = "wotlk") = joinpath(@__DIR__, "schemas", model)
 
-function datatype(type::String)
-  type === "byte" && return :Int8
-  type === "uint" && return :UInt32
-  type === "int" && return :Int32
-  type === "string" && return :String
-  type === "float" && return :Float32
-  type === "null" && return :Missing
+schema_type(schema) = Symbol(replace(string(schema), '_' => ""), :Data)
+
+function datatype(type::AbstractString)
+  type == "uint8" && return :UInt8
+  type == "uint" && return :UInt32
+  type == "int" && return :Int32
+  type == "string" && return :String
+  type == "float" && return :Float32
+  type == "null" && return :Missing
   error("Unknown type '$type'")
 end
 
@@ -22,30 +24,56 @@ function generate_schema_types()
     println(io, "abstract type DBCDataType end\n")
     for file in readdir(schema_directory(); join = true)
       schema_name = first(splitext(basename(file)))
-      name = schema_type(schema_name)
-      push!(types, name)
-      schema = JSON3.read(file)
-      type = Expr(:struct, false, :($name <: DBCDataType))
+      sname = schema_type(schema_name)
       fields = Expr(:block)
-      push!(type.args, fields)
+      lines = collect(eachline(file))
+      filter!(lines) do line
+        line = strip(line)
+        startswith(line, "IGNORE_ORDER") && return false
+        startswith(line, '#') && return false
+        isempty(line) && return false
+        true
+      end
       i = 1
-      while i ≤ length(schema)
-        field = schema[i]
-        if endswith(field.name, "_Lang_enUS") && field.type == "string"
-          fname = match(r"^(.*)_Lang_enUS", field.name)[1]
-          any(x -> x.name == fname, schema) && (fname = "_$fname")
-          # We have the first column of a localized string.
-          push!(fields.args, :($(Symbol(fname))::LString))
+      n = length(lines)
+      fields = Expr(:block)
+      while i ≤ n
+        line = strip(strip(lines[i]), '\t')
+        items = split(line, ' ')
+        type, name = items
+        name = replace(name, '_' => "")
+        if length(items) == 3
+          @assert type == "uint" && items[end] == "string"
+          type = "string"
+        end
+        loc_part = match(r"(.*)(?:enUS|en_US|1)$", items[2])
+        if i + 16 ≤ n && !isnothing(loc_part) && (type == "string" || type == "uint") && all(@view lines[(i + 1):(i + 15)]) do next
+            next = strip(strip(next), '\t')
+            endswith(next, type) || startswith(next, type)
+          end && begin
+            next = strip(strip(lines[i + 16]), '\t')
+            _type, _name = split(next, ' ')
+            base = loc_part[1]
+            _name == base * "Mask" || _name == base * "Flags" || _name == base * "Flag"
+          end
           i += 17
+          name = rstrip(name, '1')
+          name = nc_convert(SnakeCaseLower, name)
+          type = :LString
         else
-          push!(fields.args, Expr(:(::), Symbol(field.name), datatype(field.type)))
+          name = nc_convert(SnakeCaseLower, name)
+          type = datatype(type)
           i += 1
         end
+        push!(fields.args, :($(Symbol(name))::$type))
       end
+      push!(types, sname)
+      type = Expr(:struct, false, :($sname <: DBCDataType), fields)
       println(io, type)
       println(io)
     end
     println(io, '\n', Expr(:export, types...))
+    @info "Schema types written to $dest"
   end
 end
 

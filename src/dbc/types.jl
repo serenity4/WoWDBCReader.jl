@@ -2,7 +2,7 @@ schema_type(schema) = getproperty(@__MODULE__, Symbol(uppercasefirst(string(sche
 schema_name(::Type{T}) where {T<:DBCDataType} = Symbol(lowercasefirst(string(nameof(T)))[1:(end - 4)])
 dbc_filename(path::AbstractString) = Symbol(first(splitext(basename(path))))
 
-struct DBCData{T<:DBCDataType}
+@struct_hash_equal struct DBCData{T<:DBCDataType}
   name::Symbol
   schema::Symbol
   rows::Vector{T}

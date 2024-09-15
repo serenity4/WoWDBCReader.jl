@@ -17,9 +17,9 @@
   MPQ_LOCALE_UNDEFINED    = 0xffff
 end
 
-const CURRENT_LOCALE = Ref(MPQ_LOCALE_NEUTRAL)
+const DEFAULT_MPQ_LOCALE = Ref(MPQ_LOCALE_NEUTRAL)
 
-const LOCALE_LIST = Dict{Symbol,MPQLocale}(
+const MPQ_LOCALE_LIST = Dict{Symbol,MPQLocale}(
   :zhCN => MPQ_LOCALE_CHINESE,
   :zhTW => MPQ_LOCALE_CHINESE,
   :csCZ => MPQ_LOCALE_CZECH,
@@ -38,14 +38,14 @@ const LOCALE_LIST = Dict{Symbol,MPQLocale}(
 )
 
 "Get the current locale."
-get_locale() = CURRENT_LOCALE[]
+get_default_mpq_locale() = DEFAULT_MPQ_LOCALE[]
 
 "Set the current locale with a new value, returning the one that was previously set."
-function set_locale(new::MPQLocale)
-  old = CURRENT_LOCALE[]
-  CURRENT_LOCALE[] = new
+function set_default_mpq_locale(new::MPQLocale)
+  old = DEFAULT_MPQ_LOCALE[]
+  DEFAULT_MPQ_LOCALE[] = new
   old
 end
 
-set_locale(new::Nothing) = set_locale(MPQ_LOCALE_UNDEFINED)
-set_locale(new::Symbol) = set_locale(LOCALE_LIST[new])
+set_default_mpq_locale(new::Nothing) = set_default_mpq_locale(MPQ_LOCALE_UNDEFINED)
+set_default_mpq_locale(new::Symbol) = set_default_mpq_locale(LOCALE_LIST[new])

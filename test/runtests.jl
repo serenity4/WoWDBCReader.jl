@@ -10,6 +10,50 @@ dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-
 mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
 @testset "WoWDBCReader.jl" begin
+  @testset "Localization" begin
+    @test get_locale() === :enUS
+    set_locale(:enGB)
+    @test get_locale() === :enGB
+    set_locale(:enUS)
+
+    @test get_default_mpq_locale() === MPQ_LOCALE_NEUTRAL
+    set_default_mpq_locale(MPQ_LOCALE_ENGLISH)
+    @test get_default_mpq_locale() === MPQ_LOCALE_ENGLISH
+    set_default_mpq_locale(MPQ_LOCALE_NEUTRAL)
+
+    @test get_default_dbc_locale() === DBC_LOCALE_EN_US
+    set_default_dbc_locale(DBC_LOCALE_FR_FR)
+    @test get_default_dbc_locale() === DBC_LOCALE_FR_FR
+    set_default_dbc_locale(DBC_LOCALE_EN_US)
+
+    set_locale(:enUS)
+    lstr = l"English text"
+    @test lstr[] == "English text"
+    set_locale(:frFR)
+    @test lstr[] == ""
+    lstr = l"Texte français"
+    @test lstr[] == "Texte français"
+    set_locale(:enUS)
+    @test lstr[] == ""
+    lstr = LString((:enUS, :frFR))
+    @test lstr[] == ""
+    lstr = setproperties(lstr, (frFR = "Texte français", enUS = "English text"))
+    @test lstr[] == "English text"
+    set_locale(:frFR)
+    @test lstr[] == "Texte français"
+    set_locale(:enUS)
+
+    x = l"Hello"
+    y = l"Hello"
+    @test x == y
+    x = l"ello"
+    y = l"Hello"
+    @test x != y
+    x = setproperties(LString(), (; enUS = "US", frFR = "FR"))
+    y = l"US"
+    @test x ≠ y && x[] == y[]
+  end
+
   @testset "DBC files" begin
     @testset "Reading DBC files" begin
       dbc = DBCData(dbc_file(:TalentTab), :talenttab)

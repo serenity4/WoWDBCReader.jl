@@ -17,7 +17,7 @@ function ClientMPQFiles(data_directory::AbstractString)
   locale_files = String[]
   locale_folder = nothing
   files = readdir(data_directory)
-  i = findfirst(file -> haskey(LOCALE_LIST, Symbol(file)), files)
+  i = findfirst(file -> haskey(MPQ_LOCALE_LIST, Symbol(file)), files)
   locale_folder = isnothing(i) ? nothing : files[i]
   filter!(is_mpq, files)
   locale_files = isnothing(locale_folder) ? String[] : filter!(is_mpq, readdir(joinpath(data_directory, locale_folder)))

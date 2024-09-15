@@ -139,7 +139,7 @@ function recompute_hash_table(archive::MPQArchive)
     end
     ha = hash_filename(filename, MPQ_HASH_NAME_A)
     hb = hash_filename(filename, MPQ_HASH_NAME_B)
-    entry = MPQHashTableEntry(ha, hb, something(locale, get_locale()), 0, 0, block_index_start + (i - 1))
+    entry = MPQHashTableEntry(ha, hb, something(locale, get_default_mpq_locale()), 0, 0, block_index_start + (i - 1))
     ht.entries[slot] = entry
   end
   ht, block_overrides

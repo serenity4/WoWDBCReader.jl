@@ -79,6 +79,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using WoWDBCReader
-          DocMeta.setdocmeta!(WoWDBCReader, :DocTestSetup, :(using WoWDBCReader); recursive=true)
-          doctest(WoWDBCReader)
+          using WoWDataParser
+          DocMeta.setdocmeta!(WoWDataParser, :DocTestSetup, :(using WoWDataParser); recursive=true)
+          doctest(WoWDataParser)

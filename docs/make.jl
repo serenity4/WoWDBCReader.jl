@@ -1,14 +1,14 @@
-using WoWDBCReader
+using WoWDataParser
 using Documenter
 
-DocMeta.setdocmeta!(WoWDBCReader, :DocTestSetup, :(using WoWDBCReader); recursive=true)
+DocMeta.setdocmeta!(WoWDataParser, :DocTestSetup, :(using WoWDataParser); recursive=true)
 
 makedocs(;
-    modules=[WoWDBCReader],
+    modules=[WoWDataParser],
     authors="Cédric BELMANT",
-    sitename="WoWDBCReader.jl",
+    sitename="WoWDataParser.jl",
     format=Documenter.HTML(;
-        canonical="https://serenity4.github.io/WoWDBCReader.jl",
+        canonical="https://serenity4.github.io/WoWDataParser.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/serenity4/WoWDBCReader.jl",
+    repo="github.com/serenity4/WoWDataParser.jl",
     devbranch="main",
 )

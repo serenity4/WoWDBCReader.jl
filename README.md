@@ -1,9 +1,9 @@
-# WoWDBCReader
+# WoWDataParser
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://serenity4.github.io/WoWDBCReader.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://serenity4.github.io/WoWDBCReader.jl/dev/)
-[![Build Status](https://github.com/serenity4/WoWDBCReader.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/serenity4/WoWDBCReader.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/serenity4/WoWDBCReader.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/serenity4/WoWDBCReader.jl)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://serenity4.github.io/WoWDataParser.jl/stable/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://serenity4.github.io/WoWDataParser.jl/dev/)
+[![Build Status](https://github.com/serenity4/WoWDataParser.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/serenity4/WoWDataParser.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/serenity4/WoWDataParser.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/serenity4/WoWDataParser.jl)
 
 Utilies to read and write files in the [DBC](https://wowdev.wiki/DBC) and [MPQ](https://wowdev.wiki/MPQ) format.
 

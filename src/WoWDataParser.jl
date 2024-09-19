@@ -1,4 +1,4 @@
-module WoWDBCReader
+module WoWDataParser
 
 using Reexport
 

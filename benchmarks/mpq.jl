@@ -1,4 +1,4 @@
-using WoWDBCReader
+using WoWDataParser
 
 mpq_file(name) = joinpath("/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data", "$name.MPQ")
 

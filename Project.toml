@@ -1,4 +1,4 @@
-name = "WoWDBCReader"
+name = "WoWDataParser"
 uuid = "1777bde7-0b71-4cc1-b255-d672d206c00f"
 version = "0.1.0"
 authors = ["Cédric BELMANT"]

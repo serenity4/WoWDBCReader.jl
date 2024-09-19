@@ -1,13 +1,13 @@
-using WoWDBCReader
+using WoWDataParser
 using BinaryParsingTools: read_binary
-const WoW = WoWDBCReader
+const WoW = WoWDataParser
 using Test
 
 dbc_file(name) = joinpath(DBC_DIRECTORY, "$name.dbc")
 
 mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
-@testset "WoWDBCReader.jl" begin
+@testset "WoWDataParser.jl" begin
   @testset "Localization" begin
     @test get_locale() === :enUS
     set_locale(:enGB)

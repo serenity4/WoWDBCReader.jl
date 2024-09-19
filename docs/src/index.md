@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = WoWDBCReader
+CurrentModule = WoWDataParser
 ```
 
-# WoWDBCReader
+# WoWDataParser
 
-Documentation for [WoWDBCReader](https://github.com/serenity4/WoWDBCReader.jl).
+Documentation for [WoWDataParser](https://github.com/serenity4/WoWDataParser.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [WoWDBCReader]
+Modules = [WoWDataParser]
 ```

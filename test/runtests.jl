@@ -3,9 +3,7 @@ using BinaryParsingTools: read_binary
 const WoW = WoWDBCReader
 using Test
 
-DATA_DIRECTORY = "/home/serenity4/Games/world-of-warcraft-wrath-of-the-lich-king/drive_c/world_of_warcraft_wrath_of_the_lich_king/Data"
-
-dbc_file(name) = joinpath("/home/serenity4/Documents/programming/wow-local/node-dbc-reader/data/dbc", "$name.dbc")
+dbc_file(name) = joinpath(DBC_DIRECTORY, "$name.dbc")
 
 mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 

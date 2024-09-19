@@ -1061,7 +1061,7 @@ struct SpellData <: DBCDataType
     proc_charges::UInt32
     maximum_level::UInt32
     base_level::UInt32
-    spell_level::UInt32
+    level::UInt32
     duration_index::UInt32
     power_type::UInt32
     mana_cost::UInt32
@@ -1144,32 +1144,32 @@ struct SpellData <: DBCDataType
     effect_points_per_combo_point_1::Float32
     effect_points_per_combo_point_2::Float32
     effect_points_per_combo_point_3::Float32
-    effect_spell_class_mask_a_1::UInt32
-    effect_spell_class_mask_a_2::UInt32
-    effect_spell_class_mask_a_3::UInt32
-    effect_spell_class_mask_b_1::UInt32
-    effect_spell_class_mask_b_2::UInt32
-    effect_spell_class_mask_b_3::UInt32
-    effect_spell_class_mask_c_1::UInt32
-    effect_spell_class_mask_c_2::UInt32
-    effect_spell_class_mask_c_3::UInt32
-    spell_visual_1::UInt32
-    spell_visual_2::UInt32
-    spell_icon_id::UInt32
+    effect_class_mask_a_1::UInt32
+    effect_class_mask_a_2::UInt32
+    effect_class_mask_a_3::UInt32
+    effect_class_mask_b_1::UInt32
+    effect_class_mask_b_2::UInt32
+    effect_class_mask_b_3::UInt32
+    effect_class_mask_c_1::UInt32
+    effect_class_mask_c_2::UInt32
+    effect_class_mask_c_3::UInt32
+    visual_1::UInt32
+    visual_2::UInt32
+    icon_id::UInt32
     active_icon_id::UInt32
-    spell_priority::UInt32
-    spell_name::LString
-    spell_rank::LString
-    spell_description::LString
-    spell_tool_tip::LString
+    priority::UInt32
+    name::LString
+    rank::LString
+    description::LString
+    tool_tip::LString
     mana_cost_percentage::UInt32
     start_recovery_category::UInt32
     start_recovery_time::UInt32
     maximum_target_level::UInt32
-    spell_family_name::UInt32
-    spell_family_flags::UInt32
-    spell_family_flags_1::UInt32
-    spell_family_flags_2::UInt32
+    class::Class
+    class_flags::UInt32
+    class_flags_1::UInt32
+    class_flags_2::UInt32
     maximum_affected_targets::UInt32
     damage_class::UInt32
     prevention_type::UInt32
@@ -1183,15 +1183,15 @@ struct SpellData <: DBCDataType
     totem_category_1::UInt32
     totem_category_2::UInt32
     area_group_id::UInt32
-    school_mask::UInt32
+    school::MagicSchool
     rune_cost_id::UInt32
-    spell_missile_id::UInt32
+    missile_id::UInt32
     power_display_id::UInt32
     effect_bonus_multiplier_1::Float32
     effect_bonus_multiplier_2::Float32
     effect_bonus_multiplier_3::Float32
-    spell_description_variable_id::UInt32
-    spell_difficulty_id::UInt32
+    description_variable_id::UInt32
+    difficulty_id::UInt32
 end
 
 struct SpellCastTimesData <: DBCDataType

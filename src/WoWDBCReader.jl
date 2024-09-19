@@ -7,6 +7,8 @@ using CodecBzip2: Bzip2Compressor, Bzip2Decompressor
 using CodecZlib: ZlibCompressor, ZlibDecompressor
 using Dictionaries
 using StructEquality
+using StyledStrings
+using StyledStrings: SimpleColor, Face
 using TranscodingStreams: TranscodingStreams
 
 const Optional{T} = Union{T, Nothing}
@@ -15,6 +17,8 @@ const LOCALE = Ref(:enUS)
 set_locale(new::Symbol) = LOCALE[] = new
 get_locale() = LOCALE[]
 
+include("dbc/types/classes.jl")
+include("dbc/types/schools.jl")
 include("dbc/localization.jl")
 include("dbc/schemas.jl")
 include("dbc/types.jl")
@@ -42,6 +46,9 @@ export LString,
        set_default_dbc_locale,
        get_default_mpq_locale,
        set_default_mpq_locale,
+
+       Class, CLASS_GENERIC, CLASS_HOLIDAYS_EVENTS, CLASS_MAGE, CLASS_WARRIOR, CLASS_WARLOCK, CLASS_PRIEST, CLASS_DRUID, CLASS_ROGUE, CLASS_HUNTER, CLASS_PALADIN, CLASS_SHAMAN, CLASS_SPELLS, CLASS_POTION, CLASS_DEATH_KNIGHT, CLASS_PET,
+
        DBCData,
        DBCFile,
        MPQHeader,

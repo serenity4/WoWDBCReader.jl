@@ -13,6 +13,8 @@ function datatype(type::AbstractString)
   type == "string" && return :String
   type == "float" && return :Float32
   type == "null" && return :Missing
+  # Assume it's an existing (manually-input) Julia type.
+  isuppercase(type[1]) && return Symbol(type)
   error("Unknown type '$type'")
 end
 

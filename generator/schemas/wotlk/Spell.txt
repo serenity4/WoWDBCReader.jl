@@ -38,7 +38,7 @@ uint ProcChance
 uint ProcCharges
 uint MaximumLevel
 uint BaseLevel
-uint SpellLevel
+uint Level
 uint DurationIndex
 uint PowerType
 uint ManaCost
@@ -121,96 +121,96 @@ uint EffectTriggerSpell3
 float EffectPointsPerComboPoint1
 float EffectPointsPerComboPoint2
 float EffectPointsPerComboPoint3
-uint EffectSpellClassMaskA1
-uint EffectSpellClassMaskA2
-uint EffectSpellClassMaskA3
-uint EffectSpellClassMaskB1
-uint EffectSpellClassMaskB2
-uint EffectSpellClassMaskB3
-uint EffectSpellClassMaskC1
-uint EffectSpellClassMaskC2
-uint EffectSpellClassMaskC3
-uint SpellVisual1
-uint SpellVisual2
-uint SpellIconID
+uint EffectClassMaskA1
+uint EffectClassMaskA2
+uint EffectClassMaskA3
+uint EffectClassMaskB1
+uint EffectClassMaskB2
+uint EffectClassMaskB3
+uint EffectClassMaskC1
+uint EffectClassMaskC2
+uint EffectClassMaskC3
+uint Visual1
+uint Visual2
+uint IconID
 uint ActiveIconID
-uint SpellPriority
-uint SpellName0 string
-uint SpellName1 string
-uint SpellName2 string
-uint SpellName3 string
-uint SpellName4 string
-uint SpellName5 string
-uint SpellName6 string
-uint SpellName7 string
-uint SpellName8 string
-uint SpellName9 string
-uint SpellName10 string
-uint SpellName11 string
-uint SpellName12 string
-uint SpellName13 string
-uint SpellName14 string
-uint SpellName15 string
-uint SpellNameFlags
-uint SpellRank0 string
-uint SpellRank1 string
-uint SpellRank2 string
-uint SpellRank3 string
-uint SpellRank4 string
-uint SpellRank5 string
-uint SpellRank6 string
-uint SpellRank7 string
-uint SpellRank8 string
-uint SpellRank9 string
-uint SpellRank10 string
-uint SpellRank11 string
-uint SpellRank12 string
-uint SpellRank13 string
-uint SpellRank14 string
-uint SpellRank15 string
-uint SpellRankFlags
-uint SpellDescription0 string
-uint SpellDescription1 string
-uint SpellDescription2 string
-uint SpellDescription3 string
-uint SpellDescription4 string
-uint SpellDescription5 string
-uint SpellDescription6 string
-uint SpellDescription7 string
-uint SpellDescription8 string
-uint SpellDescription9 string
-uint SpellDescription10 string
-uint SpellDescription11 string
-uint SpellDescription12 string
-uint SpellDescription13 string
-uint SpellDescription14 string
-uint SpellDescription15 string
-uint SpellDescriptionFlags
-uint SpellToolTip0 string
-uint SpellToolTip1 string
-uint SpellToolTip2 string
-uint SpellToolTip3 string
-uint SpellToolTip4 string
-uint SpellToolTip5 string
-uint SpellToolTip6 string
-uint SpellToolTip7 string
-uint SpellToolTip8 string
-uint SpellToolTip9 string
-uint SpellToolTip10 string
-uint SpellToolTip11 string
-uint SpellToolTip12 string
-uint SpellToolTip13 string
-uint SpellToolTip14 string
-uint SpellToolTip15 string
-uint SpellToolTipFlags
+uint Priority
+uint Name0 string
+uint Name1 string
+uint Name2 string
+uint Name3 string
+uint Name4 string
+uint Name5 string
+uint Name6 string
+uint Name7 string
+uint Name8 string
+uint Name9 string
+uint Name10 string
+uint Name11 string
+uint Name12 string
+uint Name13 string
+uint Name14 string
+uint Name15 string
+uint NameFlags
+uint Rank0 string
+uint Rank1 string
+uint Rank2 string
+uint Rank3 string
+uint Rank4 string
+uint Rank5 string
+uint Rank6 string
+uint Rank7 string
+uint Rank8 string
+uint Rank9 string
+uint Rank10 string
+uint Rank11 string
+uint Rank12 string
+uint Rank13 string
+uint Rank14 string
+uint Rank15 string
+uint RankFlags
+uint Description0 string
+uint Description1 string
+uint Description2 string
+uint Description3 string
+uint Description4 string
+uint Description5 string
+uint Description6 string
+uint Description7 string
+uint Description8 string
+uint Description9 string
+uint Description10 string
+uint Description11 string
+uint Description12 string
+uint Description13 string
+uint Description14 string
+uint Description15 string
+uint DescriptionFlags
+uint ToolTip0 string
+uint ToolTip1 string
+uint ToolTip2 string
+uint ToolTip3 string
+uint ToolTip4 string
+uint ToolTip5 string
+uint ToolTip6 string
+uint ToolTip7 string
+uint ToolTip8 string
+uint ToolTip9 string
+uint ToolTip10 string
+uint ToolTip11 string
+uint ToolTip12 string
+uint ToolTip13 string
+uint ToolTip14 string
+uint ToolTip15 string
+uint ToolTipFlags
 uint ManaCostPercentage
 uint StartRecoveryCategory
 uint StartRecoveryTime
 uint MaximumTargetLevel
-uint SpellFamilyName
-uint SpellFamilyFlags
-uint SpellFamilyFlags1
-uint SpellFamilyFlags2
+Class Class
+uint ClassFlags
+uint ClassFlags1
+uint ClassFlags2
 uint MaximumAffectedTargets
 uint DamageClass
 uint PreventionType
@@ -224,12 +224,12 @@ uint RequiredAuraVision
 uint TotemCategory1
 uint TotemCategory2
 uint AreaGroupID
-uint SchoolMask
+MagicSchool School
 uint RuneCostID
-uint SpellMissileID
+uint MissileID
 uint PowerDisplayId
 float EffectBonusMultiplier1
 float EffectBonusMultiplier2
 float EffectBonusMultiplier3
-uint SpellDescriptionVariableID
-uint SpellDifficultyID
+uint DescriptionVariableID
+uint DifficultyID

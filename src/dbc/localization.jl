@@ -74,6 +74,7 @@ end
 Base.broadcastable(lstr::LString) = Ref(lstr)
 
 Base.getindex(lstr::LString) = getproperty(lstr, get_locale())
+Base.isempty(lstr::LString) = isempty(lstr[])
 
 LString(locale::Symbol) = LString((locale,))
 function LString(locales::Union{Tuple, AbstractVector} = ())

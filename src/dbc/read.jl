@@ -1,7 +1,7 @@
 const DBC_MAGIC_NUMBER = tag4"CBDW"
 
 BinaryParsingTools.cache_stream_in_ram(io::IO, ::Type{DBCData}) = true
-BinaryParsingTools.swap_endianness(io::IO, ::Type{DBCData}) = peek(io, UInt32) == reverse(DBC_MAGIC_NUMBER)
+BinaryParsingTools.swap_endianness(io::IO, ::Type{DBCData}) = peek(io, Tag4) == reverse(DBC_MAGIC_NUMBER)
 
 function read_strings(io::IO, string_block_size::UInt32)
   # Strings are all the way to the end of the file.

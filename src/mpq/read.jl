@@ -1,7 +1,7 @@
 const MPQ_MAGIC_NUMBER = Tag4(('M', 'P', 'Q', '\x1A'))
 
 function BinaryParsingTools.swap_endianness(io::IO, ::Type{MPQArchive})
-  peek(io, UInt32) == reverse(MPQ_MAGIC_NUMBER)
+  peek(io, Tag4) == reverse(MPQ_MAGIC_NUMBER)
 end
 
 MPQArchive(path::AbstractString) = finalizer(x -> close(x.io), MPQArchive(open(path, "r")))

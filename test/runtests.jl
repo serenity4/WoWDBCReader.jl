@@ -255,4 +255,74 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
       @test length(collection.file_sources) > 200000
     end
   end
+
+  @testset "BLP files" begin
+    # The following example files were identified on https://wowwiki-archive.fandom.com/wiki/BLP_file
+    # for their specific features suitable for testing.
+    @testset "Reading BLP files" begin
+      collection = MPQCollection([mpq_file("enUS/locale-enUS"), mpq_file("common"), mpq_file("lichking")])
+
+      @testset "BLP compression" begin
+        # No alpha.
+        icon = MPQFile(collection, "Interface\\GLUES\\LoadingBar\\Loading-BarGlow.blp")
+        file = BLPFile(read(icon))
+        nx, ny = size(file.image)
+        @test nx == 512 && ny == 128
+        @test length(file.mipmaps) == log2(ny)
+        @test size(file.mipmaps[end]) == (4, 1)
+
+        # 1-bit alpha.
+        icon = MPQFile(collection, "Interface\\CURSOR\\Attack.blp")
+        file = BLPFile(read(icon))
+        nx, ny = size(file.image)
+        @test nx == 32 && ny == 32
+        @test length(file.mipmaps) == log2(nx)
+        @test size(file.mipmaps[end]) == (1, 1)
+
+        FileIO.save("test.png", file.image)
+
+        # 4-bit alpha.
+        icon = MPQFile(collection, "Character\\Tauren\\Female\\TAURENFEMALESKIN00_01_EXTRA.BLP")
+        file = BLPFile(read(icon))
+
+        # 8-bit alpha.
+        icon = MPQFile(collection, "Interface\\CURSOR\\Buy.blp")
+        file = BLPFile(read(icon))
+      end
+
+      @testset "DTX1 compression" begin
+        # No alpha.
+        icon = MPQFile(collection, "Interface\\Icons\\Trade_Alchemy.blp")
+        file = BLPFile(read(icon))
+
+        # 1-bit alpha.
+        icon = MPQFile(collection, "Interface\\AUCTIONFRAME\\BuyoutIcon.blp")
+        file = BLPFile(read(icon))
+
+        # Has a with of 768 pixels.
+        icon = MPQFile(collection, "TILESET\\Terrain Cube Maps\\TCB_CrystalSong_A.blp")
+        @test_throws "must be a power of two" file = BLPFile(read(icon))
+      end
+
+      @testset "DTX3 compression" begin
+        # 4-bit alpha.
+        icon = MPQFile(collection, "Interface\\Icons\\INV_Fishingpole_02.blp")
+        file = BLPFile(read(icon))
+      end
+
+      @testset "DTX5 compression" begin
+        # No alpha.
+        icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
+        file = BLPFile(read(icon))
+
+        # 8-bit alpha.
+        icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
+        file = BLPFile(read(icon))
+      end
+
+      @testset "No compression" begin
+        # TODO (requires data from Cataclysm or later)
+      end
+    end
+  end
 end;

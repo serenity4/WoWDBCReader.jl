@@ -30,20 +30,34 @@ function write_blp_image(io, image)
       a_rgb = RGB(a.r, a.g, a.b)
       b_rgb = RGB(b.r, b.g, b.b)
       rgb_bits = 0x00000000
-      alpha_bits = 0x0000000000000000
       for bx in 1:4
         for by in 1:4
           rgb_bit_offset = 2 * (bx + 4(by - 1) - 1)
-          alpha_bit_offset = 3 * (bx + 4(by - 1) - 1)
           pixel = block[bx, by]
           pixel_rgb = RGB(pixel.r, pixel.g, pixel.b)
           _, i = findmin(w -> norm(pixel_rgb - mix(a_rgb, b_rgb, w)), (0.0, 1.0, 1/3, 2/3))
           rgb_bits |= ((i - 1) % UInt32) << rgb_bit_offset
-          _, i = findmin(w -> norm(pixel.alpha - mix(a.alpha, b.alpha, w)), (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7))
+        end
+      end
+      alpha_bits = 0x0000000000000000
+      distance = sum(pixel -> minimum(w -> norm(pixel.alpha - mix(a.alpha, b.alpha, w)), (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7)), block)
+      distance_2 = sum(pixel -> minimum(w -> norm(pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w))), (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0)), block)
+      default_mode = distance < distance_2
+      for bx in 1:4
+        for by in 1:4
+          pixel = block[bx, by]
+          alpha_bit_offset = 3 * (bx + 4(by - 1) - 1)
+          if default_mode
+            _, i = findmin(w -> norm(pixel.alpha - mix(a.alpha, b.alpha, w)), (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7))
+          else
+            _, i = findmin(w -> norm(pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w))), (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0))
+          end
           alpha_bits |= ((i - 1) % UInt64) << alpha_bit_offset
         end
       end
-      alpha_endpoints = ifelse(a.alpha > b.alpha, (a.alpha, b.alpha), (b.alpha, a.alpha))
+      alpha_endpoints = default_mode ?
+       ifelse(a.alpha > b.alpha, (a.alpha, b.alpha), (b.alpha, a.alpha)) :
+       ifelse(a.alpha > b.alpha, (b.alpha, a.alpha), (a.alpha, b.alpha))
       alpha_block = |(
         UInt64(0),
         reinterpret(UInt8, N0f8(alpha_endpoints[1])),
@@ -72,7 +86,7 @@ function compute_endpoints(block::AbstractMatrix{RGBA{N0f8}})
   components = predict(pca, table)::Matrix{Float64}
   rgb_approx = reconstruct(pca, [minimum(components) maximum(components)])::Matrix{Float64}
 
-  a = RGBA(clamp.(ntuple(i -> rgb_approx[i, 1], 3), 0, 1)..., alpha_a)
-  b = RGBA(clamp.(ntuple(i -> rgb_approx[i, 2], 3), 0, 1)..., alpha_b)
+  a = RGBA(ntuple(i -> clamp(rgb_approx[i, 1], 0, 1), 3)..., alpha_a)
+  b = RGBA(ntuple(i -> clamp(rgb_approx[i, 2], 0, 1), 3)..., alpha_b)
   a, b
 end

@@ -20,7 +20,12 @@ function Base.read(io::BinaryIO, ::Type{BLPFile})
   height = read(io, UInt32)
   mipmap_offsets = [read(io, UInt32) for _ in 1:16]
   mipmap_lengths = [read(io, UInt32) for _ in 1:16]
-  palette = compression === BLP_COMPRESSION_BLP ? [reinterpret(ABGR{N0f8}, read(io, UInt32)) for _ in 1:256] : nothing
+  if compression === BLP_COMPRESSION_BLP
+    palette = [reinterpret(ABGR{N0f8}, read(io, UInt32)) for _ in 1:256]
+  else
+    palette = nothing
+    skip(io, 1024)
+  end
   images = read_blp_images(io, width, height, compression, alpha_depth, pixel_format, has_mips, mipmap_offsets, mipmap_lengths, palette)
   BLPFile(popfirst!(images), images)
 end
@@ -157,4 +162,4 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
 end
 
 mix(a::RGB16, b::RGB16, weight) = RGB(((1 - weight) .* (a.r, a.g, a.b) .+ weight .* (b.r, b.g, b.b))...)
-mix(a::AbstractFloat, b::AbstractFloat, weight) = (1 - weight) * a + weight * b
+mix(a, b, weight) = (1 .- weight) .* a .+ weight .* b

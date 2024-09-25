@@ -1,12 +1,15 @@
 using WoWDataParser
 using WoWDataParser: RGBA, RGB16, N0f8
+using LinearAlgebra: norm
+using MultivariateStats: mean
+using StatsBase: quantile
 using BinaryParsingTools: read_binary
 const WoW = WoWDataParser
 using Test
 
 dbc_file(name) = joinpath(DBC_DIRECTORY, "$name.dbc")
-
 mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
+error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), bound)
 
 @testset "WoWDataParser.jl" begin
   @testset "Localization" begin
@@ -341,6 +344,26 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
       @testset "No compression" begin
         # TODO (requires data from Cataclysm or later)
       end
+    end
+
+    @testset "Writing BLP files" begin
+      icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
+      file = BLPFile(read(icon))
+      data = BLPData(file.image)
+      io = IOBuffer()
+      write(io, data)
+      serialized = take!(seekstart(io))
+      file2 = BLPFile(serialized)
+      @test error_quantile(file.image, file2.image, 0.7) == 0.0
+
+      icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
+      file = BLPFile(read(icon))
+      data = BLPData(file.image)
+      io = IOBuffer()
+      write(io, data)
+      serialized = take!(seekstart(io))
+      file2 = BLPFile(serialized)
+      @test error_quantile(file.image, file2.image, 0.9) == 0.0
     end
   end
 end;

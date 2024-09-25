@@ -39,6 +39,12 @@ function Base.getproperty(rgb::RGB16, name::Symbol)
 end
 
 Base.read(io::IO, ::Type{RGB16}) = RGB16(read(io, UInt16))
+Base.write(io::IO, rgb::RGB16) = write(io, rgb.data)
 
 RGB16(r::N0f8, g::N0f8, b::N0f8) = RGB16(foldl((data, (c, n, size)) -> data |= UInt16(c.i >> (8 - size)) << n, zip((r, g, b), (11, 5, 0), (5, 6, 5)); init = 0x0000))
 RGB16(r, g, b) = RGB16(N0f8.((r, g, b))...)
+RGB16(color::Colorant) = RGB16(color.r, color.g, color.b)
+
+struct BLPData
+  image::Matrix{RGBA{N0f8}}
+end

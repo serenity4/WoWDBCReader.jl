@@ -10,6 +10,8 @@ using CodecZlib: ZlibCompressor, ZlibDecompressor
 using ColorTypes
 using Dictionaries
 using FixedPointNumbers: N0f8
+using LinearAlgebra: norm
+using MultivariateStats: PCA, fit, predict, reconstruct
 using StructEquality
 using StyledStrings
 using StyledStrings: SimpleColor, Face
@@ -25,6 +27,7 @@ get_locale() = LOCALE[]
 
 include("blp/types.jl")
 include("blp/read.jl")
+include("blp/write.jl")
 
 include("dbc/localization.jl")
 include("dbc/schemas.jl")
@@ -65,7 +68,7 @@ export LString,
        find_file,
        listfile,
 
-       BLPFile,
+       BLPFile, BLPData,
        BLPCompression, BLP_COMPRESSION_BLP, BLP_COMPRESSION_DXTC, BLP_COMPRESSION_NONE,
        BLPPixelFormat, BLP_PIXEL_FORMAT_DXT1, BLP_PIXEL_FORMAT_DXT3, BLP_PIXEL_FORMAT_ARGB8888, BLP_PIXEL_FORMAT_ARGB1555, BLP_PIXEL_FORMAT_ARGB4444, BLP_PIXEL_FORMAT_RGB565, BLP_PIXEL_FORMAT_A8, BLP_PIXEL_FORMAT_DXT5, BLP_PIXEL_FORMAT_UNSPECIFIED, BLP_PIXEL_FORMAT_ARGB2565, BLP_PIXEL_FORMAT_UNKNOWN, BLP_PIXEL_FORMAT_BC5
 

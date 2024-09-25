@@ -304,9 +304,9 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         # No alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Trade_Alchemy.blp")
         file = BLPFile(read(icon))
-        @test file.image[3912] === RGBA{N0f8}(0.188, 0.204, 0.188, 1.0)
+        @test file.image[3912] === RGBA{N0f8}(0.188, 0.204, 0.2, 1.0)
         @test file.image[89] === RGBA{N0f8}(0.753, 0.753, 0.753, 1.0)
-        @test file.image[465] === RGBA{N0f8}(0.596, 0.533, 0.314, 1.0)
+        @test file.image[465] === RGBA{N0f8}(0.608, 0.545, 0.314, 1.0)
 
         # 1-bit alpha.
         icon = MPQFile(collection, "Interface\\AUCTIONFRAME\\BuyoutIcon.blp")
@@ -316,26 +316,26 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         # Has a with of 768 pixels.
         icon = MPQFile(collection, "TILESET\\Terrain Cube Maps\\TCB_CrystalSong_A.blp")
         file = BLPFile(read(icon))
-        @test file.image[20, 76] === RGBA{N0f8}(0.282, 0.267, 0.376, 1.0)
+        @test file.image[20, 76] === RGBA{N0f8}(0.302, 0.278, 0.376, 1.0)
       end
 
       @testset "DTX3 compression" begin
         # 4-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\INV_Fishingpole_02.blp")
         file = BLPFile(read(icon))
-        @test file.image[15, 20] === RGBA{N0f8}(0.345, 0.251, 0.188, 1.0)
+        @test file.image[15, 20] === RGBA{N0f8}(0.357, 0.263, 0.188, 1.0)
       end
 
       @testset "DTX5 compression" begin
         # No alpha.
         icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
         file = BLPFile(read(icon))
-        @test file.image[250, 100] === RGBA{N0f8}(0.188, 0.204, 0.094, 1.0)
+        @test file.image[250, 100] === RGBA{N0f8}(0.2, 0.216, 0.094, 1.0)
 
         # 8-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
         file = BLPFile(read(icon))
-        @test file.image[42, 18] === RGBA{N0f8}(0.408, 0.157, 0.847, 1.0)
+        @test file.image[42, 18] === RGBA{N0f8}(0.427, 0.161, 0.847, 1.0)
       end
 
       @testset "No compression" begin

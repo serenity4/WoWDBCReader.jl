@@ -156,5 +156,5 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
   images
 end
 
-mix(a::RGB16, b::RGB16, weight) = RGB16(((1 - weight) .* (a.r, a.g, a.b) .+ weight .* (b.r, b.g, b.b))...)
+mix(a::RGB16, b::RGB16, weight) = RGB(((1 - weight) .* (a.r, a.g, a.b) .+ weight .* (b.r, b.g, b.b))...)
 mix(a::AbstractFloat, b::AbstractFloat, weight) = (1 - weight) * a + weight * b

@@ -322,6 +322,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         # 4-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\INV_Fishingpole_02.blp")
         file = BLPFile(read(icon))
+        @test file.image[20, 15] === RGBA{N0f8}(0.345, 0.251, 0.188, 1.0)
       end
 
       @testset "DTX5 compression" begin
@@ -332,6 +333,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         # 8-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
         file = BLPFile(read(icon))
+        @test file.image[18, 42] === RGBA{N0f8}(0.408, 0.157, 0.847, 1.0)
       end
 
       @testset "No compression" begin

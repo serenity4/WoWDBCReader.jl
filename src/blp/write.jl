@@ -62,17 +62,17 @@ function compute_endpoints(block::AbstractMatrix{RGBA{N0f8}})
   # Inspired from https://www.sjbrown.co.uk/posts/dxt-compression-techniques/
   table = getproperty.(data, :alpha)
   pca = fit(PCA, table; maxoutdim = 1)
-  components = predict(pca, table)
-  approx = reconstruct(pca, [minimum(components) maximum(components)])
-  alpha_a = clamp(approx[1, 1], 0, 1)
-  alpha_b = clamp(approx[1, 2], 0, 1)
+  components = predict(pca, table)::Matrix{Float64}
+  alpha_approx = reconstruct(pca, [minimum(components) maximum(components)])::Matrix{Float64}
+  alpha_a = clamp(alpha_approx[1, 1], 0, 1)
+  alpha_b = clamp(alpha_approx[1, 2], 0, 1)
 
   table = [getproperty.(data, :r); getproperty.(data, :g); getproperty.(data, :b)]
   pca = fit(PCA, table; maxoutdim = 1)
-  components = predict(pca, table)
-  approx = reconstruct(pca, [minimum(components) maximum(components)])
+  components = predict(pca, table)::Matrix{Float64}
+  rgb_approx = reconstruct(pca, [minimum(components) maximum(components)])::Matrix{Float64}
 
-  a = RGBA(clamp.(@view(approx[:, 1]), 0, 1)..., alpha_a)
-  b = RGBA(clamp.(@view(approx[:, 2]), 0, 1)..., alpha_b)
+  a = RGBA(clamp.(ntuple(i -> rgb_approx[i, 1], 3), 0, 1)..., alpha_a)
+  b = RGBA(clamp.(ntuple(i -> rgb_approx[i, 2], 3), 0, 1)..., alpha_b)
   a, b
 end

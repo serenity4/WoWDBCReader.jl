@@ -15,11 +15,9 @@ function Base.read(io::BinaryIO, ::Type{BLPFile})
   any(==(alpha_depth), (0, 1, 4, 8)) || error("Unsupported alpha depth value: $alpha_depth")
   pixel_format = read(io, BLPPixelFormat)
   mip_flags = read(io, UInt8)
-  has_mips = Bool(mip_flags & 0x0f)
+  has_mips = Bool(mip_flags & 0x01)
   width = read(io, UInt32)
   height = read(io, UInt32)
-  ispow2(width) || error("Image width must be a power of two.")
-  ispow2(height) || error("Image height must be a power of two.")
   mipmap_offsets = [read(io, UInt32) for _ in 1:16]
   mipmap_lengths = [read(io, UInt32) for _ in 1:16]
   palette = compression === BLP_COMPRESSION_BLP ? [reinterpret(ABGR{N0f8}, read(io, UInt32)) for _ in 1:256] : nothing
@@ -28,19 +26,19 @@ function Base.read(io::BinaryIO, ::Type{BLPFile})
 end
 
 function read_blp_images(io, width, height, compression, alpha_depth, pixel_format, has_mips::Bool, mipmap_offsets, mipmap_lengths, palette)
-  mip_range = 0:(has_mips ? minimum(Int ∘ log2, (width, height)) : 0)
+  mip_range = 0:(has_mips ? minimum(Int ∘ ceil ∘ log2, (width, height)) : 0)
   images = Matrix{RGBA{N0f8}}[]
   for (level, offset, size) in zip(mip_range, mipmap_offsets, mipmap_lengths)
     nx, ny = width >> level, height >> level
     n = nx * ny
     !iszero(offset) && seek(io, offset)
     if compression === BLP_COMPRESSION_BLP
-      linear = zeros(RGBA{N0f8}, ny, nx)
+      image = zeros(RGBA{N0f8}, nx, ny)
       palette::Vector{ABGR{N0f8}}
       for i in 1:n
         index = read(io, UInt8)
         pixel = palette[index + 1]
-        linear[i] = RGBA(pixel.r, pixel.g, pixel.b, pixel.alpha)
+        image[i] = RGBA(pixel.r, pixel.g, pixel.b, pixel.alpha)
       end
       if alpha_depth > 0
         n_per_alpha = 8 ÷ alpha_depth
@@ -48,20 +46,20 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
         for i in 1:na
           alpha = read(io, UInt8)
           for k in 1:n_per_alpha
-            pixel = linear[i]
-            linear[i] = @set pixel.alpha = reinterpret(N0f8, (alpha << (8 - k * alpha_depth)) >> 8 - alpha_depth)
+            pixel = image[i]
+            image[i] = @set pixel.alpha = reinterpret(N0f8, (alpha << (8 - k * alpha_depth)) >> 8 - alpha_depth)
           end
         end
       end
-      push!(images, permutedims(linear, (2, 1)))
+      push!(images, image)
     elseif compression === BLP_COMPRESSION_DXTC && pixel_format === BLP_PIXEL_FORMAT_DXT1
       image = zeros(RGBA{N0f8}, nx, ny)
       push!(images, image)
       sx, sy = cld(nx, 4), cld(ny, 4)
-      for x in 1:sx
-        offset_x = 4(x - 1)
-        for y in 1:sy
-          offset_y = 4(y - 1)
+      for y in 1:sy
+        offset_y = 4(y - 1)
+        for x in 1:sx
+          offset_x = 4(x - 1)
           a = read(io, RGB16)
           b = read(io, RGB16)
           bits = read(io, UInt32)
@@ -72,7 +70,7 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
             for by in 1:4
               j = by + offset_y
               j > ny && break
-              bit_offset = 2 * (by + 4(bx - 1) - 1)
+              bit_offset = 2 * (bx + 4(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
               if isnothing(reserved)
                 pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
@@ -91,10 +89,10 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
       image = zeros(RGBA{N0f8}, nx, ny)
       push!(images, image)
       sx, sy = cld(nx, 4), cld(ny, 4)
-      for x in 1:sx
-        offset_x = 4(x - 1)
-        for y in 1:sy
-          offset_y = 4(y - 1)
+      for y in 1:sy
+        offset_y = 4(y - 1)
+        for x in 1:sx
+          offset_x = 4(x - 1)
           alphas = read(io, UInt64)
           a = read(io, RGB16)
           b = read(io, RGB16)
@@ -105,8 +103,8 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
             for by in 1:4
               j = by + offset_y
               j > ny && break
-              bit_offset = 2 * (by + 4(bx - 1) - 1)
-              alpha_offset = 4 * (by + 4(bx - 1) - 1)
+              bit_offset = 2 * (bx + 4(by - 1) - 1)
+              alpha_offset = 4 * (bx + 4(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
               pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
               alpha = (((alphas << (60 - alpha_offset)) >> 60) % UInt16) / 15
@@ -119,10 +117,10 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
       image = zeros(RGBA{N0f8}, nx, ny)
       push!(images, image)
       sx, sy = cld(nx, 4), cld(ny, 4)
-      for x in 1:sx
-        offset_x = 4(x - 1)
-        for y in 1:sy
-          offset_y = 4(y - 1)
+      for y in 1:sy
+        offset_y = 4(y - 1)
+        for x in 1:sx
+          offset_x = 4(x - 1)
           alpha_block = read(io, UInt64)
           alpha_a = (alpha_block & 0xff) / 255
           alpha_b = ((alpha_block & 0xff00) >> 8) / 255
@@ -136,8 +134,8 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
             for by in 1:4
               j = by + offset_y
               j > ny && break
-              bit_offset = 2 * (by + 4(bx - 1) - 1)
-              alpha_offset = 3 * (by + 3(bx - 1) - 1)
+              bit_offset = 2 * (bx + 4(by - 1) - 1)
+              alpha_offset = 3 * (bx + 3(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
               pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
               alpha_code = (alpha_bits >> alpha_offset) & 0x07

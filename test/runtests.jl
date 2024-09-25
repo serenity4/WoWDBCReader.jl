@@ -271,7 +271,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         @test nx == 512 && ny == 128
         @test length(file.mipmaps) == log2(ny)
         @test size(file.mipmaps[end]) == (4, 1)
-        @test file.image[400, 64] === RGBA{N0f8}(0.0, 0.008, 0.012, 0.02)
+        @test file.image[400, 64] === RGBA{N0f8}(0.0, 0.102, 0.275, 0.518)
 
         # 1-bit alpha.
         icon = MPQFile(collection, "Interface\\CURSOR\\Attack.blp")
@@ -280,17 +280,17 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         @test nx == 32 && ny == 32
         @test length(file.mipmaps) == log2(nx)
         @test size(file.mipmaps[end]) == (1, 1)
-        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.565, 0.725, 0.776)
+        @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.565, 0.725, 0.776)
 
         # 4-bit alpha.
         icon = MPQFile(collection, "Character\\Tauren\\Female\\TAURENFEMALESKIN00_01_EXTRA.BLP")
         file = BLPFile(read(icon))
-        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.141, 0.125, 0.988)
+        @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.141, 0.125, 0.988)
 
         # 8-bit alpha.
         icon = MPQFile(collection, "Interface\\CURSOR\\Buy.blp")
         file = BLPFile(read(icon))
-        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.482, 0.369, 0.973)
+        @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.482, 0.369, 0.973)
       end
 
       @testset "DTX1 compression" begin
@@ -304,9 +304,9 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         # No alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Trade_Alchemy.blp")
         file = BLPFile(read(icon))
-        @test file.image[6] === RGBA{N0f8}(0.0, 0.016, 0.031, 1.0)
-        @test file.image[89] === RGBA{N0f8}(0.251, 0.251, 0.251, 1.0)
-        @test file.image[465] === RGBA{N0f8}(0.878, 0.863, 0.784, 1.0)
+        @test file.image[3912] === RGBA{N0f8}(0.188, 0.204, 0.188, 1.0)
+        @test file.image[89] === RGBA{N0f8}(0.753, 0.753, 0.753, 1.0)
+        @test file.image[465] === RGBA{N0f8}(0.596, 0.533, 0.314, 1.0)
 
         # 1-bit alpha.
         icon = MPQFile(collection, "Interface\\AUCTIONFRAME\\BuyoutIcon.blp")
@@ -315,25 +315,27 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
 
         # Has a with of 768 pixels.
         icon = MPQFile(collection, "TILESET\\Terrain Cube Maps\\TCB_CrystalSong_A.blp")
-        @test_throws "must be a power of two" file = BLPFile(read(icon))
+        file = BLPFile(read(icon))
+        @test file.image[20, 76] === RGBA{N0f8}(0.282, 0.267, 0.376, 1.0)
       end
 
       @testset "DTX3 compression" begin
         # 4-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\INV_Fishingpole_02.blp")
         file = BLPFile(read(icon))
-        @test file.image[20, 15] === RGBA{N0f8}(0.345, 0.251, 0.188, 1.0)
+        @test file.image[15, 20] === RGBA{N0f8}(0.345, 0.251, 0.188, 1.0)
       end
 
       @testset "DTX5 compression" begin
         # No alpha.
         icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
         file = BLPFile(read(icon))
+        @test file.image[250, 100] === RGBA{N0f8}(0.188, 0.204, 0.094, 1.0)
 
         # 8-bit alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
         file = BLPFile(read(icon))
-        @test file.image[18, 42] === RGBA{N0f8}(0.408, 0.157, 0.847, 1.0)
+        @test file.image[42, 18] === RGBA{N0f8}(0.408, 0.157, 0.847, 1.0)
       end
 
       @testset "No compression" begin

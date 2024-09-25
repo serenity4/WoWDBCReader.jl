@@ -34,15 +34,13 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
     nx, ny = width >> level, height >> level
     n = nx * ny
     !iszero(offset) && seek(io, offset)
-    image = zeros(RGBA{N0f8}, nx, ny)
-    push!(images, image)
-    linear = transpose(image)
     if compression === BLP_COMPRESSION_BLP
+      linear = zeros(RGBA{N0f8}, ny, nx)
       palette::Vector{ABGR{N0f8}}
       for i in 1:n
         index = read(io, UInt8)
         pixel = palette[index + 1]
-        image[i] = RGBA(pixel.r, pixel.g, pixel.b, pixel.alpha)
+        linear[i] = RGBA(pixel.r, pixel.g, pixel.b, pixel.alpha)
       end
       if alpha_depth > 0
         n_per_alpha = 8 ÷ alpha_depth
@@ -50,14 +48,58 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
         for i in 1:na
           alpha = read(io, UInt8)
           for k in 1:n_per_alpha
-            pixel = image[i]
-            image[i] = @set pixel.alpha = reinterpret(N0f8, (alpha << (8 - k * alpha_depth)) >> 8 - alpha_depth)
+            pixel = linear[i]
+            linear[i] = @set pixel.alpha = reinterpret(N0f8, (alpha << (8 - k * alpha_depth)) >> 8 - alpha_depth)
           end
         end
       end
+      push!(images, permutedims(linear, (2, 1)))
+    elseif compression === BLP_COMPRESSION_DXTC && pixel_format === BLP_PIXEL_FORMAT_DXT1
+      image = zeros(RGBA{N0f8}, nx, ny)
+      push!(images, image)
+      sx, sy = cld(nx, 4), cld(ny, 4)
+      for x in 1:sx
+        offset_x = 4(x - 1)
+        for y in 1:sy
+          offset_y = 4(y - 1)
+          a = read(io, RGB16)
+          b = read(io, RGB16)
+          bits = read(io, UInt32)
+          reserved = a.data > b.data ? nothing : RGBA{N0f8}(0, 0, 0, ifelse(alpha_depth == 0, 1, 0))
+          for bx in 1:4
+            i = bx + offset_x
+            i > nx && break
+            for by in 1:4
+              j = by + offset_y
+              j > ny && break
+              bit_offset = 2 * (by + 4(bx - 1) - 1)
+              bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
+              if isnothing(reserved)
+                pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
+                image[i, j] = RGBA{N0f8}(pixel.r, pixel.g, pixel.b, 1)
+              elseif bit == 0x03
+                image[i, j] = reserved
+              else
+                pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, 0.5)
+                image[i, j] = RGBA{N0f8}(pixel.r, pixel.g, pixel.b, 1)
+              end
+            end
+          end
+        end
+      end
+    elseif compression === BLP_COMPRESSION_DXTC && pixel_format === BLP_PIXEL_FORMAT_DXT3
+      # TODO
+      # https://registry.khronos.org/DataFormat/specs/1.3/dataformat.1.3.inline.html#S3TC
+      # https://themaister.net/blog/2020/08/12/compressed-gpu-texture-formats-a-review-and-compute-shader-decoders-part-1/
+      # https://en.wikipedia.org/wiki/S3_Texture_Compression
+      error("Unsupported compression format $compression")
+    elseif compression === BLP_COMPRESSION_DXTC && pixel_format === BLP_PIXEL_FORMAT_DXT5
+      error("Unsupported compression format $compression")
     else
       error("Unsupported compression format $compression")
     end
   end
   images
 end
+
+mix(a::RGB16, b::RGB16, weight) = RGB16(((1 - weight) .* (a.r, a.g, a.b) .+ weight .* (b.r, b.g, b.b))...)

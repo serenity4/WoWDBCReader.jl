@@ -1,4 +1,5 @@
 using WoWDataParser
+using WoWDataParser: RGBA, RGB16, N0f8
 using BinaryParsingTools: read_binary
 const WoW = WoWDataParser
 using Test
@@ -270,6 +271,7 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         @test nx == 512 && ny == 128
         @test length(file.mipmaps) == log2(ny)
         @test size(file.mipmaps[end]) == (4, 1)
+        @test file.image[400, 64] === RGBA{N0f8}(0.0, 0.008, 0.012, 0.02)
 
         # 1-bit alpha.
         icon = MPQFile(collection, "Interface\\CURSOR\\Attack.blp")
@@ -278,26 +280,38 @@ mpq_file(name) = joinpath(DATA_DIRECTORY, "$name.MPQ")
         @test nx == 32 && ny == 32
         @test length(file.mipmaps) == log2(nx)
         @test size(file.mipmaps[end]) == (1, 1)
-
-        FileIO.save("test.png", file.image)
+        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.565, 0.725, 0.776)
 
         # 4-bit alpha.
         icon = MPQFile(collection, "Character\\Tauren\\Female\\TAURENFEMALESKIN00_01_EXTRA.BLP")
         file = BLPFile(read(icon))
+        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.141, 0.125, 0.988)
 
         # 8-bit alpha.
         icon = MPQFile(collection, "Interface\\CURSOR\\Buy.blp")
         file = BLPFile(read(icon))
+        @test file.image[16, 14] === RGBA{N0f8}(0.0, 0.482, 0.369, 0.973)
       end
 
       @testset "DTX1 compression" begin
+        @testset "RGB16" begin
+          rgb = RGB16(N0f8(0.5), N0f8(0.2), N0f8(0.3))
+          @test rgb.r === N0f8(0.502)
+          @test rgb.g === N0f8(0.188)
+          @test rgb.b === N0f8(0.282)
+        end
+
         # No alpha.
         icon = MPQFile(collection, "Interface\\Icons\\Trade_Alchemy.blp")
         file = BLPFile(read(icon))
+        @test file.image[6] === RGBA{N0f8}(0.0, 0.016, 0.031, 1.0)
+        @test file.image[89] === RGBA{N0f8}(0.251, 0.251, 0.251, 1.0)
+        @test file.image[465] === RGBA{N0f8}(0.878, 0.863, 0.784, 1.0)
 
         # 1-bit alpha.
         icon = MPQFile(collection, "Interface\\AUCTIONFRAME\\BuyoutIcon.blp")
         file = BLPFile(read(icon))
+        @test file.image[2] === RGBA{N0f8}(0.847, 0.706, 0.0, 1.0)
 
         # Has a with of 768 pixels.
         icon = MPQFile(collection, "TILESET\\Terrain Cube Maps\\TCB_CrystalSong_A.blp")

@@ -354,7 +354,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       write(io, data)
       serialized = take!(seekstart(io))
       file2 = BLPFile(serialized)
-      @test error_quantile(file.image, file2.image, 0.7) == 0.0
+      @test error_quantile(file.image, file2.image, 0.77) == 0.0
 
       icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
       file = BLPFile(read(icon))
@@ -363,7 +363,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       write(io, data)
       serialized = take!(seekstart(io))
       file2 = BLPFile(serialized)
-      @test error_quantile(file.image, file2.image, 0.9) == 0.0
+      @test error_quantile(file.image, file2.image, 0.96) == 0.0
     end
   end
 end;

@@ -40,17 +40,17 @@ function write_blp_image(io, image)
         end
       end
       alpha_bits = 0x0000000000000000
-      distance = sum(pixel -> minimum(w -> norm(pixel.alpha - mix(a.alpha, b.alpha, w)), (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7)), block)
-      distance_2 = sum(pixel -> minimum(w -> norm(pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w))), (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0)), block)
+      distance = sum(pixel -> minimum(w -> (pixel.alpha - mix(a.alpha, b.alpha, w))^2, (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7)), block)
+      distance_2 = sum(pixel -> minimum(w -> (pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w)))^2, (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0)), block)
       default_mode = distance < distance_2
       for bx in 1:4
         for by in 1:4
           pixel = block[bx, by]
           alpha_bit_offset = 3 * (bx + 4(by - 1) - 1)
           if default_mode
-            _, i = findmin(w -> norm(pixel.alpha - mix(a.alpha, b.alpha, w)), (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7))
+            _, i = findmin(w -> (pixel.alpha - mix(a.alpha, b.alpha, w))^2, (0.0, 1.0, 1/7, 2/7, 3/7, 4/7, 5/7, 6/7))
           else
-            _, i = findmin(w -> norm(pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w))), (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0))
+            _, i = findmin(w -> (pixel.alpha - (w == 10.0 ? 0.0 : w == 11.0 ? 1.0 : mix(a.alpha, b.alpha, w)))^2, (0.0, 1.0, 1/5, 2/5, 3/5, 4/5, 10.0, 11.0))
           end
           alpha_bits |= ((i - 1) % UInt64) << alpha_bit_offset
         end
@@ -65,28 +65,57 @@ function write_blp_image(io, image)
         alpha_bits << 16,
       )
       write(io, alpha_block)
-      write(io, RGB16(a), RGB16(b), rgb_bits)
+      write(io, RGB16(a))
+      write(io, RGB16(b))
+      write(io, rgb_bits)
     end
   end
 end
 
+function compute_endpoints(block)
+  distinct_colors = unique(block)
+  length(distinct_colors) == 1 && return (distinct_colors[1], distinct_colors[1])
+  length(distinct_colors) == 2 && return (distinct_colors[1], distinct_colors[2])
+  compute_endpoints_pca(block)
+end
 
-function compute_endpoints(block::AbstractMatrix{RGBA{N0f8}})
+# This is the range Fit technique described in https://www.sjbrown.co.uk/posts/dxt-compression-techniques
+function compute_endpoints_pca(block::AbstractMatrix{RGBA{N0f8}})
   data = reshape(block, (1, 16))
-  # Inspired from https://www.sjbrown.co.uk/posts/dxt-compression-techniques/
+
+  alpha_a, alpha_b = compute_endpoints_pca_alpha(data)
+  rgb_a, rgb_b = compute_endpoints_pca_color(data)
+  a = RGBA(rgb_a.r, rgb_a.g, rgb_a.b, alpha_a)
+  b = RGBA(rgb_b.r, rgb_b.g, rgb_b.b, alpha_b)
+
+  a, b
+end
+
+function compute_endpoints_pca_alpha(data)
   table = getproperty.(data, :alpha)
+
+  distinct_alphas = unique(table)
+  length(distinct_alphas) == 1 && return (distinct_alphas[1], distinct_alphas[1])
+  length(distinct_alphas) == 2 && return (distinct_alphas[1], distinct_alphas[2])
+
   pca = fit(PCA, table; maxoutdim = 1)
   components = predict(pca, table)::Matrix{Float64}
-  alpha_approx = reconstruct(pca, [minimum(components) maximum(components)])::Matrix{Float64}
-  alpha_a = clamp(alpha_approx[1, 1], 0, 1)
-  alpha_b = clamp(alpha_approx[1, 2], 0, 1)
+  _, i = findmin(reshape(components, (16,)))
+  _, j = findmax(reshape(components, (16,)))
+  a = N0f8(clamp(table[1, i], 0, 1))
+  b = N0f8(clamp(table[1, j], 0, 1))
 
+  a, b
+end
+
+function compute_endpoints_pca_color(data)
   table = [getproperty.(data, :r); getproperty.(data, :g); getproperty.(data, :b)]
   pca = fit(PCA, table; maxoutdim = 1)
   components = predict(pca, table)::Matrix{Float64}
-  rgb_approx = reconstruct(pca, [minimum(components) maximum(components)])::Matrix{Float64}
+  _, i = findmin(reshape(components, (16,)))
+  _, j = findmax(reshape(components, (16,)))
+  a = RGB(ntuple(c -> N0f8(clamp(table[c, i], 0, 1)), 3)...)
+  b = RGB(ntuple(c -> N0f8(clamp(table[c, j], 0, 1)), 3)...)
 
-  a = RGBA(ntuple(i -> clamp(rgb_approx[i, 1], 0, 1), 3)..., alpha_a)
-  b = RGBA(ntuple(i -> clamp(rgb_approx[i, 2], 0, 1), 3)..., alpha_b)
   a, b
 end

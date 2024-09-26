@@ -11,7 +11,7 @@ using ColorTypes
 using Dictionaries
 using FixedPointNumbers: N0f8
 using LinearAlgebra: norm
-using MultivariateStats: PCA, fit, predict, reconstruct
+using MultivariateStats: PCA, fit, predict
 using StructEquality
 using StyledStrings
 using StyledStrings: SimpleColor, Face

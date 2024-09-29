@@ -52,6 +52,7 @@ function files_sorted_by_priority((; files, locale_files, locale_folder)::Client
     add_locale_mpq_files!(list, "expansion-speech", locale_files, locale_folder)
     add_locale_mpq_files!(list, "locale", locale_files, locale_folder)
     add_locale_mpq_files!(list, "speech", locale_files, locale_folder)
+    add_locale_mpq_files!(list, "base", locale_files, locale_folder)
   end
   add_mpq_files!(list, "patch", files)
   add_mpq_files!(list, "lichking", files)
@@ -75,6 +76,7 @@ function MPQCollection(files)
       get!(file_sources, file, archive)
     end
   end
+  sortkeys!(file_sources)
   MPQCollection(archives, file_sources)
 end
 
@@ -97,6 +99,7 @@ function Base.show(io::IO, mime::MIME"text/plain", collection::MPQCollection)
 end
 
 function MPQFile(collection::MPQCollection, filename::AbstractString)
+  filename = lowercase(filename)
   archive = get(collection.file_sources, filename, nothing)
   isnothing(archive) && error("No file named $(repr(filename)) exists in this collection.")
   MPQFile(archive, filename)

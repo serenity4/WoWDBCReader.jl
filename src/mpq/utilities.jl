@@ -2,7 +2,7 @@ function listfile(archive::MPQArchive)
   file = find_file(archive, "(listfile)")
   isnothing(file) && return nothing
   data = read(file)
-  split(String(data), in(('\r', '\n', ';')); keepempty = false)
+  split(replace(lowercase(String(data)), '\\' => '/'), in(('\r', '\n', ';')); keepempty = false)
 end
 
 Base.getindex(archive::MPQArchive, filename::AbstractString) = MPQFile(archive, filename)

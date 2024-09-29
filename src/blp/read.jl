@@ -78,12 +78,12 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
               bit_offset = 2 * (bx + 4(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
               if isnothing(reserved)
-                pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
+                pixel = bit == 0x00 ? RGB{Float64}(a) : bit == 0x01 ? RGB{Float64}(b) : mix(a, b, (bit - 1)/3)
                 image[i, j] = RGBA{N0f8}(pixel.r, pixel.g, pixel.b, 1)
               elseif bit == 0x03
                 image[i, j] = reserved
               else
-                pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, 0.5)
+                pixel = bit == 0x00 ? RGB{Float64}(a) : bit == 0x01 ? RGB{Float64}(b) : mix(a, b, 0.5)
                 image[i, j] = RGBA{N0f8}(pixel.r, pixel.g, pixel.b, 1)
               end
             end
@@ -111,7 +111,7 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
               bit_offset = 2 * (bx + 4(by - 1) - 1)
               alpha_offset = 4 * (bx + 4(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
-              pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
+              pixel = bit == 0x00 ? RGB{Float64}(a) : bit == 0x01 ? RGB{Float64}(b) : mix(a, b, (bit - 1)/3)
               alpha = (((alphas << (60 - alpha_offset)) >> 60) % UInt16) / 15
               image[i, j] = RGBA{N0f8}(pixel.r, pixel.g, pixel.b, alpha)
             end
@@ -142,7 +142,7 @@ function read_blp_images(io, width, height, compression, alpha_depth, pixel_form
               bit_offset = 2 * (bx + 4(by - 1) - 1)
               alpha_offset = 3 * (bx + 3(by - 1) - 1)
               bit = ((bits << (30 - bit_offset)) >> 30) % UInt8
-              pixel = bit == 0x00 ? a : bit == 0x01 ? b : mix(a, b, (bit - 1)/3)
+              pixel = bit == 0x00 ? RGB{Float64}(a) : bit == 0x01 ? RGB{Float64}(b) : mix(a, b, (bit - 1)/3)
               alpha_code = (alpha_bits >> alpha_offset) & 0x07
               alpha = alpha_code == 0x00 ? alpha_a : alpha_code == 0x01 ? alpha_b : if alpha_a > alpha_b
                 mix(alpha_a, alpha_b, (alpha_code - 1) / 7)

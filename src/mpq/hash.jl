@@ -27,7 +27,7 @@ const MPQ_HASH_NAME_A = 0x100
 const MPQ_HASH_NAME_B = 0x200
 const MPQ_HASH_FILE_KEY = 0x300
 
-function hash_filename(filename::AbstractString, hash_type; slash_to_backslash = false)
+function hash_filename(filename::AbstractString, hash_type; slash_to_backslash = true)
   seed_1::UInt32 = 0x7fed7fed
   seed_2::UInt32 = 0xeeeeeeee
   for char in filename

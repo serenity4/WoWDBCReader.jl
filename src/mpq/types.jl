@@ -152,6 +152,7 @@ function MPQFile(archive::MPQArchive, filename::AbstractString, hash_entry::MPQH
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString, data::AbstractVector{UInt8}; locale::Optional{MPQLocale} = nothing, flags::MPQFileFlags = MPQFileFlags(), compression::Optional{MPQCompressionFlags} = DEFAULT_COMPRESSION_METHOD, encrypt::Bool = false)
+  filename = lowercase(filename)
   haskey(archive.files, filename) && error("The file $(repr(filename)) already exists")
   flags |= MPQ_FILE_EXISTS
   !isnothing(compression) && (flags |= MPQ_FILE_COMPRESS)

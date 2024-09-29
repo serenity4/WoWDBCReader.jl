@@ -34,7 +34,7 @@ function file_decryption_key(filename::AbstractString, block::MPQBlock)
 end
 
 function file_decryption_key(filename::AbstractString, file_offset, uncompressed_file_size, flags::MPQFileFlags)
-  filename = filter(x -> x == '/' || x == '\\', filename)
+  filename = filter(≠('/'), filename)
   key = hash_filename(filename, MPQ_HASH_FILE_KEY)
   !in(MPQ_FILE_KEY_V2, flags) && return key
   (key + file_offset) ⊻ uncompressed_file_size

@@ -87,6 +87,7 @@ function find_file(archive::MPQArchive, filename::AbstractString)
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString)
+  filename = lowercase(filename)
   file = get(archive.files, filename, nothing)
   !isnothing(file) && return file
   file = find_file(archive, filename)
@@ -162,9 +163,12 @@ function read_uncompressed_block_data!(data::Vector{UInt8}, io::IO, block::MPQBl
       sector_buffer[j] = read(io, UInt8)
     end
     sector = @view sector_buffer[1:size]
-    sector = reinterpret(UInt32, sector)
-    !isnothing(key) && decrypt_block!(sector, key + UInt32(i - 1))
-    append!(data, reinterpret(UInt8, sector))
+    if !isnothing(key)
+      sector = reinterpret(UInt32, sector)
+      decrypt_block!(sector, key + UInt32(i - 1))
+      sector = reinterpret(UInt8, sector)
+    end
+    append!(data, sector)
   end
   data
 end

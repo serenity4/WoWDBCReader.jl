@@ -8,6 +8,7 @@ using BitMasks
 using CodecBzip2: Bzip2Compressor, Bzip2Decompressor
 using CodecZlib: ZlibCompressor, ZlibDecompressor
 using ColorTypes
+using ColorVectorSpace
 using Dictionaries
 using FixedPointNumbers: N0f8
 using LinearAlgebra: norm

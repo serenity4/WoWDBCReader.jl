@@ -150,21 +150,21 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       @test length(data) === Int(block.uncompressed_file_size)
       files = listfile(archive)
       @test length(files) === 2994
-      @test files[begin] == "CHARACTER\\BloodElf\\Female\\BloodElfFemale.M2"
-      @test files[end] == "WTF\\DefaultBindings.wtf"
+      @test files[begin] == lowercase("CHARACTER/BloodElf/Female/BloodElfFemale.M2")
+      @test files[end] == lowercase("WTF/DefaultBindings.wtf")
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS"))
-      talent_tabs_dbc = read(archive["DBFilesClient\\TalentTab.dbc"])
+      talent_tabs_dbc = read(archive["DBFilesClient/TalentTab.dbc"])
       talent_tabs = DBCData(talent_tabs_dbc, :TalentTab)
       ref = DBCData(dbc_file(:TalentTab))
       @test talent_tabs == ref
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS-3"))
-      map_dbc = read(archive["DBFilesClient\\Map.dbc"])
+      map_dbc = read(archive["DBFilesClient/Map.dbc"])
       map = DBCData(map_dbc, :Map)
       ref = DBCData(dbc_file(:Map))
       @test map == ref
-      spell_dbc = read(archive["DBFilesClient\\Spell.dbc"])
+      spell_dbc = read(archive["DBFilesClient/Spell.dbc"])
       spell = DBCData(spell_dbc, :Spell)
       ref = DBCData(dbc_file(:Spell))
       @test spell == ref
@@ -186,9 +186,9 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       archive = MPQArchive()
       # This file will be stored as a single uncompressed sector in practice,
       # because compression will not make it smaller than its data.
-      file_a = MPQFile(archive, "Test\\A", UInt8[0x18, 0x9a, 0xdf, 0xe1, 0xad])
-      @test_throws "already exists" MPQFile(archive, "Test\\A", file_a.data)
-      file_b = MPQFile(archive, "Test\\B", ones(UInt8, 5000))
+      file_a = MPQFile(archive, "Test/A", UInt8[0x18, 0x9a, 0xdf, 0xe1, 0xad])
+      @test_throws "already exists" MPQFile(archive, "Test/A", file_a.data)
+      file_b = MPQFile(archive, "Test/B", ones(UInt8, 5000))
       buffer = IOBuffer()
       nb = write(buffer, archive)
       @test nb > 65536 + 44
@@ -196,8 +196,8 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
       @test length(archive2.block_table.entries) == 3
-      file_a_2 = archive2["Test\\A"]
-      file_b_2 = archive2["Test\\B"]
+      file_a_2 = archive2["Test/A"]
+      file_b_2 = archive2["Test/B"]
       @test file_a_2.block[].uncompressed_file_size == 5
       @test file_b_2.block[].uncompressed_file_size == 5000
       @test read(file_a_2) == read(file_a)
@@ -206,9 +206,9 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
 
       # Same, but with one file uncompressed.
       archive = MPQArchive()
-      file_a = MPQFile(archive, "Test\\A", ones(UInt8, 256); compression = nothing)
-      @test_throws "already exists" MPQFile(archive, "Test\\A", rand(UInt8, 256))
-      file_b = MPQFile(archive, "Test\\B", ones(UInt8, 5000))
+      file_a = MPQFile(archive, "Test/A", ones(UInt8, 256); compression = nothing)
+      @test_throws "already exists" MPQFile(archive, "Test/A", rand(UInt8, 256))
+      file_b = MPQFile(archive, "Test/B", ones(UInt8, 5000))
       buffer = IOBuffer()
       nb = write(buffer, archive)
       @test nb > 65536 + 44
@@ -216,8 +216,8 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
       @test length(archive2.block_table.entries) == 3
-      file_a_2 = archive2["Test\\A"]
-      file_b_2 = archive2["Test\\B"]
+      file_a_2 = archive2["Test/A"]
+      file_b_2 = archive2["Test/B"]
       @test file_a_2.block[].uncompressed_file_size == 256
       @test file_a_2.block[].compressed_file_size == 256
       @test file_b_2.block[].uncompressed_file_size == 5000
@@ -225,24 +225,24 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       @test read(file_b_2) == read(file_b)
 
       archive = MPQArchive(mpq_file("enUS/patch-enUS"))
-      data = read(archive["DBFilesClient\\TalentTab.dbc"])
+      data = read(archive["DBFilesClient/TalentTab.dbc"])
       part = MPQArchive()
-      file = MPQFile(part, "DBFilesClient\\TalentTab.dbc", data)
+      file = MPQFile(part, "DBFilesClient/TalentTab.dbc", data)
       buffer = IOBuffer()
       write(buffer, part)
       seekstart(buffer)
       archive2 = MPQArchive(buffer)
-      data2 = read(archive2["DBFilesClient\\TalentTab.dbc"])
+      data2 = read(archive2["DBFilesClient/TalentTab.dbc"])
       @test data2 == data
     end
 
     @testset "MPQ collections" begin
       collection = MPQCollection([mpq_file("enUS/patch-enUS-3"), mpq_file("enUS/locale-enUS")])
-      file = MPQFile(collection, "DBFilesClient\\Achievement.dbc")
+      file = MPQFile(collection, "DBFilesClient/Achievement.dbc")
       @test file === MPQFile(collection.archives[1], file.filename)
-      file = MPQFile(collection, "Fonts\\FRIENDS.TTF")
+      file = MPQFile(collection, "Fonts/FRIENDS.TTF")
       @test file === MPQFile(collection.archives[1], file.filename)
-      file = MPQFile(collection, "Fonts\\MORPHEUS.TTF")
+      file = MPQFile(collection, "Fonts/MORPHEUS.TTF")
       @test file === MPQFile(collection.archives[2], file.filename)
 
       mpq_files = WoW.ClientMPQFiles(DATA_DIRECTORY)
@@ -268,7 +268,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
 
       @testset "BLP compression" begin
         # No alpha.
-        icon = MPQFile(collection, "Interface\\GLUES\\LoadingBar\\Loading-BarGlow.blp")
+        icon = MPQFile(collection, "Interface/GLUES/LoadingBar/Loading-BarGlow.blp")
         file = BLPFile(read(icon))
         nx, ny = size(file.image)
         @test nx == 512 && ny == 128
@@ -277,7 +277,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         @test file.image[400, 64] === RGBA{N0f8}(0.0, 0.102, 0.275, 0.518)
 
         # 1-bit alpha.
-        icon = MPQFile(collection, "Interface\\CURSOR\\Attack.blp")
+        icon = MPQFile(collection, "Interface/CURSOR/Attack.blp")
         file = BLPFile(read(icon))
         nx, ny = size(file.image)
         @test nx == 32 && ny == 32
@@ -286,12 +286,12 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.565, 0.725, 0.776)
 
         # 4-bit alpha.
-        icon = MPQFile(collection, "Character\\Tauren\\Female\\TAURENFEMALESKIN00_01_EXTRA.BLP")
+        icon = MPQFile(collection, "Character/Tauren/Female/TAURENFEMALESKIN00_01_EXTRA.BLP")
         file = BLPFile(read(icon))
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.141, 0.125, 0.988)
 
         # 8-bit alpha.
-        icon = MPQFile(collection, "Interface\\CURSOR\\Buy.blp")
+        icon = MPQFile(collection, "Interface/CURSOR/Buy.blp")
         file = BLPFile(read(icon))
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.482, 0.369, 0.973)
       end
@@ -305,38 +305,38 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         end
 
         # No alpha.
-        icon = MPQFile(collection, "Interface\\Icons\\Trade_Alchemy.blp")
+        icon = MPQFile(collection, "Interface/Icons/Trade_Alchemy.blp")
         file = BLPFile(read(icon))
         @test file.image[3912] === RGBA{N0f8}(0.188, 0.204, 0.2, 1.0)
         @test file.image[89] === RGBA{N0f8}(0.753, 0.753, 0.753, 1.0)
         @test file.image[465] === RGBA{N0f8}(0.608, 0.545, 0.314, 1.0)
 
         # 1-bit alpha.
-        icon = MPQFile(collection, "Interface\\AUCTIONFRAME\\BuyoutIcon.blp")
+        icon = MPQFile(collection, "Interface/AUCTIONFRAME/BuyoutIcon.blp")
         file = BLPFile(read(icon))
         @test file.image[2] === RGBA{N0f8}(0.847, 0.706, 0.0, 1.0)
 
         # Has a with of 768 pixels.
-        icon = MPQFile(collection, "TILESET\\Terrain Cube Maps\\TCB_CrystalSong_A.blp")
+        icon = MPQFile(collection, "TILESET/Terrain Cube Maps/TCB_CrystalSong_A.blp")
         file = BLPFile(read(icon))
         @test file.image[20, 76] === RGBA{N0f8}(0.302, 0.278, 0.376, 1.0)
       end
 
       @testset "DTX3 compression" begin
         # 4-bit alpha.
-        icon = MPQFile(collection, "Interface\\Icons\\INV_Fishingpole_02.blp")
+        icon = MPQFile(collection, "Interface/Icons/INV_Fishingpole_02.blp")
         file = BLPFile(read(icon))
         @test file.image[15, 20] === RGBA{N0f8}(0.357, 0.263, 0.188, 1.0)
       end
 
       @testset "DTX5 compression" begin
         # No alpha.
-        icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
+        icon = MPQFile(collection, "Environments/Stars/HellFireSkyNebula03.blp")
         file = BLPFile(read(icon))
         @test file.image[250, 100] === RGBA{N0f8}(0.2, 0.216, 0.094, 1.0)
 
         # 8-bit alpha.
-        icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
+        icon = MPQFile(collection, "Interface/Icons/Ability_Rogue_Shadowstep.blp")
         file = BLPFile(read(icon))
         @test file.image[42, 18] === RGBA{N0f8}(0.427, 0.161, 0.847, 1.0)
       end
@@ -347,7 +347,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
     end
 
     @testset "Writing BLP files" begin
-      icon = MPQFile(collection, "Environments\\Stars\\HellFireSkyNebula03.blp")
+      icon = MPQFile(collection, "Environments/Stars/HellFireSkyNebula03.blp")
       file = BLPFile(read(icon))
       data = BLPData(file.image)
       io = IOBuffer()
@@ -356,7 +356,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       file2 = BLPFile(serialized)
       @test error_quantile(file.image, file2.image, 0.77) == 0.0
 
-      icon = MPQFile(collection, "Interface\\Icons\\Ability_Rogue_Shadowstep.blp")
+      icon = MPQFile(collection, "Interface/Icons/Ability_Rogue_Shadowstep.blp")
       file = BLPFile(read(icon))
       data = BLPData(file.image)
       io = IOBuffer()

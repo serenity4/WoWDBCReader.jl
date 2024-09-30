@@ -30,12 +30,6 @@ include("blp/types.jl")
 include("blp/read.jl")
 include("blp/write.jl")
 
-include("dbc/localization.jl")
-include("dbc/schemas.jl")
-include("dbc/types.jl")
-include("dbc/read.jl")
-include("dbc/write.jl")
-
 include("mpq/locale.jl")
 include("mpq/compression.jl")
 include("mpq/types.jl")
@@ -45,6 +39,12 @@ include("mpq/hash.jl")
 include("mpq/cryptography.jl")
 include("mpq/read.jl")
 include("mpq/write.jl")
+
+include("dbc/localization.jl")
+include("dbc/schemas.jl")
+include("dbc/types.jl")
+include("dbc/read.jl")
+include("dbc/write.jl")
 
 export LString,
        @set,

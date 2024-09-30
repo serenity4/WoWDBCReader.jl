@@ -152,14 +152,14 @@ function MPQFile(archive::MPQArchive, filename::AbstractString, hash_entry::MPQH
 end
 
 function MPQFile(archive::MPQArchive, filename::AbstractString, data::AbstractVector{UInt8}; locale::Optional{MPQLocale} = nothing, flags::MPQFileFlags = MPQFileFlags(), compression::Optional{MPQCompressionFlags} = DEFAULT_COMPRESSION_METHOD, encrypt::Bool = false)
-  filename = lowercase(filename)
-  haskey(archive.files, filename) && error("The file $(repr(filename)) already exists")
+  lfilename = lowercase(filename)
+  haskey(archive.files, lfilename) && error("The file $(repr(filename)) already exists")
   flags |= MPQ_FILE_EXISTS
   !isnothing(compression) && (flags |= MPQ_FILE_COMPRESS)
   encrypt && (flags |= MPQ_FILE_ENCRYPTED)
   placeholder = MPQBlock(0xffffffff, 0xffffffff, 0xffffffff, typemax(MPQFileFlags))
   file = MPQFile(archive, filename, locale, flags, compression, Ref(placeholder), data, true)
-  insert!(archive.files, filename, file)
+  insert!(archive.files, lfilename, file)
   file
 end
 

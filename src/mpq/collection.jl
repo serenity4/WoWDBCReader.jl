@@ -99,8 +99,9 @@ function Base.show(io::IO, mime::MIME"text/plain", collection::MPQCollection)
 end
 
 function MPQFile(collection::MPQCollection, filename::AbstractString)
-  filename = lowercase(filename)
-  archive = get(collection.file_sources, filename, nothing)
+  archive = get(collection.file_sources, lowercase(filename), nothing)
   isnothing(archive) && error("No file named $(repr(filename)) exists in this collection.")
   MPQFile(archive, filename)
 end
+
+Base.getindex(collection::MPQCollection, filename::AbstractString) = MPQFile(collection, filename)

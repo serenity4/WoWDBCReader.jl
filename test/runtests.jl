@@ -146,6 +146,12 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       @test block.flags === MPQ_FILE_COMPRESS | MPQ_FILE_SECTOR_CRC | MPQ_FILE_EXISTS
       @test block === block_table.entries[2995]
       @test_throws "No file" archive["doesnotexist"]
+
+      file = archive["World/wmo/Northrend/Wintergrasp/WG_Tower02C.wmo"]
+      @test file.filename == "World/wmo/Northrend/Wintergrasp/WG_Tower02C.wmo"
+      @test file.data === archive[lowercase("World/wmo/Northrend/Wintergrasp/WG_Tower02C.wmo")].data
+      @test length(archive.files) == 1
+
       data = read(archive["(listfile)"])
       @test length(data) === Int(block.uncompressed_file_size)
       files = listfile(archive)
@@ -238,12 +244,14 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
 
     @testset "MPQ collections" begin
       collection = MPQCollection([mpq_file("enUS/patch-enUS-3"), mpq_file("enUS/locale-enUS")])
-      file = MPQFile(collection, "DBFilesClient/Achievement.dbc")
-      @test file === MPQFile(collection.archives[1], file.filename)
-      file = MPQFile(collection, "Fonts/FRIENDS.TTF")
-      @test file === MPQFile(collection.archives[1], file.filename)
-      file = MPQFile(collection, "Fonts/MORPHEUS.TTF")
-      @test file === MPQFile(collection.archives[2], file.filename)
+      file = collection["DBFilesClient/Achievement.dbc"]
+      @test file === collection.archives[1][file.filename]
+      @test file.filename == "DBFilesClient/Achievement.dbc"
+      @test file.data === collection[lowercase("DBFilesClient/Achievement.dbc")].data
+      file = collection["Fonts/FRIENDS.TTF"]
+      @test file === collection.archives[1][file.filename]
+      file = collection["Fonts/MORPHEUS.TTF"]
+      @test file === collection.archives[2][file.filename]
 
       mpq_files = WoW.ClientMPQFiles(DATA_DIRECTORY)
       sorted = WoW.files_sorted_by_priority(mpq_files)
@@ -263,12 +271,14 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
   @testset "BLP files" begin
     # The following example files were identified on https://wowwiki-archive.fandom.com/wiki/BLP_file
     # for their specific features suitable for testing.
+
+    collection = MPQCollection([mpq_file("enUS/locale-enUS"), mpq_file("common"), mpq_file("lichking")])
+
     @testset "Reading BLP files" begin
-      collection = MPQCollection([mpq_file("enUS/locale-enUS"), mpq_file("common"), mpq_file("lichking")])
 
       @testset "BLP compression" begin
         # No alpha.
-        icon = MPQFile(collection, "Interface/GLUES/LoadingBar/Loading-BarGlow.blp")
+        icon = collection["Interface/GLUES/LoadingBar/Loading-BarGlow.blp"]
         file = BLPFile(read(icon))
         nx, ny = size(file.image)
         @test nx == 512 && ny == 128
@@ -277,7 +287,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         @test file.image[400, 64] === RGBA{N0f8}(0.0, 0.102, 0.275, 0.518)
 
         # 1-bit alpha.
-        icon = MPQFile(collection, "Interface/CURSOR/Attack.blp")
+        icon = collection["Interface/CURSOR/Attack.blp"]
         file = BLPFile(read(icon))
         nx, ny = size(file.image)
         @test nx == 32 && ny == 32
@@ -286,12 +296,12 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.565, 0.725, 0.776)
 
         # 4-bit alpha.
-        icon = MPQFile(collection, "Character/Tauren/Female/TAURENFEMALESKIN00_01_EXTRA.BLP")
+        icon = collection["Character/Tauren/Female/TAURENFEMALESKIN00_01_EXTRA.BLP"]
         file = BLPFile(read(icon))
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.141, 0.125, 0.988)
 
         # 8-bit alpha.
-        icon = MPQFile(collection, "Interface/CURSOR/Buy.blp")
+        icon = collection["Interface/CURSOR/Buy.blp"]
         file = BLPFile(read(icon))
         @test file.image[14, 16] === RGBA{N0f8}(0.0, 0.482, 0.369, 0.973)
       end
@@ -305,38 +315,38 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
         end
 
         # No alpha.
-        icon = MPQFile(collection, "Interface/Icons/Trade_Alchemy.blp")
+        icon = collection["Interface/Icons/Trade_Alchemy.blp"]
         file = BLPFile(read(icon))
         @test file.image[3912] === RGBA{N0f8}(0.188, 0.204, 0.2, 1.0)
         @test file.image[89] === RGBA{N0f8}(0.753, 0.753, 0.753, 1.0)
         @test file.image[465] === RGBA{N0f8}(0.608, 0.545, 0.314, 1.0)
 
         # 1-bit alpha.
-        icon = MPQFile(collection, "Interface/AUCTIONFRAME/BuyoutIcon.blp")
+        icon = collection["Interface/AUCTIONFRAME/BuyoutIcon.blp"]
         file = BLPFile(read(icon))
         @test file.image[2] === RGBA{N0f8}(0.847, 0.706, 0.0, 1.0)
 
         # Has a with of 768 pixels.
-        icon = MPQFile(collection, "TILESET/Terrain Cube Maps/TCB_CrystalSong_A.blp")
+        icon = collection["TILESET/Terrain Cube Maps/TCB_CrystalSong_A.blp"]
         file = BLPFile(read(icon))
         @test file.image[20, 76] === RGBA{N0f8}(0.302, 0.278, 0.376, 1.0)
       end
 
       @testset "DTX3 compression" begin
         # 4-bit alpha.
-        icon = MPQFile(collection, "Interface/Icons/INV_Fishingpole_02.blp")
+        icon = collection["Interface/Icons/INV_Fishingpole_02.blp"]
         file = BLPFile(read(icon))
         @test file.image[15, 20] === RGBA{N0f8}(0.357, 0.263, 0.188, 1.0)
       end
 
       @testset "DTX5 compression" begin
         # No alpha.
-        icon = MPQFile(collection, "Environments/Stars/HellFireSkyNebula03.blp")
+        icon = collection["Environments/Stars/HellFireSkyNebula03.blp"]
         file = BLPFile(read(icon))
         @test file.image[250, 100] === RGBA{N0f8}(0.2, 0.216, 0.094, 1.0)
 
         # 8-bit alpha.
-        icon = MPQFile(collection, "Interface/Icons/Ability_Rogue_Shadowstep.blp")
+        icon = collection["Interface/Icons/Ability_Rogue_Shadowstep.blp"]
         file = BLPFile(read(icon))
         @test file.image[42, 18] === RGBA{N0f8}(0.427, 0.161, 0.847, 1.0)
       end
@@ -347,7 +357,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
     end
 
     @testset "Writing BLP files" begin
-      icon = MPQFile(collection, "Environments/Stars/HellFireSkyNebula03.blp")
+      icon = collection["Environments/Stars/HellFireSkyNebula03.blp"]
       file = BLPFile(read(icon))
       data = BLPData(file.image)
       io = IOBuffer()
@@ -356,7 +366,7 @@ error_quantile(x, y, bound) = quantile(reshape(norm.(y - x), (prod(size(x)))), b
       file2 = BLPFile(serialized)
       @test error_quantile(file.image, file2.image, 0.77) == 0.0
 
-      icon = MPQFile(collection, "Interface/Icons/Ability_Rogue_Shadowstep.blp")
+      icon = collection["Interface/Icons/Ability_Rogue_Shadowstep.blp"]
       file = BLPFile(read(icon))
       data = BLPData(file.image)
       io = IOBuffer()
